@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTasks } from '@fortawesome/free-solid-svg-icons'
+import { faTasks } from '@fortawesome/free-solid-svg-icons'
 
 const SearchFilter = ({
     searchWorkerId,
@@ -138,9 +138,7 @@ const SearchFilter = ({
                                         <input
                                             type="radio"
                                             name="OutsideGroup"
-                                            checked={
-                                                selectedOutside === null
-                                            }
+                                            checked={selectedOutside === null}
                                             onChange={() =>
                                                 setSelectedOutside(null)
                                             }
@@ -154,14 +152,9 @@ const SearchFilter = ({
                                         <input
                                             type="radio"
                                             name="OutsideGroup"
-                                            checked={
-                                                selectedOutside ===
-                                                '2'
-                                            }
+                                            checked={selectedOutside === '2'}
                                             onChange={() =>
-                                                setSelectedOutside(
-                                                    '2',
-                                                )
+                                                setSelectedOutside('2')
                                             }
                                         />
                                         <i className="form-icon"></i>
@@ -173,14 +166,9 @@ const SearchFilter = ({
                                         <input
                                             type="radio"
                                             name="OutsideGroup"
-                                            checked={
-                                                selectedOutside ===
-                                                '1'
-                                            }
+                                            checked={selectedOutside === '1'}
                                             onChange={() =>
-                                                setSelectedOutside(
-                                                    '1',
-                                                )
+                                                setSelectedOutside('1')
                                             }
                                         />
                                         <i className="form-icon"></i>
@@ -351,13 +339,11 @@ const SearchFilter = ({
                                         ประเภทงาน
                                     </li>
                                     <li>
-                                    <label className="form-checkbox text-blue-500">
+                                        <label className="form-checkbox text-blue-500">
                                             <input
                                                 type="radio"
                                                 name="JobGroup"
-                                                checked={
-                                                    selectedJob === null
-                                                }
+                                                checked={selectedJob === null}
                                                 onChange={() =>
                                                     setSelectedJob(null)
                                                 }
@@ -372,10 +358,13 @@ const SearchFilter = ({
                                                 type="radio"
                                                 name="JobGroup"
                                                 checked={
-                                                    selectedJob === 'แม่บ้านทั่วไป'
+                                                    selectedJob ===
+                                                    'แม่บ้านทั่วไป'
                                                 }
                                                 onChange={() =>
-                                                    setSelectedJob('แม่บ้านทั่วไป')
+                                                    setSelectedJob(
+                                                        'แม่บ้านทั่วไป',
+                                                    )
                                                 }
                                             />
                                             <i className="form-icon"></i>
@@ -388,10 +377,13 @@ const SearchFilter = ({
                                                 type="radio"
                                                 name="JobGroup"
                                                 checked={
-                                                    selectedJob === 'พี่เลี้ยงน้อง'
+                                                    selectedJob ===
+                                                    'พี่เลี้ยงน้อง'
                                                 }
                                                 onChange={() =>
-                                                    setSelectedJob('พี่เลี้ยงน้อง')
+                                                    setSelectedJob(
+                                                        'พี่เลี้ยงน้อง',
+                                                    )
                                                 }
                                             />
                                             <i className="form-icon"></i>
@@ -404,10 +396,13 @@ const SearchFilter = ({
                                                 type="radio"
                                                 name="JobGroup"
                                                 checked={
-                                                    selectedJob === 'ดูแลผู้สูงอายุ'
+                                                    selectedJob ===
+                                                    'ดูแลผู้สูงอายุ'
                                                 }
                                                 onChange={() =>
-                                                    setSelectedJob('ดูแลผู้สูงอายุ')
+                                                    setSelectedJob(
+                                                        'ดูแลผู้สูงอายุ',
+                                                    )
                                                 }
                                             />
                                             <i className="form-icon"></i>
@@ -420,10 +415,13 @@ const SearchFilter = ({
                                                 type="radio"
                                                 name="JobGroup"
                                                 checked={
-                                                    selectedJob === 'แม่บ้านพี่เลี้ยงน้อง'
+                                                    selectedJob ===
+                                                    'แม่บ้านพี่เลี้ยงน้อง'
                                                 }
                                                 onChange={() =>
-                                                    setSelectedJob('แม่บ้านพี่เลี้ยงน้อง')
+                                                    setSelectedJob(
+                                                        'แม่บ้านพี่เลี้ยงน้อง',
+                                                    )
                                                 }
                                             />
                                             <i className="form-icon"></i>
@@ -436,10 +434,13 @@ const SearchFilter = ({
                                                 type="radio"
                                                 name="JobGroup"
                                                 checked={
-                                                    selectedJob === 'แม่บ้านดูแลผู้สูงอายุ'
+                                                    selectedJob ===
+                                                    'แม่บ้านดูแลผู้สูงอายุ'
                                                 }
                                                 onChange={() =>
-                                                    setSelectedJob('แม่บ้านดูแลผู้สูงอายุ')
+                                                    setSelectedJob(
+                                                        'แม่บ้านดูแลผู้สูงอายุ',
+                                                    )
                                                 }
                                             />
                                             <i className="form-icon"></i>
@@ -468,10 +469,13 @@ const SearchFilter = ({
                                                 type="radio"
                                                 name="JobGroup"
                                                 checked={
-                                                    selectedJob === 'พ่อบ้านทั่วไป'
+                                                    selectedJob ===
+                                                    'พ่อบ้านทั่วไป'
                                                 }
                                                 onChange={() =>
-                                                    setSelectedJob('พ่อบ้านทั่วไป')
+                                                    setSelectedJob(
+                                                        'พ่อบ้านทั่วไป',
+                                                    )
                                                 }
                                             />
                                             <i className="form-icon"></i>
@@ -485,13 +489,11 @@ const SearchFilter = ({
                                         ภูมิภาค
                                     </li>
                                     <li>
-                                    <label className="form-checkbox text-blue-500">
+                                        <label className="form-checkbox text-blue-500">
                                             <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === null
-                                                }
+                                                checked={selectedZone === null}
                                                 onChange={() =>
                                                     setSelectedZone(null)
                                                 }
@@ -502,12 +504,10 @@ const SearchFilter = ({
                                     </li>
                                     <li>
                                         <label className="form-checkbox">
-                                        <input
+                                            <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === '1'
-                                                }
+                                                checked={selectedZone === '1'}
                                                 onChange={() =>
                                                     setSelectedZone('1')
                                                 }
@@ -521,9 +521,7 @@ const SearchFilter = ({
                                             <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === '2'
-                                                }
+                                                checked={selectedZone === '2'}
                                                 onChange={() =>
                                                     setSelectedZone('2')
                                                 }
@@ -537,9 +535,7 @@ const SearchFilter = ({
                                             <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === '3'
-                                                }
+                                                checked={selectedZone === '3'}
                                                 onChange={() =>
                                                     setSelectedZone('3')
                                                 }
@@ -553,9 +549,7 @@ const SearchFilter = ({
                                             <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === '4'
-                                                }
+                                                checked={selectedZone === '4'}
                                                 onChange={() =>
                                                     setSelectedZone('4')
                                                 }
@@ -569,9 +563,7 @@ const SearchFilter = ({
                                             <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === '5'
-                                                }
+                                                checked={selectedZone === '5'}
                                                 onChange={() =>
                                                     setSelectedZone('5')
                                                 }
@@ -585,9 +577,7 @@ const SearchFilter = ({
                                             <input
                                                 type="radio"
                                                 name="ZoneGroup"
-                                                checked={
-                                                    selectedZone === '6'
-                                                }
+                                                checked={selectedZone === '6'}
                                                 onChange={() =>
                                                     setSelectedZone('6')
                                                 }
