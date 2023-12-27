@@ -130,7 +130,7 @@ const WorkerCard = ({
                             background: 'rgba(0, 0, 0, 0)',
                             padding: '3px',
                         }}>
-                            <div className="badge badge-primary py-3 mr-2">
+                        <div className="badge badge-primary py-3 mr-2">
                             {getFlagUrl(item.worker_type)}
                         </div>
                     </figcaption>

@@ -1,9 +1,7 @@
-
 import Head from 'next/head'
 import React from 'react'
 
 const GuestLayout = ({ children }) => {
-
     return (
         <div className="bg-gray-100">
             <Head>
@@ -11,7 +9,7 @@ const GuestLayout = ({ children }) => {
             </Head>
             <main>
                 <div className="flex items-center justify-center h-screen">
-                {children}
+                    {children}
                 </div>
             </main>
         </div>

@@ -1,6 +1,11 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserGroup, faHouse, faGear, faFlaskVial} from '@fortawesome/free-solid-svg-icons'
+import {
+    faUserGroup,
+    faHouse,
+    faGear,
+    faFlaskVial,
+} from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -30,50 +35,50 @@ const MenuNav = ({ user }) => {
         <div className="w-1/6 h-screen fixed bg-white lg:p-3 p-0 lg:overflow-y-auto overflow-hidden lg:border-r-0 border-r">
             <ul className="menu mb-3 m-0 p-0 text-gray-600">
                 <li className="py-1">
-                    <MenuItem href="/dashboard" icon={faHouse} label="Dashboard" />
+                    <MenuItem
+                        href="/dashboard"
+                        icon={faHouse}
+                        label="Dashboard"
+                    />
                 </li>
                 {user?.type48 === 1 && (
-                <li className="py-1">
-                    <MenuItem
-                        href="/48/worker"
-                        icon={faUserGroup}
-                        label="นาซ่า48"
-                    />
-                </li>
+                    <li className="py-1">
+                        <MenuItem
+                            href="/48/worker"
+                            icon={faUserGroup}
+                            label="นาซ่า48"
+                        />
+                    </li>
                 )}
                 {user?.type82 === 1 && (
-                <li className="py-1">
-                    <MenuItem
-                        href="/82/worker"
-                        icon={faUserGroup}
-                        label="แม่บ้านดีดี"
-                    />
-                </li>
+                    <li className="py-1">
+                        <MenuItem
+                            href="/82/worker"
+                            icon={faUserGroup}
+                            label="แม่บ้านดีดี"
+                        />
+                    </li>
                 )}
                 {user?.typelaos === 1 && (
-                <li className="py-1">
-                    <MenuItem
-                        href="/laos/worker"
-                        icon={faUserGroup}
-                        label="เมทอินเตอร์"
-                    />
-                </li>
+                    <li className="py-1">
+                        <MenuItem
+                            href="/laos/worker"
+                            icon={faUserGroup}
+                            label="เมทอินเตอร์"
+                        />
+                    </li>
                 )}
                 {user?.typethai === 1 && (
-                <li className="py-1">
-                    <MenuItem
-                        href="/online/worker"
-                        icon={faUserGroup}
-                        label="ออนไลน์คนไทย"
-                    />
-                </li>
+                    <li className="py-1">
+                        <MenuItem
+                            href="/online/worker"
+                            icon={faUserGroup}
+                            label="ออนไลน์คนไทย"
+                        />
+                    </li>
                 )}
                 <li className="py-1">
-                    <MenuItem
-                        href="/test"
-                        icon={faFlaskVial}
-                        label="ทดสอบ"
-                    />
+                    <MenuItem href="/test" icon={faFlaskVial} label="ทดสอบ" />
                 </li>
                 <li className="pb-1">
                     <details className="lg:inline-block hidden h-full">

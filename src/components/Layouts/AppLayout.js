@@ -2,7 +2,7 @@ import Navigation from '@/components/Layouts/Navigation'
 import MenuNav from '@/components/Layouts/MenuNav'
 import { useAuth } from '@/hooks/auth'
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -10,11 +10,11 @@ const AppLayout = ({ children }) => {
     const router = useRouter()
     const { user } = useAuth({ middleware: 'auth' })
 
-     useEffect(() => {
-         if (!user) {
-             router.push('/')
-         }
-     }, [user])
+    useEffect(() => {
+        if (!user) {
+            router.push('/')
+        }
+    }, [user])
 
     return (
         <div className="min-h-screen bg-gray-100">

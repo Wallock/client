@@ -159,8 +159,7 @@ const WorkerDetailsDrawer = ({
                                         {workerData.worker_nickname}
                                         {workerData.worker_namelist === 1 ? (
                                             <label className="text-red-400">
-                                                {' '}
-                                                (NameList)
+                                                NameList
                                             </label>
                                         ) : null}
                                     </p>

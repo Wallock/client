@@ -12,11 +12,7 @@ module.exports = {
         es6: true,
         commonjs: true,
     },
-    extends: [
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:prettier/recommended',
-    ],
+    extends: ['prettier'],
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
@@ -42,7 +38,7 @@ module.exports = {
         'react/jsx-no-comment-textnodes': 0,
         'react/jsx-props-no-spreading': 0,
         'react/no-array-index-key': 0,
-        'react/no-unescaped-entities': 0,
+        'react/no-unescaped-entities': 'off',
         'react/require-default-props': 0,
         'react/react-in-jsx-scope': 0,
         'linebreak-style': ['error', 'unix'],

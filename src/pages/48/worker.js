@@ -1,26 +1,13 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faCaretRight,
-    faCaretLeft,
-    faCircleCheck,
-    faQuestion,
-    faCirclePause,
-    faFileCircleCheck,
-    faClock,
-    faArrowRightArrowLeft,
-    faPersonCircleExclamation,
-    faUserCheck,
-} from '@fortawesome/free-solid-svg-icons'
+
 import SearchFilter from '@/components/48/SearchFilter'
 import Pagination from '@/components/48/Pagination'
 import WorkerCard from '@/components/48/WorkerCard'
 import WorkerDetailsDrawer from '@/components/48/WorkerDetailsDrawer'
 import axios from 'axios'
 import { useAuth } from '@/hooks/auth'
-
 
 export default function Home() {
     const router = useRouter()
@@ -46,9 +33,9 @@ export default function Home() {
     const [filteredData, setFilteredData] = useState([])
     const { user } = useAuth({ middleware: 'auth' })
 
-const token =`1amwall0ck`
-const f_url = `https://beta.wb.in.th`
-const getname = `48`
+    const token = `1amwall0ck`
+    const f_url = `https://beta.wb.in.th`
+    const getname = `48`
 
     const fetchData = async () => {
         try {
@@ -101,10 +88,17 @@ const getname = `48`
 
     useEffect(() => {
         if (user?.type48 !== 1) {
-            router.push('/');
+            router.push('/')
         }
         fetchData()
-    }, [currentPage, lastPage, selectedStatus, selectedJob, selectedZone, selectedOutside])
+    }, [
+        currentPage,
+        lastPage,
+        selectedStatus,
+        selectedJob,
+        selectedZone,
+        selectedOutside,
+    ])
 
     useEffect(() => {
         if (data) {
@@ -155,7 +149,15 @@ const getname = `48`
         }, 1 * 60 * 1000)
 
         return () => clearInterval(intervalId)
-    }, [currentPage, lastPage, searchWorkerId, selectedStatus, selectedJob, selectedZone, selectedOutside])
+    }, [
+        currentPage,
+        lastPage,
+        searchWorkerId,
+        selectedStatus,
+        selectedJob,
+        selectedZone,
+        selectedOutside,
+    ])
 
     const handleNextPage = () => {
         // Increment the current page when loading next page
@@ -231,7 +233,7 @@ const getname = `48`
         }
     }
 
-    const handleSearchWorkerId = workerId => {
+    const handleSearchWorkerId = () => {
         fetchData()
     }
 

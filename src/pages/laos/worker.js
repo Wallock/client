@@ -1,18 +1,5 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faCaretRight,
-    faCaretLeft,
-    faCircleCheck,
-    faQuestion,
-    faCirclePause,
-    faFileCircleCheck,
-    faClock,
-    faArrowRightArrowLeft,
-    faPersonCircleExclamation,
-    faUserCheck,
-} from '@fortawesome/free-solid-svg-icons'
+import React, { useEffect, useState } from 'react'
 import SearchFilter from '@/components/laos/SearchFilter'
 import Pagination from '@/components/laos/Pagination'
 import WorkerCard from '@/components/laos/WorkerCard'
@@ -45,8 +32,8 @@ export default function Home() {
     const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
 
-const token =`1amwall0ck`
-const f_url = `https://laos.wb.in.th`
+    const token = `1amwall0ck`
+    const f_url = `https://laos.wb.in.th`
 
     const fetchData = async () => {
         try {
@@ -99,10 +86,17 @@ const f_url = `https://laos.wb.in.th`
 
     useEffect(() => {
         if (user?.typelaos !== 1) {
-            router.push('/');
+            router.push('/')
         }
         fetchData()
-    }, [currentPage, lastPage, selectedStatus, selectedJob, selectedZone, selectedOutside])
+    }, [
+        currentPage,
+        lastPage,
+        selectedStatus,
+        selectedJob,
+        selectedZone,
+        selectedOutside,
+    ])
 
     useEffect(() => {
         if (data) {
@@ -153,7 +147,15 @@ const f_url = `https://laos.wb.in.th`
         }, 1 * 60 * 1000)
 
         return () => clearInterval(intervalId)
-    }, [currentPage, lastPage, searchWorkerId, selectedStatus, selectedJob, selectedZone, selectedOutside])
+    }, [
+        currentPage,
+        lastPage,
+        searchWorkerId,
+        selectedStatus,
+        selectedJob,
+        selectedZone,
+        selectedOutside,
+    ])
 
     const handleNextPage = () => {
         // Increment the current page when loading next page
@@ -229,7 +231,7 @@ const f_url = `https://laos.wb.in.th`
         }
     }
 
-    const handleSearchWorkerId = workerId => {
+    const handleSearchWorkerId = () => {
         fetchData()
     }
 

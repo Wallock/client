@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faTasks } from '@fortawesome/free-solid-svg-icons'
+import { faTasks } from '@fortawesome/free-solid-svg-icons'
 
 const SearchFilter = ({
     searchWorkerId,

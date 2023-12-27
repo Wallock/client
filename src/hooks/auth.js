@@ -101,13 +101,13 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     useEffect(() => {
         if (middleware === 'guest' && redirectIfAuthenticated && user)
             router.push(redirectIfAuthenticated)
-            setLoading(false)
+        setLoading(false)
         if (
             window.location.pathname === '/verify-email' &&
             user?.email_verified_at
         )
             router.push(redirectIfAuthenticated)
-            setLoading(false)
+        setLoading(false)
         if (middleware === 'auth' && error) logout()
     }, [user, error])
 

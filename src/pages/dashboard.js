@@ -1,5 +1,5 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
@@ -10,8 +10,6 @@ export default function dashboard() {
     const [datalaos, setDataLaos] = useState(null)
     const [datathai, setDataThai] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [lastPage, setLastPage] = useState(1)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -161,11 +159,22 @@ export default function dashboard() {
                                     </div>
                                 </div>
                                 <div className="px-4 py-5 text-center font-1 text-sm lg:text-lg font-semibold text-gray-600">
-                                    <u>ระบบนี้จัดทำขึ้นเพื่อเป็นระบบกลางในการจัดการคนงานในระบบเก่า โดยไม่ต้องเข้า-ออกหลายหน้าต่างหลายระบบ
-                                        สามารถใช้งานได้ทุกระบบในระบบเดียว</u><br/>
-                                    ขนาดนี้ v3 อยู่ในช่วงทดสอบระบบการใช้งานจริง อาจมีบัคหรือทำงานผิดพลาดบ้าง<br/>
-                                    ในระหว่างนี้สามารถใช้งานได้ทั้งระบบ v2 และระบบ v3 ตามปกติครับ<br/>
-                                    หากบาง Function ใช้งานไม่ได้โปรดแจ้งผู้พัฒนาเพื่อแก้ไข และกลับไปใช้ v2 ก่อน<br/>
+                                    <u>
+                                        ระบบนี้จัดทำขึ้นเพื่อเป็นระบบกลางในการจัดการคนงานในระบบเก่า
+                                        โดยไม่ต้องเข้า-ออกหลายหน้าต่างหลายระบบ
+                                        สามารถใช้งานได้ทุกระบบในระบบเดียว
+                                    </u>
+                                    <br />
+                                    ขนาดนี้ v3 อยู่ในช่วงทดสอบระบบการใช้งานจริง
+                                    อาจมีบัคหรือทำงานผิดพลาดบ้าง
+                                    <br />
+                                    ในระหว่างนี้สามารถใช้งานได้ทั้งระบบ v2
+                                    และระบบ v3 ตามปกติครับ
+                                    <br />
+                                    หากบาง Function
+                                    ใช้งานไม่ได้โปรดแจ้งผู้พัฒนาเพื่อแก้ไข
+                                    และกลับไปใช้ v2 ก่อน
+                                    <br />
                                 </div>
                                 {/* <div className="flex justify-center px-4 py-5 bg-base-200">
                             UPDATE NEW!

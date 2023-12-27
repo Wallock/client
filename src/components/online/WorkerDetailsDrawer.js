@@ -3,7 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 
-const WorkerDetailsDrawer = ({ isOpen, onClose, workerId, getfapi, gettoken }) => {
+const WorkerDetailsDrawer = ({
+    isOpen,
+    onClose,
+    workerId,
+    getfapi,
+    gettoken,
+}) => {
     const [workerData, setWorkerData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [imageLoading, setImageLoading] = useState(true)
@@ -150,8 +156,10 @@ const WorkerDetailsDrawer = ({ isOpen, onClose, workerId, getfapi, gettoken }) =
                                     <p className="font-semibold">
                                         {workerData.worker_nickname}
                                         {workerData.worker_namelist === 1 ? (
-                            <label className="text-red-400"> (NameList)</label>
-                        ) : null}
+                                            <label className="text-red-400">
+                                                NameList
+                                            </label>
+                                        ) : null}
                                     </p>
                                 </div>
                                 <div className="divider">ประเภทงาน</div>
