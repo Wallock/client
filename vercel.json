@@ -5,7 +5,7 @@
         "headers": [
           {
             "key": "Access-Control-Allow-Origin",
-            "value": "https://jssystem.vercel.app"
+            "value": "https://api.wb.in.th"
           },
           {
             "key": "Access-Control-Allow-Methods",
