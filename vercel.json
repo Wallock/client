@@ -1,7 +1,6 @@
 {
     "headers": [
       {
-        "source": "/api/user",
         "headers": [
           {
             "key": "Access-Control-Allow-Origin",
