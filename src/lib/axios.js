@@ -1,7 +1,7 @@
 import Axios from 'axios'
 
 const axiosInstance = Axios.create({
-    baseURL: 'https://api.wb.in.th',
+    baseURL: 'https://server-wb.vercel.app/',
     withCredentials: true,
 })
 
