@@ -43,7 +43,7 @@ const Home = () => {
                 </div>
                 <div className="toast toast-top toast-center lg:toast-end">
                     <div className="alert bg-blue-700 text-white font-1 font-bold px-3 shadow-lg">
-                        <span className="loading loading-bars loading-sm"></span>
+                        <span className="loading loading-bars loading-sm" />
                         <span>กำลังดาวน์โหลดข้อมูล กรุณารอสักครู่...</span>
                     </div>
                 </div>
