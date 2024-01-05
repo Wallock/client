@@ -7,7 +7,7 @@ const nextConfig = {
         return [
             {
                 // matching all API routes
-                source: '/api/:path*',
+                source: '*',
                 headers: [
                     { key: 'Access-Control-Allow-Credentials', value: 'true' },
                     { key: 'Access-Control-Allow-Origin', value: '*' },
@@ -28,6 +28,7 @@ const nextConfig = {
 
 const millionConfig = {
     auto: true,
+    output: 'export',
 }
 
 export default million.next(nextConfig, millionConfig)
