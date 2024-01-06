@@ -1,11 +1,12 @@
 import useSWR from 'swr'
 import axios from '@/lib/axios'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
-    const [loading, setLoading] = useState(true)
+    const params = useParams()
+
     const { data: user, error, mutate } = useSWR('/api/user', () =>
         axios
             .get('/api/user')
@@ -13,7 +14,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 409) throw error
 
-                router.push('/login')
+                router.push('/verify-email')
             }),
     )
 
@@ -73,7 +74,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/reset-password', { token: router.query.token, ...props })
+            .post('/reset-password', { token: params.token, ...props })
             .then(response =>
                 router.push('/login?reset=' + btoa(response.data.status)),
             )
@@ -101,13 +102,11 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     useEffect(() => {
         if (middleware === 'guest' && redirectIfAuthenticated && user)
             router.push(redirectIfAuthenticated)
-        setLoading(false)
         if (
             window.location.pathname === '/verify-email' &&
             user?.email_verified_at
         )
             router.push(redirectIfAuthenticated)
-        setLoading(false)
         if (middleware === 'auth' && error) logout()
     }, [user, error])
 
@@ -119,6 +118,5 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         resetPassword,
         resendEmailVerification,
         logout,
-        loading,
     }
 }
