@@ -15,7 +15,7 @@ const LoginPage = () => {
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
-console.log(login)
+    console.log(login)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
