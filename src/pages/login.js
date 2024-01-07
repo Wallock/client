@@ -25,10 +25,6 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        console.log(router.query.reset)
-        console.log(router.query)
-        console.log(errors)
-
         if (router.query.reset?.length > 0 && errors.length === 0) {
             setStatus(atob(router.query.reset))
         } else {
