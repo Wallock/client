@@ -100,7 +100,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     useEffect(() => {
         setLoading(false)
-        log(redirectIfAuthenticated)
+        console.log(redirectIfAuthenticated)
         if (middleware === 'guest' && redirectIfAuthenticated && user) {
             router.push(redirectIfAuthenticated)
             //window.location.pathname = redirectIfAuthenticated
