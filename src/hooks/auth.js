@@ -1,11 +1,12 @@
 import useSWR from 'swr'
 import axios from '@/lib/axios'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
-    const [loading, setLoading] = useState(true)
+    const params = useParams()
+
     const { data: user, error, mutate } = useSWR('/api/user', () =>
         axios
             .get('/api/user')
@@ -13,7 +14,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 409) throw error
 
-                router.push('/login')
+                router.push('/verify-email')
             }),
     )
 
@@ -25,10 +26,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setErrors([])
 
         axios
-            .post('/api/register2', props)
+            .post('/register', props)
             .then(() => mutate())
             .catch(error => {
-                if (error.response.status !== 200) throw error
+                if (error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)
             })
@@ -41,10 +42,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/api/login2', props)
+            .post('/login', props)
             .then(() => mutate())
             .catch(error => {
-                if (error.response.status !== 200) throw error
+                if (error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)
             })
@@ -73,7 +74,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/reset-password', { token: router.query.token, ...props })
+            .post('/reset-password', { token: params.token, ...props })
             .then(response =>
                 router.push('/login?reset=' + btoa(response.data.status)),
             )
@@ -99,22 +100,14 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     useEffect(() => {
-        setLoading(false)
-
-        if (middleware === 'guest' && redirectIfAuthenticated && user) {
+        if (middleware === 'guest' && redirectIfAuthenticated && user)
             router.push(redirectIfAuthenticated)
-            //window.location.pathname = redirectIfAuthenticated
-        }
         if (
             window.location.pathname === '/verify-email' &&
             user?.email_verified_at
-        ) {
+        )
             router.push(redirectIfAuthenticated)
-            //window.location.pathname = redirectIfAuthenticated
-        }
-        if (middleware === 'auth' && error) {
-            logout()
-        }
+        if (middleware === 'auth' && error) logout()
     }, [user, error])
 
     return {
@@ -125,6 +118,5 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         resetPassword,
         resendEmailVerification,
         logout,
-        loading,
     }
 }
