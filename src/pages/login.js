@@ -30,7 +30,7 @@ const LoginPage = () => {
         } else {
             setStatus(null)
         }
-    }, [router.query.reset, errors])
+    })
 
     const submitForm = async event => {
         event.preventDefault()
@@ -48,6 +48,7 @@ const LoginPage = () => {
             <Head>
                 <title>JS-System v3</title>
             </Head>
+            <AuthSessionStatus className="mb-4" status={status} />
             <section className="text-gray-600 body-font bg-gray-100">
                 <div className="flex items-center justify-center min-h-screen">
                     <div className="container xl:px-32 px-5 py-24 mx-auto flex flex-wrap items-center">
