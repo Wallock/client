@@ -11,7 +11,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const LoginPage = () => {
     const router = useRouter()
-
+    console.error(user)
     const { login } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',

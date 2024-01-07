@@ -15,7 +15,7 @@ const Home = () => {
         } else {
             router.push('/dashboard')
         }
-    }, [])
+    })
 
     return (
         <div className="bg-gray-100">
