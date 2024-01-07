@@ -30,8 +30,7 @@ const LoginPage = () => {
         } else {
             setStatus(null)
         }
-        console.log(setStatus)
-    })
+    }, [router.query.reset, errors])
 
     const submitForm = async event => {
         event.preventDefault()
