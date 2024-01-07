@@ -100,8 +100,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     useEffect(() => {
         setLoading(false)
-        console.log(redirectIfAuthenticated)
+
         if (middleware === 'guest' && redirectIfAuthenticated && user) {
+            console.log(redirectIfAuthenticated)
             router.push(redirectIfAuthenticated)
             //window.location.pathname = redirectIfAuthenticated
         }
@@ -109,6 +110,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             window.location.pathname === '/verify-email' &&
             user?.email_verified_at
         ) {
+            console.log(redirectIfAuthenticated)
             router.push(redirectIfAuthenticated)
             //window.location.pathname = redirectIfAuthenticated
         }
