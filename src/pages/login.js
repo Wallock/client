@@ -11,12 +11,11 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const LoginPage = () => {
     const router = useRouter()
-    console.error(user)
     const { login } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
-
+console.log(login)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
