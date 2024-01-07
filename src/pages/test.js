@@ -1,38 +1,58 @@
-import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useEffect, useState } from 'react'
 
 import axios from 'axios'
 
-export default function TestPage() {
-    const [userData, setUserData] = useState(null)
+const TestPage = () => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [userId, setUserId] = useState(null)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await axios.get('https://randomuser.me/api/')
-            setUserData(result.data.results[0])
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post(
+                'https://api.wb.in.th/api/login2',
+                {
+                    username,
+                    password,
+                },
+            )
+
+            const { success, user, message } = response.data
+
+            if (success) {
+                setUserId(user.id)
+                console.log(`Login successful. User ID: ${user.id}`)
+            } else {
+                console.error(`Login failed. Message: ${message}`)
+            }
+        } catch (error) {
+            console.error('Error during login:', error)
         }
-
-        fetchData()
-    }, [])
+    }
 
     return (
-        <AppLayout>
-            <div className="w-full p-3 mb-20">
-                <div className="flex items-center justify-center flex-wrap gap-4">
-                    {userData ? (
-                        <div>
-                            <h1>{`${userData.name.first} ${userData.name.last}`}</h1>
-                            <p>{userData.email}</p>
-                            <img
-                                src={userData.picture.large}
-                                alt="User Avatar"
-                            />
-                        </div>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                </div>
+        <div>
+            <h1>Login</h1>
+            <div>
+                <label>Username:</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                />
             </div>
-        </AppLayout>
+            <div>
+                <label>Password:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+            </div>
+            <button onClick={handleLogin}>Login</button>
+            {userId && <p>User ID: {userId}</p>}
+        </div>
     )
 }
+
+export default TestPage
