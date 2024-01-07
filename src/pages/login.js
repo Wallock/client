@@ -30,6 +30,7 @@ const LoginPage = () => {
         } else {
             setStatus(null)
         }
+        console.log(setStatus)
     })
 
     const submitForm = async event => {
