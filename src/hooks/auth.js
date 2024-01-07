@@ -25,7 +25,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setErrors([])
 
         axios
-            .post('/api/register2', props)
+            .post('/register', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -41,7 +41,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         axios
-            .post('/api/login2', props)
+            .post('/login', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -99,16 +99,19 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     useEffect(() => {
-        if (middleware === 'guest' && redirectIfAuthenticated && user)
-            router.push(redirectIfAuthenticated)
         setLoading(false)
+        if (middleware === 'guest' && redirectIfAuthenticated && user) {
+            router.push(redirectIfAuthenticated)
+        }
         if (
             window.location.pathname === '/verify-email' &&
             user?.email_verified_at
-        )
+        ) {
             router.push(redirectIfAuthenticated)
-        setLoading(false)
-        if (middleware === 'auth' && error) logout()
+        }
+        if (middleware === 'auth' && error) {
+            logout()
+        }
     }, [user, error])
 
     return {
