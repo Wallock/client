@@ -12,7 +12,7 @@ const axios = Axios.create({
 axios.interceptors.request.use(
     async config => {
         // Fetch CSRF cookie
-        await axiosInstance.get('/sanctum/csrf-cookie')
+        await axios.get('/sanctum/csrf-cookie')
 
         // Extract XSRF token from the cookie
         const xsrfToken = getCookie('XSRF-TOKEN')
