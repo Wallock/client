@@ -25,7 +25,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setErrors([])
 
         axios
-            .post('/api/register', props)
+            .post('/register', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -36,18 +36,19 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const login = async ({ setErrors, setStatus, ...props }) => {
         await csrf()
-
+        console.error(csrf())
         setErrors([])
         setStatus(null)
 
         axios
-            .post('/api/login', props)
+            .post('/login', props)
             .then(() => mutate())
             .catch(error => {
                 if (error.response.status !== 422) throw error
 
                 setErrors(error.response.data.errors)
             })
+        console.log(mutate())
     }
 
     const forgotPassword = async ({ setErrors, setStatus, email }) => {
