@@ -8,11 +8,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const [loading, setLoading] = useState(true)
     const { data: user, error, mutate } = useSWR('/api/user', () =>
         axios
-            .get('/api/user', {
-                headers: {
-                    Referer: 'https://jssystem.vercel.app',
-                },
-            })
+            .get('/api/user')
             .then(res => res.data)
             .catch(error => {
                 if (error.response.status !== 409) throw error
