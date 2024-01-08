@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import AuthSessionStatus from '@/components/AuthSessionStatus'
 import InputError from '@/components/InputError'
