@@ -36,8 +36,23 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             })
     }
 
+    const getCsrfTokenFromCookie = () => {
+        const cookieArray = document.cookie.split(';')
+        for (const cookie of cookieArray) {
+            const [name, value] = cookie.trim().split('=')
+            if (name === 'XSRF-TOKEN') {
+                return decodeURIComponent(value)
+            }
+        }
+        return null
+    }
+
     const login = async ({ setErrors, setStatus, ...props }) => {
         await csrf()
+
+        const csrfToken = getCsrfTokenFromCookie()
+        axios.defaults.headers.common['X-XSRF-TOKEN'] = csrfToken
+
         setErrors([])
         setStatus(null)
 
