@@ -36,7 +36,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const login = async ({ setErrors, setStatus, ...props }) => {
         await csrf()
-        console.error(csrf())
         setErrors([])
         setStatus(null)
 
@@ -48,7 +47,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
                 setErrors(error.response.data.errors)
             })
-        console.log(mutate())
     }
 
     const forgotPassword = async ({ setErrors, setStatus, email }) => {
