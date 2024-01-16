@@ -3,8 +3,8 @@ import Dropdown from '@/components/Dropdown'
 import Link from 'next/link'
 import { ResponsiveNavButton } from '@/components/ResponsiveNavLink'
 import { DropdownButton } from '@/components/DropdownLink'
-import { useAuth } from '@/hooks/auth'
-//import { useRouter } from 'next/router'
+import supabase from '@/lib/supabaseClient'
+import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUser,
@@ -34,11 +34,13 @@ const getBadgeProps = role => {
     }
 }
 
-const Navigation = ({ user }) => {
-    // const router = useRouter()
-
-    const { logout } = useAuth()
-    const { color, text } = getBadgeProps(user?.role)
+const Navigation = ({ user, profile }) => {
+    const router = useRouter()
+    const handleLogout = async () => {
+        await supabase.auth.signOut()
+        router.push('/login')
+    }
+    const { color, text } = getBadgeProps(profile?.level)
     const [open, setOpen] = useState(false)
 
     return (
@@ -53,15 +55,6 @@ const Navigation = ({ user }) => {
                                 <ApplicationLogo className="block h-10 w-auto fill-current" />
                             </Link>
                         </div>
-
-                        {/* Navigation Links */}
-                        {/* <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <NavLink
-                                href="/"
-                                active={router.pathname === '/'}>
-                                หน้าหลัก
-                            </NavLink>
-                        </div> */}
                     </div>
 
                     {/* Settings Dropdown */}
@@ -76,7 +69,7 @@ const Navigation = ({ user }) => {
                                         {text}
                                     </div>
                                     <div className="mx-1 font-semibold text-lg">
-                                        {user?.name}
+                                        {profile?.name}
                                     </div>
 
                                     <div className="mx-1">
@@ -88,7 +81,7 @@ const Navigation = ({ user }) => {
                                 </button>
                             }>
                             {/* Authentication */}
-                            <DropdownButton onClick={logout}>
+                            <DropdownButton onClick={handleLogout}>
                                 <div className="flex items-center font-semibold text-lg text-red-600 justify-center">
                                     <FontAwesomeIcon
                                         icon={faRightFromBracket}
@@ -166,7 +159,7 @@ const Navigation = ({ user }) => {
 
                         <div className="mt-3 space-y-1">
                             {/* Authentication */}
-                            <ResponsiveNavButton onClick={logout}>
+                            <ResponsiveNavButton onClick={handleLogout}>
                                 <div className="flex items-center font-semibold rounded-box text-lg bg-red-600 text-white p-1 justify-center">
                                     <FontAwesomeIcon
                                         icon={faRightFromBracket}

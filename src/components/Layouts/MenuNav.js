@@ -30,7 +30,7 @@ const MenuItem = ({ href, icon, label }) => {
     )
 }
 
-const MenuNav = ({ user }) => {
+const MenuNav = ({ user, profile }) => {
     return (
         <div className="w-1/6 h-screen fixed bg-white lg:p-3 p-0 lg:overflow-y-auto overflow-hidden lg:border-r-0 border-r">
             <ul className="menu mb-3 m-0 p-0 text-gray-600">
@@ -41,7 +41,7 @@ const MenuNav = ({ user }) => {
                         label="Dashboard"
                     />
                 </li>
-                {user?.type48 === 1 && (
+                {profile?.type48 === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/48/worker"
@@ -50,7 +50,7 @@ const MenuNav = ({ user }) => {
                         />
                     </li>
                 )}
-                {user?.type82 === 1 && (
+                {profile?.type82 === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/82/worker"
@@ -59,7 +59,7 @@ const MenuNav = ({ user }) => {
                         />
                     </li>
                 )}
-                {user?.typelaos === 1 && (
+                {profile?.typelaos === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/laos/worker"
@@ -68,7 +68,7 @@ const MenuNav = ({ user }) => {
                         />
                     </li>
                 )}
-                {user?.typethai === 1 && (
+                {profile?.typethai === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/online/worker"

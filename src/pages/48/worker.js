@@ -7,7 +7,6 @@ import Pagination from '@/components/48/Pagination'
 import WorkerCard from '@/components/48/WorkerCard'
 import WorkerDetailsDrawer from '@/components/48/WorkerDetailsDrawer'
 import axios from 'axios'
-import { useAuth } from '@/hooks/auth'
 
 export default function Home() {
     const router = useRouter()
@@ -31,7 +30,6 @@ export default function Home() {
     const [selectedZone, setSelectedZone] = useState(null)
     const [selectedOutside, setSelectedOutside] = useState(null)
     const [filteredData, setFilteredData] = useState([])
-    const { user } = useAuth({ middleware: 'auth' })
 
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
@@ -87,9 +85,6 @@ export default function Home() {
     }
 
     useEffect(() => {
-        if (user?.type48 !== 1) {
-            router.push('/')
-        }
         fetchData()
     }, [
         currentPage,

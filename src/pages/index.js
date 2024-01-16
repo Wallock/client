@@ -1,22 +1,32 @@
-import { useAuth } from '@/hooks/auth'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
+import { createClient } from '@supabase/supabase-js'
 
 const Home = () => {
-    const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
-    useEffect(() => {
-        if (!user) {
-            router.push('/login')
-        } else {
-            router.push('/dashboard')
-        }
-    })
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
+    const supabase = createClient(supabaseUrl, supabaseKey)
+    const [user, setUser] = useState(null)
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser()
+            if (!user) {
+                router.push('/login')
+            } else {
+                router.push('/dashboard')
+            }
+        }
+
+        fetchUserData()
+    }, [])
     return (
         <div className="bg-gray-100">
             <Head>

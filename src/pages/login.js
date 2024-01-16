@@ -1,46 +1,51 @@
-'use client'
 import React from 'react'
-import AuthSessionStatus from '@/components/AuthSessionStatus'
-import InputError from '@/components/InputError'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import InputError from '@/components/InputError'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import supabase from '@/lib/supabaseClient'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
     const router = useRouter()
-    const { login } = useAuth({
-        middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
-    })
-    const [username, setUsername] = useState('')
+
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
-    const [errors, setErrors] = useState([])
+    const [errors, setErrors] = useState({ email: '', password: '' })
     const [status, setStatus] = useState(null)
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        if (router.query.reset?.length > 0 && errors.length === 0) {
-            setStatus(atob(router.query.reset))
-        } else {
-            setStatus(null)
-        }
-    })
 
     const submitForm = async event => {
         event.preventDefault()
         setLoading(true)
-        login({
-            username,
-            password,
-            remember: shouldRemember,
-            setErrors,
-            setStatus,
-        }).finally(() => setLoading(false))
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            })
+            if (error) {
+                setLoading(false)
+                toast.error('บัญชีหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+            } else {
+                // เข้าสู่ระบบสำเร็จ
+                router.push('/dashboard') // หรือไปยังหน้าอื่นที่คุณต้องการ
+            }
+        } catch (error) {
+            console.error('เกิดข้อผิดพลาดในการเข้าสู่ระบบ:', error)
+            setLoading(false)
+        }
     }
     return (
         <div>
@@ -63,10 +68,6 @@ const LoginPage = () => {
                         </div>
 
                         <div className="lg:w-2/6 md:w-1/2 bg-white shadow-lg rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
-                            <AuthSessionStatus
-                                className="mb-4"
-                                status={status}
-                            />
                             {loading ? (
                                 <div className="relative mb-4 justify-center">
                                     <FontAwesomeIcon
@@ -77,25 +78,23 @@ const LoginPage = () => {
                                 </div>
                             ) : (
                                 <form onSubmit={submitForm}>
+                                    <ToastContainer />
                                     <div className="relative mb-4">
                                         <input
-                                            id="username"
-                                            type="text"
+                                            id="email"
+                                            type="email"
                                             placeholder="Account UserID"
                                             onChange={event =>
-                                                setUsername(event.target.value)
+                                                setEmail(event.target.value)
                                             }
                                             required
                                             autoFocus
-                                            autoComplete="username"
-                                            value={username}
+                                            autoComplete="email"
+                                            value={email}
                                             className="input input-bordered w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-lg outline-none  text-gray-700 px-3 leading-8 transition-colors duration-200 ease-in-out"
                                         />
-                                        <InputError
-                                            messages={errors.username}
-                                            className="mt-2"
-                                        />
                                     </div>
+
                                     <div className="relative mb-4">
                                         <input
                                             id="password"
@@ -109,11 +108,8 @@ const LoginPage = () => {
                                             autoComplete="current-password"
                                             className="input input-bordered w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200  outline-none text-lg text-gray-700 px-3 leading-8 transition-colors duration-200 ease-in-out"
                                         />
-                                        <InputError
-                                            messages={errors.password}
-                                            className="mt-2"
-                                        />
                                     </div>
+
                                     <div className="relative my-3">
                                         <label
                                             htmlFor="remember_me"

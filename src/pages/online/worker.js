@@ -5,7 +5,6 @@ import Pagination from '@/components/online/Pagination'
 import WorkerCard from '@/components/online/WorkerCard'
 import WorkerDetailsDrawer from '@/components/online/WorkerDetailsDrawer'
 import axios from 'axios'
-import { useAuth } from '@/hooks/auth'
 import { useRouter } from 'next/router'
 
 export default function Home() {
@@ -29,7 +28,6 @@ export default function Home() {
     const [selectedZone, setSelectedZone] = useState(null)
     const [selectedOutside, setSelectedOutside] = useState(null)
     const [filteredData, setFilteredData] = useState([])
-    const { user } = useAuth({ middleware: 'auth' })
     const router = useRouter()
 
     const token = `1amwall0ck`
@@ -85,9 +83,6 @@ export default function Home() {
     }
 
     useEffect(() => {
-        if (user?.typethai !== 1) {
-            router.push('/')
-        }
         fetchData()
     }, [
         currentPage,
