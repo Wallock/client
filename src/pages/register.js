@@ -9,7 +9,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const Register = () => {
-
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -43,7 +42,6 @@ const Register = () => {
     return (
         <GuestLayout>
             <form onSubmit={submitForm}>
-
                 {/* Email Address */}
                 <div className="mt-4">
                     <Label htmlFor="email">Email</Label>
