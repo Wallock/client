@@ -4,13 +4,10 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
-import { createClient } from '@supabase/supabase-js'
+import supabase from '@/lib/supabaseClient'
 
 const Home = () => {
     const router = useRouter()
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY
-    const supabase = createClient(supabaseUrl, supabaseKey)
     const [user, setUser] = useState(null)
 
     useEffect(() => {

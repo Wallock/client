@@ -2,7 +2,6 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useAuth } from '@/hooks/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCircleCheck,
@@ -44,9 +43,6 @@ export default function Page() {
     }
 
     useEffect(() => {
-        if (user?.type48 !== 1) {
-            router.push('/')
-        }
         fetchData()
     }, [])
     const getStatusData = status => {

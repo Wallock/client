@@ -4,6 +4,7 @@ import {
     faUserGroup,
     faHouse,
     faGear,
+    faUserPlus,
     faFlaskVial,
 } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
@@ -77,6 +78,13 @@ const MenuNav = ({ user, profile }) => {
                         />
                     </li>
                 )}
+                <li className="py-1">
+                    <MenuItem
+                        href="/register/user"
+                        icon={faUserPlus}
+                        label="สมัครใหม่"
+                    />
+                </li>
                 <li className="py-1">
                     <MenuItem href="/test" icon={faFlaskVial} label="ทดสอบ" />
                 </li>
