@@ -49,7 +49,6 @@ export default function dashboard() {
 
                 setLoading(false)
             } catch (error) {
-                console.error('Error fetching data:', error)
                 setLoading(false)
             }
         }
@@ -170,9 +169,6 @@ export default function dashboard() {
                                     dangerouslySetInnerHTML={{
                                         __html: config.data_text,
                                     }}></div>
-                                {/* <div className="flex justify-center px-4 py-5 bg-base-200">
-                            UPDATE NEW!
-                        </div> */}
                             </div>
                         </div>
                     </div>
