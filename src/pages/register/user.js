@@ -1,19 +1,32 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState } from 'react'
-import SearchFilter from '@/components/laos/SearchFilter'
-import Pagination from '@/components/laos/Pagination'
-import WorkerCard from '@/components/laos/WorkerCard'
-import WorkerDetailsDrawer from '@/components/laos/WorkerDetailsDrawer'
-import axios from 'axios'
+import React from 'react'
 import { useRouter } from 'next/router'
 
 export default function user() {
     return (
         <AppLayout>
             <div className="w-full">
+                <div
+                    className="hero rounded-lg"
+                    style={{
+                        backgroundImage:
+                            'url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)',
+                    }}>
+                    <div className="hero-overlay bg-opacity-60 rounded-lg"></div>
+                    <div className="hero-content text-center text-neutral-content">
+                        <div className="max-w-md">
+                            <h1 className="mb-5 text-5xl font-bold">
+                                สมัครคนงานใหม่
+                            </h1>
+                            <p className="mb-5">
+                                ระบบสมัครงานออนไลน์ สำหรับจัดการคนงาน
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 <div className="flex items-center justify-center flex-wrap">
                     <div className="w-full lg:w-1/2">
-                        <div className="card card-side bg-neutral text-neutral-content shadow-xl m-3">
+                        <div className="card lg:card-side bg-base-100 text-neutral shadow-xl m-3">
                             <figure className="px-5">
                                 <img
                                     src="https://48.wb.in.th/images/logo.png"
@@ -22,16 +35,32 @@ export default function user() {
                                 />
                             </figure>
                             <div className="card-body">
-                                <h2 className="card-title">นาซ่าลาดพร้าว48</h2>
-                                <p>How to park your car at your garage?</p>
+                                <h2 className="card-title justify-center">
+                                    นาซ่าลาดพร้าว48
+                                </h2>
                                 <div className="card-actions justify-center">
-                                    <button className="btn btn-primary">
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/m.jpeg" />
+                                            </div>
+                                        </div>
                                         พม่า
                                     </button>
-                                    <button className="btn btn-primary">
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/l.png" />
+                                            </div>
+                                        </div>
                                         ลาว
                                     </button>
-                                    <button className="btn btn-primary">
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/c.png" />
+                                            </div>
+                                        </div>
                                         กัมพูชา
                                     </button>
                                 </div>
@@ -39,8 +68,8 @@ export default function user() {
                         </div>
                     </div>
                     <div className="w-full lg:w-1/2">
-                        <div className="card card-side bg-neutral text-neutral-content shadow-xl m-3">
-                            <figure className="px-5">
+                        <div className="card lg:card-side bg-base-100 text-neutral shadow-xl m-3">
+                            <figure className="px-5 lg:hidden">
                                 <img
                                     src="https://dd.wb.in.th/public/images/logodede.png"
                                     alt="dd"
@@ -48,21 +77,25 @@ export default function user() {
                                 />
                             </figure>
                             <div className="card-body">
-                                <h2 className="card-title">
+                                <h2 className="card-title justify-center">
                                     แม่บ้านดีดีเซอร์วิส
                                 </h2>
-                                <p>How to park your car at your garage?</p>
-                                <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">
-                                        Learn now!
+                                <div className="card-actions justify-center">
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/m.jpeg" />
+                                            </div>
+                                        </div>
+                                        พม่า
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="w-full lg:w-1/2">
-                        <div className="card card-side bg-neutral text-neutral-content shadow-xl m-3">
-                            <figure className="px-5">
+                        <div className="card lg:card-side bg-base-100 text-neutral shadow-xl m-3">
+                            <figure className="px-5 lg:hidden">
                                 <img
                                     src="https://cdn-icons-png.flaticon.com/512/187/187487.png"
                                     alt="Thai"
@@ -70,19 +103,41 @@ export default function user() {
                                 />
                             </figure>
                             <div className="card-body">
-                                <h2 className="card-title">คนไทย ออนไลน์</h2>
-                                <p>How to park your car at your garage?</p>
-                                <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">
-                                        Learn now!
+                                <h2 className="card-title justify-center">
+                                    คนไทย ออนไลน์
+                                </h2>
+                                <div className="card-actions justify-center">
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/t.png" />
+                                            </div>
+                                        </div>
+                                        รหัส 48
+                                    </button>
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/t.png" />
+                                            </div>
+                                        </div>
+                                        รหัส G
+                                    </button>
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/t.png" />
+                                            </div>
+                                        </div>
+                                        รหัส JN
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="w-full lg:w-1/2">
-                        <div className="card card-side bg-neutral text-neutral-content shadow-xl m-3">
-                            <figure className="px-5">
+                        <div className="card lg:card-side bg-base-100 text-neutral shadow-xl m-3">
+                            <figure className="px-5 lg:hidden">
                                 <img
                                     src="https://laos.wb.in.th/public/images/laos.png"
                                     alt="laos"
@@ -90,13 +145,17 @@ export default function user() {
                                 />
                             </figure>
                             <div className="card-body">
-                                <h2 className="card-title">
+                                <h2 className="card-title justify-center">
                                     เมทอินเตอร์เซอร์วิส
                                 </h2>
-                                <p>How to park your car at your garage?</p>
-                                <div className="card-actions justify-end">
-                                    <button className="btn btn-primary">
-                                        Learn now!
+                                <div className="card-actions justify-center">
+                                    <button className="btn btn-neutral">
+                                        <div className="avatar">
+                                            <div className="w-8 rounded-full">
+                                                <img src="/icon/l.png" />
+                                            </div>
+                                        </div>
+                                        ลาว
                                     </button>
                                 </div>
                             </div>
