@@ -2,12 +2,33 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faListCheck } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
 
 export default function regM() {
     const [weight, setWeight] = useState('')
     const [height, setHeight] = useState('')
     const [phone, setPhone] = useState('')
     const [altPhone, setAltPhone] = useState('')
+    const [provinces, setProvinces] = useState([])
+    const [selectedProvince, setSelectedProvince] = useState('')
+
+    useEffect(() => {
+        axios
+            .get(
+                'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json',
+            )
+            .then(response => {
+                setProvinces(response.data)
+                if (response.data.length > 0) {
+                    setSelectedProvince(response.data[0].name_th) // เลือกจังหวัดแรกเป็นค่าเริ่มต้น
+                }
+            })
+            .catch(error => console.error('Error:', error))
+    }, [])
+
+    const handleChange = event => {
+        setSelectedProvince(event.target.value)
+    }
 
     const handlePhoneChange = (value, setValue) => {
         // ตรวจสอบว่าข้อมูลที่ป้อนเป็นตัวเลขและมีความยาวไม่เกิน 11 ตัวอักษร
@@ -270,11 +291,21 @@ export default function regM() {
                                             จังหวัด
                                         </span>
                                     </div>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full"
-                                        placeholder="หมายเลขโทรศัพท์"
-                                    />
+                                    <select
+                                        className="select select-bordered w-full "
+                                        value={selectedProvince}
+                                        onChange={handleChange}>
+                                        <option disabled selected>
+                                            กรุณาเลือก
+                                        </option>
+                                        {provinces.map((province, index) => (
+                                            <option
+                                                key={index}
+                                                value={province.id}>
+                                                {province.name_th}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className="form-control w-full md:w-1/3 px-2 mb-1">
                                     <div className="label">
@@ -356,10 +387,97 @@ export default function regM() {
 
                             <div className="divider">เอกสาร</div>
 
+                            <div className="flex flex-wrap">
+                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
+                                    <div className="label">
+                                        <span className="label-text font-semibold">
+                                            รหัสประชาชน / Work permit
+                                        </span>
+                                        <span className="label-text-alt text-gray-300">
+                                            **หากไม่มีให้ใส่เลขพาสปอต
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full"
+                                        placeholder="เลข 13 หลัก"
+                                        maxLength="13"
+                                        minLength="13"
+                                    />
+                                </div>
+                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
+                                    <div className="label">
+                                        <span className="label-text font-semibold">
+                                            วันหมดอายุบัตรประชาชน / Work Permit
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        className="input input-bordered w-full"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
+                                    <div className="label">
+                                        <span className="label-text font-semibold">
+                                            วันหมดอายุบัตร VISA
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        className="input input-bordered w-full"
+                                        placeholder=""
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex flex-wrap">
+                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
+                                    <div className="label">
+                                        <span className="label-text font-semibold">
+                                            เลขบัตร Passport
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full"
+                                        placeholder="หากไม่มีให้ใส่เลขบัตรประชาชน"
+                                        maxLength="9"
+                                        minLength="9"
+                                    />
+                                </div>
+                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
+                                    <div className="label">
+                                        <span className="label-text font-semibold">
+                                            วันหมดอายุ Passport
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="date"
+                                        className="input input-bordered w-full"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
+                                    <div className="label">
+                                        <span className="label-text font-semibold">
+                                            ใบอนุญาต
+                                        </span>
+                                    </div>
+                                    <select className="select select-bordered select-primary w-full">
+                                        <option disabled selected>
+                                            กรุณาเลือก
+                                        </option>
+                                        <option>มี</option>
+                                        <option>ไม่มี</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <button
                                 type="submit"
                                 className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                ส่ง
+                                บันทึกข้อมูล
                             </button>
                         </form>
                     </div>
