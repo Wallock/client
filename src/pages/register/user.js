@@ -1,6 +1,7 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export default function user() {
     return (
@@ -39,30 +40,36 @@ export default function user() {
                                     นาซ่าลาดพร้าว48
                                 </h2>
                                 <div className="card-actions justify-center">
-                                    <button className="btn btn-neutral">
+                                    <Link
+                                        href="/48/reg-m"
+                                        className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
                                                 <img src="/icon/m.jpeg" />
                                             </div>
                                         </div>
                                         พม่า
-                                    </button>
-                                    <button className="btn btn-neutral">
+                                    </Link>
+                                    <Link
+                                        href="/48/reg-m"
+                                        className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
                                                 <img src="/icon/l.png" />
                                             </div>
                                         </div>
                                         ลาว
-                                    </button>
-                                    <button className="btn btn-neutral">
+                                    </Link>
+                                    <Link
+                                        href="/48/reg-m"
+                                        className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
                                                 <img src="/icon/c.png" />
                                             </div>
                                         </div>
                                         กัมพูชา
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
