@@ -37,32 +37,33 @@ const Home = () => {
 
         fetchUserData()
     }, [])
+
     return (
-        <div className="bg-gray-100">
+        <div className=" bg-gradient-to-b from-blue-800 to-indigo-700">
             <Head>
                 <title>JS-System v3</title>
             </Head>
             <main>
                 <div className="flex items-center justify-center h-screen">
                     <div>
-                        <h1 className="title-font m-0 font-extrabold text-5xl text-transparent py-1 bg-clip-text bg-gradient-to-r from-indigo-700 to-blue-500 text-left">
+                        <h1 className="title-font m-0 font-extrabold text-5xl  drop-shadow-xl text-transparent py-1 bg-clip-text bg-gradient-to-r from-slate-50 to-gray-400 text-left">
                             <FontAwesomeIcon
                                 icon={faGear}
                                 shake
-                                className="text-gray-600"
+                                className="text-white"
                             />{' '}
                             JS-System
-                            <sup className="text-red-500 lg:text-1xl text-sm">
+                            <sup className="text-red-500 lg:text-1xl  drop-shadow-md text-sm">
                                 v3
                             </sup>
                         </h1>
-                        <p className="leading-relaxed text-lg lg:max-w-xl text-slate-400 font-semibold text-center ">
+                        <p className="leading-relaxed  drop-shadow-lg text-lg lg:max-w-xl text-slate-50 font-semibold text-center ">
                             ระบบจัดการพนักงานและองค์กรภายใน
                         </p>
                     </div>
                 </div>
                 <div className="toast toast-top toast-center lg:toast-end">
-                    <div className="alert bg-blue-700 text-white font-1 font-bold px-3 shadow-lg">
+                    <div className="alert bg-white text-blue-600 font-1 font-bold px-3 shadow-lg ">
                         <span className="loading loading-bars loading-sm" />
                         <span>กำลังดาวน์โหลดข้อมูล กรุณารอสักครู่...</span>
                     </div>

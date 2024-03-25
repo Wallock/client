@@ -44,10 +44,10 @@ const Navigation = ({ user, profile }) => {
     const [open, setOpen] = useState(false)
 
     return (
-        <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10">
+        <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10 shadow">
             {/* Primary Navigation Menu */}
             <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16">
+                <div className="flex justify-between h-12">
                     <div className="flex">
                         {/* Logo */}
                         <div className="flex-shrink-0 flex items-center">
@@ -65,7 +65,7 @@ const Navigation = ({ user, profile }) => {
                             trigger={
                                 <button className="flex items-center text-gray-600 hover:text-gray-800 focus:outline-none transition duration-150 ease-in-out">
                                     <div
-                                        className={`badge badge-${color} badge-outline mx-1 py-3 text-xs font-semibold`}>
+                                        className={`badge badge-${color} badge-outline mx-1 text-xs font-semibold`}>
                                         {text}
                                     </div>
                                     <div className="mx-1 font-semibold text-lg">
@@ -75,7 +75,7 @@ const Navigation = ({ user, profile }) => {
                                     <div className="mx-1">
                                         <FontAwesomeIcon
                                             icon={faEllipsisVertical}
-                                            className="h-7 w-7"
+                                            className="fa-fw"
                                         />
                                     </div>
                                 </button>

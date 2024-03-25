@@ -682,13 +682,201 @@ export default function regM() {
                                         type="text"
                                         className="input input-bordered w-full"
                                         placeholder="หากไม่มีให้ใส่ขีด"
-                                        maxLength="9"
-                                        minLength="9"
                                     />
                                 </div>
                             </div>
-                            <div className="divider">ประวัติการทำงาน</div>
-                            <div className="flex flex-wrap">..</div>
+                            <div className="divider">ความสามารถ</div>
+                            <div className="flex flex-wrap">
+                                <div className="w-full md:w-1/2 px-2 mb-1">
+                                    <div className="card bg-base-100 shadow-xl">
+                                        <figure className="bg-neutral-500 text-white font-bold p-2 text-lg justify-center">
+                                            การขับขี่
+                                        </figure>
+                                        <div className="card-body p-0">
+                                            <div className="flex">
+                                                <div className="form-control w-1/3 p-0">
+                                                    <h2 className="card-title justify-center">
+                                                        จักรยาน
+                                                    </h2>
+                                                    <label className="label cursor-pointer px-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="radio-0"
+                                                            className="radio"
+                                                            checked
+                                                        />
+                                                        <span className="label-text">
+                                                            ได้
+                                                        </span>
+                                                    </label>
+                                                    <label className="label cursor-pointer px-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="radio-0"
+                                                            className="radio"
+                                                        />
+                                                        <span className="label-text">
+                                                            ไม่ได้
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <div className="divider divider-horizontal p-0 mx-1"></div>
+                                                <div className="form-control w-1/3 p-0">
+                                                    <h2 className="card-title justify-center">
+                                                        มอเตอร์ไซต์
+                                                    </h2>
+                                                    <label className="label cursor-pointer px-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="radio-2"
+                                                            className="radio"
+                                                            checked
+                                                        />
+                                                        <span className="label-text">
+                                                            ได้
+                                                        </span>
+                                                    </label>
+                                                    <label className="label cursor-pointer px-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="radio-2"
+                                                            className="radio"
+                                                        />
+                                                        <span className="label-text">
+                                                            ไม่ได้
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <div className="divider divider-horizontal p-0 mx-1"></div>
+                                                <div className="form-control w-1/3 p-0">
+                                                    <h2 className="card-title justify-center">
+                                                        รถยนต์
+                                                    </h2>
+                                                    <label className="label cursor-pointer px-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="radio-3"
+                                                            className="radio"
+                                                            checked
+                                                        />
+                                                        <span className="label-text">
+                                                            ได้
+                                                        </span>
+                                                    </label>
+                                                    <label className="label cursor-pointer px-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="radio-3"
+                                                            className="radio"
+                                                        />
+                                                        <span className="label-text">
+                                                            ไม่ได้
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-full md:w-1/2 px-2 mb-1 flex">
+                                    <div className="form-control w-1/3 px-2 mb-1">
+                                        <div className="label">
+                                            <span className="label-text font-semibold">
+                                                การทำอาหารไทย
+                                            </span>
+                                        </div>
+                                        <select className="select select-bordered w-full">
+                                            <option disabled selected>
+                                                ทำอาหารไทย
+                                            </option>
+                                            <option>ได้</option>
+                                            <option>ไม่ได้</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-control w-1/3 px-2 mb-1">
+                                        <div className="label">
+                                            <span className="label-text font-semibold">
+                                                ระดับการทำอาหาร
+                                            </span>
+                                        </div>
+                                        <select className="select select-bordered w-full">
+                                            <option disabled selected>
+                                                ระดับการทำอาหาร
+                                            </option>
+                                            <option>ได้เบื้องต้น</option>
+                                            <option>ได้ตามสั่ง</option>
+                                            <option>ร้านอาหาร</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-control w-1/3 px-2 mb-1">
+                                        <div className="label">
+                                            <span className="label-text font-semibold">
+                                                ยกตัวอย่างอาหารที่ทำได้
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            placeholder="ไข่เจียว ต้มจืด ผัดผัก ข้าวต้ม"
+                                            className="input input-bordered w-full"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-wrap">
+                                <div className="w-full md:w-1/4 px-1">
+                                    <div className="flex items-center">
+                                        <p className="text-sm font-semibold">
+                                            โรคประจำตัว
+                                        </p>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered"
+                                            placeholder="หากไม่มีใส่ขีด"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="w-full md:w-1/4 px-1">
+                                    <div className="flex items-center p-0">
+                                        <p className="text-sm font-semibold">
+                                            เคยป่วยหนัก?
+                                        </p>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered"
+                                            placeholder="หากไม่มีใส่ขีด"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="w-full md:w-1/4 px-1">
+                                    <div className="flex items-center p-0">
+                                        <p className="text-sm font-semibold">
+                                            สัตว์เลี้ยงตัวเล็ก
+                                        </p>
+                                        <select className="select select-bordered w-full">
+                                            <option disabled selected>
+                                                กรุณาเลือก
+                                            </option>
+                                            <option>กลัว</option>
+                                            <option>ไม่กลัว</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="w-full md:w-1/4 px-1">
+                                    <div className="flex items-center p-0">
+                                        <p className="text-sm font-semibold">
+                                            สัตว์เลี้ยงตัวใหญ่
+                                        </p>
+                                        <select className="select select-bordered w-full">
+                                            <option disabled selected>
+                                                กรุณาเลือก
+                                            </option>
+                                            <option>กลัว</option>
+                                            <option>ไม่กลัว</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                             <button
                                 type="submit"
                                 className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">

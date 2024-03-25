@@ -34,10 +34,8 @@ export default function Page() {
             const response = await axios.get(apiUrl)
             const newData = response.data
             setData(newData[0])
-            console.log(data)
             setLoading(false)
         } catch (error) {
-            console.error('Error fetching data:', error)
             setLoading(false)
         }
     }
@@ -103,10 +101,10 @@ export default function Page() {
                             <div
                                 key={index}
                                 className="flex flex-col gap-4 w-full lg:w-48 mx-1">
-                                <div className="skeleton h-32 w-full"></div>
-                                <div className="skeleton h-4 w-28"></div>
-                                <div className="skeleton h-4 w-full"></div>
-                                <div className="skeleton h-4 w-full"></div>
+                                <div className="skeleton h-32 w-full"> </div>
+                                <div className="skeleton h-4 w-28"> </div>
+                                <div className="skeleton h-4 w-full"> </div>
+                                <div className="skeleton h-4 w-full"> </div>
                             </div>
                         ))}
                     </div>
@@ -130,7 +128,9 @@ export default function Page() {
                         <h1 className="title-font m-0 font-extrabold text-center text-2xl sm:text-7xl text-white opacity-20 pt-10 sm:pt-3 px-2">
                             {data?.worker_id}
                         </h1>
-                        <div className="absolute top-0 left-0 right-0 bottom-0 opacity-25"></div>
+                        <div className="absolute top-0 left-0 right-0 bottom-0 opacity-25">
+                            x
+                        </div>
                         <img
                             className="rounded-full object-cover border-4 border-white absolute bottom-0 transform translate-y-1/2 w-52 h-52 mx-auto left-0 right-0"
                             src={`${f_url}/${data?.worker_image}`}
