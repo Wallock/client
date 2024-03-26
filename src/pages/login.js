@@ -29,7 +29,7 @@ const LoginPage = () => {
         event.preventDefault()
         setLoading(true)
         try {
-            const { data, error } = await supabase.auth.signIn({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
                 options: { captchaToken },
