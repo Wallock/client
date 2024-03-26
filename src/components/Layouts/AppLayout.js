@@ -32,7 +32,7 @@ const AppLayout = ({ children }) => {
         fetchUserData()
     }, [])
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 ">
             <Head>
                 <title>JS-System v3</title>
             </Head>

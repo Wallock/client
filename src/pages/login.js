@@ -1,42 +1,38 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import Head from 'next/head'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import {
+    faSpinner,
+    faRightToBracket,
+    faKey,
+    faCircleInfo,
+} from '@fortawesome/free-solid-svg-icons'
 import supabase from '@/lib/supabaseClient'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
     const router = useRouter()
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState({ email: '', password: '' })
     const [status, setStatus] = useState(null)
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        const script = document.createElement('script')
-        script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
-        script.defer = true
-        document.body.appendChild(script)
-
-        return () => {
-            document.body.removeChild(script)
-        }
-    }, [])
+    const [captchaToken, setCaptchaToken] = useState()
 
     const submitForm = async event => {
         event.preventDefault()
         setLoading(true)
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabase.auth.signIn({
                 email: email,
                 password: password,
+                options: { captchaToken },
             })
             if (error) {
                 setLoading(false)
@@ -62,9 +58,8 @@ const LoginPage = () => {
                 <title>JS-System v3</title>
             </Head>
             <section className="text-gray-600 body-font bg-gradient-to-b from-blue-800 to-indigo-700">
-                <div className="bg-opacity-25 bg-wave"></div>
                 <div className="flex items-center justify-center min-h-screen">
-                    <div className="container xl:px-32 px-5 py-24 mx-auto flex flex-wrap items-center">
+                    <div className="container xl:px-32 px-5 py-auto mx-auto flex flex-wrap items-center">
                         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 w-full">
                             <h1 className="title-font drop-shadow-xl font-extrabold lg:text-7xl text-5xl text-transparent py-2 bg-clip-text bg-gradient-to-r from-slate-50 to-gray-400 text-center md:text-left">
                                 JS-System
@@ -77,24 +72,32 @@ const LoginPage = () => {
                             </p>
                         </div>
 
-                        <div className="lg:w-2/6 md:w-1/2 bg-white shadow-lg rounded-lg p-5 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+                        <div className="transition ease-in-out duration-500 hover:-translate-y-1 hover:scale-105 lg:w-2/6 md:w-1/2 border-2 border-indigo-100 rounded-3xl bg-white shadow-lg rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
                             {loading ? (
                                 <div className="relative font-3 text-indigo-800 text-2xl m-4 justify-center text-center drop-shadow-md">
                                     <FontAwesomeIcon
                                         icon={faSpinner}
                                         className="animate-spin text-indigo-800 mr-2"
                                     />
-                                    Logging in...
+                                    กำลังเข้าสู่ระบบ...
                                 </div>
                             ) : (
                                 <form onSubmit={submitForm}>
                                     <ToastContainer />
-                                    <h1 className="mb-5 block text-3xl font-semibold text-gray-700">
-                                        Sign In
-                                    </h1>
+
+                                    <div className="pb-3 flex items-center border-b border-gray-100 mb-5">
+                                        <div className="fa-2x text-gray-100 bg-indigo-800 px-2 rounded-xl">
+                                            <FontAwesomeIcon icon={faKey} />
+                                        </div>
+                                        <div className="ml-4">
+                                            <h1 className="block text-3xl font-semibold text-gray-700">
+                                                เข้าสู่ระบบ
+                                            </h1>
+                                        </div>
+                                    </div>
                                     <div className="relative mb-4">
                                         <label className="mb-1 block text-sm font-bold text-gray-700">
-                                            Email
+                                            บัญชีอีเมล
                                         </label>
                                         <input
                                             id="email"
@@ -106,13 +109,13 @@ const LoginPage = () => {
                                             autoFocus
                                             autoComplete="email"
                                             value={email}
-                                            className="input input-bordered w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-lg outline-none  text-gray-700 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                                            className="w-full p-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
                                         />
                                     </div>
 
                                     <div className="relative mb-4">
                                         <label className="mb-1 block text-sm font-bold text-gray-700">
-                                            Password
+                                            รหัสผ่าน
                                         </label>
                                         <input
                                             id="password"
@@ -123,7 +126,7 @@ const LoginPage = () => {
                                             required
                                             value={password}
                                             autoComplete="current-password"
-                                            className="input input-bordered w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200  outline-none text-lg text-gray-700 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                                            className="w-full p-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
                                         />
                                     </div>
 
@@ -144,31 +147,42 @@ const LoginPage = () => {
                                             />
 
                                             <span className="ml-2 text-sm text-gray-600">
-                                                Remember me
+                                                จดจำการเข้าสู่ระบบไว้เสมอ
                                             </span>
                                         </label>
                                     </div>
 
                                     <div class="relative my-3">
-                                        <div
-                                            class="cf-turnstile"
-                                            data-sitekey="0x4AAAAAAAUgEUg29ywY9_C2"></div>
+                                        <HCaptcha
+                                            sitekey="be4d4afe-dabf-426a-83f9-e574cf6a00a6"
+                                            onVerify={token => {
+                                                setCaptchaToken(token)
+                                            }}
+                                        />
                                     </div>
 
                                     <div className="relative">
-                                        <button className="text-white drop-shadow-lg w-full border-0 py-2 px-8 focus:outline-none font-bold rounded text-xl bg-blue-600">
-                                            Log In
+                                        <button className="text-white drop-shadow-lg w-full border-0 py-2 px-8 focus:outline-none font-semibold rounded text-xl bg-blue-600">
+                                            <FontAwesomeIcon
+                                                icon={faRightToBracket}
+                                                className="fa-fw"
+                                            />{' '}
+                                            Sign In
                                         </button>
                                     </div>
-                                    <p className="my-3 text-sm text-blue-800 py-4 text-center font-bold">
+                                    <p className="text-sm text-blue-800 pt-4 text-center font-bold border-t border-gray-100 mt-5">
+                                        <FontAwesomeIcon
+                                            icon={faCircleInfo}
+                                            className="fa-fw"
+                                        />{' '}
                                         หากลืมรหัสผ่านให้ติดต่อผู้พัฒนาโดยตรง
                                     </p>
                                 </form>
                             )}
                         </div>
 
-                        <div className="lg:w-2/6 md:w-1/2 bg-transparent rounded-lg p-8 flex flex-col md:ml-auto w-full mt-3 md:mt-0">
-                            <p className="text-sm text-gray-700 mt-3 text-center font-black text-slate-400">
+                        <div className="lg:w-2/6 md:w-1/2 p-8 flex flex-col md:ml-auto w-full mt-3 md:mt-0">
+                            <p className="text-sm text-gray-100 mt-3 text-center font-bold drop-shadow-xl">
                                 Developer & Design By Wallock
                             </p>
                         </div>
