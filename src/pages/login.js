@@ -72,7 +72,7 @@ const LoginPage = () => {
                             </p>
                         </div>
 
-                        <div className="transition ease-in-out duration-500 hover:-translate-y-1 hover:scale-105 lg:w-2/6 md:w-1/2 border-2 border-indigo-100 rounded-3xl bg-white shadow-lg rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+                        <div className=" lg:w-2/6 md:w-1/2 border-2 border-indigo-100 rounded-3xl bg-white shadow-lg rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
                             {loading ? (
                                 <div className="relative font-3 text-indigo-800 text-2xl m-4 justify-center text-center drop-shadow-md">
                                     <FontAwesomeIcon
@@ -152,13 +152,13 @@ const LoginPage = () => {
                                         </label>
                                     </div>
 
-                                    <div class="relative my-3">
+                                    <div className="relative my-3">
                                         <HCaptcha
                                             sitekey="120d9aa3-d47a-4f36-8197-f04262417241"
                                             onVerify={token => {
                                                 setCaptchaToken(token)
                                             }}
-                                            language="th"
+                                            languageCode="th"
                                         />
                                     </div>
 

@@ -125,11 +125,45 @@ ul {
     -webkit-text-fill-color: transparent;
 }
 
+
+
 .badge-danger {
     color: #ff0000;
     background: -webkit-linear-gradient(rgb(255, 2, 2), rgb(128, 0, 0));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.animate-marquee {
+    animation: marquee 30s linear infinite;
+}
+
+.animate-marquee-stopped {
+    animation-play-state: paused;
+}
+
+.fade-enter {
+    opacity: 0;
+}
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms;
+}
+.fade-exit {
+    opacity: 1;
+}
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 500ms;
 }
 
 /* Rest of your global styles */

@@ -593,7 +593,7 @@ const SearchFilter = ({
                 </div>
                 <div className="navbar navbar-brand w-64 text-center hidden lg:flex">
                     <div className="badge badge-outline w-full py-5 font-bold text-gray-600">
-                        ระบบ 48
+                        ระบบ ไทย
                     </div>
                 </div>
                 <div className="navbar navbar-end w-auto lg:w-full">
