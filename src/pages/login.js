@@ -154,10 +154,11 @@ const LoginPage = () => {
 
                                     <div class="relative my-3">
                                         <HCaptcha
-                                            sitekey="be4d4afe-dabf-426a-83f9-e574cf6a00a6"
+                                            sitekey="120d9aa3-d47a-4f36-8197-f04262417241"
                                             onVerify={token => {
                                                 setCaptchaToken(token)
                                             }}
+                                            language="th"
                                         />
                                     </div>
 
