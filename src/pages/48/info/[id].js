@@ -13,6 +13,10 @@ import {
     faCircleCheck,
     faPersonWalkingArrowLoopLeft,
     faFileCirclePlus,
+    faCircleInfo,
+    faImage,
+    faAddressCard,
+    faBroom,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Page() {
@@ -45,6 +49,15 @@ export default function Page() {
             fetchData()
         }
     }, [router.query.id])
+    const birthday = new Date(data?.worker_birthday)
+    const today = new Date()
+    let age = today.getFullYear() - birthday.getFullYear()
+    function formatDate(date) {
+        const day = date.getDate()
+        const month = date.getMonth() + 1
+        const year = date.getFullYear() + 543
+        return `${day}/${month}/${year}`
+    }
     const getStatusData = status => {
         switch (status) {
             case 'wait':
@@ -114,10 +127,10 @@ export default function Page() {
             ) : (
                 <div className="bg-gray-100 p-0">
                     {/* Header Section with Background Image */}
-                    <div className="rounded-lg bg-white">
-                        <div className="rounded-lg bg-gradient-to-t from-indigo-500 to-blue-500 h-48 w-full relative sm:h-62">
+                    <div className="rounded-box bg-white">
+                        <div className="rounded-box bg-gradient-to-t from-indigo-500 to-blue-500 h-48 w-full relative sm:h-62">
                             <img
-                                className="rounded-lg absolute inset-0 w-full h-full object-cover object-top"
+                                className="rounded-box absolute inset-0 w-full h-full object-cover object-top"
                                 src="/images/bg-blue.webp"
                                 alt="Cover Image"
                             />
@@ -351,50 +364,199 @@ export default function Page() {
                             </div>
                         </div>
                     </div>
+                    <div className="flex flex-wrap">
+                        <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faCircleInfo}
+                                        className="fa-fw"
+                                    />{' '}
+                                    ข้อมูลประวัติ
+                                </h2>
+                                <div className="flex justify-between items-center mt-4">
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            เพศ
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {data?.worker_gender === 1
+                                                ? 'ชาย'
+                                                : 'หญิง'}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            อายุ
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {age} ปี
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            น้ำหนัก
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {data?.worker_weight}กก.
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            ส่วนสูง
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {data?.worker_height}cm.
+                                        </span>
+                                    </div>
+                                </div>
 
-                    {/* Experience Section */}
-                    <div className="bg-white p-6 shadow-sm mt-6 mb-6">
-                        <h2 className="text-xl font-bold mb-4">
-                            ประวัติการทำงาน
-                        </h2>
-                        {/* Repeat this for each experience item */}
-                        <div className="mb-4">
-                            <h3 className="text-lg font-bold">
-                                Job Title at Company
-                            </h3>
-                            <p className="text-gray-600">Duration</p>
-                            <p>Description of your role and achievements...</p>
+                                <div className="flex justify-between items-center mt-4">
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            วันเดือนปีเกิด
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {formatDate(birthday)}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold">
+                                            รูปแบบ
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {data?.worker_overnight === 1
+                                                ? 'อยู่ประจำ'
+                                                : 'ไป-กลับ'}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-gray-600 text-sm font-semibold">
+                                            เดินทาง
+                                        </h4>
+                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                            {data?.worker_outside === 1
+                                                ? 'ไปได้ทุกที่'
+                                                : 'ในพื้นที่อยู่เท่านั้น'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="divider"></div>
+                                <div className="flex w-full">
+                                    <div className="grid h-20 flex-grow place-items-center">
+                                        <h3 className="text-lg font-bold">
+                                            เบอร์ติดต่อ
+                                        </h3>
+                                        <p>
+                                            <a
+                                                href={`tel:${data?.worker_phone}`}>
+                                                <kbd className="kbd">
+                                                    {data?.worker_phone}
+                                                </kbd>
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div className="divider divider-horizontal">
+                                        หรือ
+                                    </div>
+                                    <div className="grid h-20 flex-grow place-items-center">
+                                        <h3 className="text-lg font-bold">
+                                            เบอร์สำรอง
+                                        </h3>
+                                        <p>
+                                            <a
+                                                href={`tel:${data?.worker_phone2}`}>
+                                                <kbd className="kbd">
+                                                    {data?.worker_phone2}
+                                                </kbd>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                                {/* Experience item ends */}
+                            </div>
+
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faAddressCard}
+                                        className="fa-fw"
+                                    />{' '}
+                                    บัตรประจำตัว
+                                </h2>
+                                WP : {data?.worker_wpcard}
+                                <br />
+                                WP Exp : {data?.worker_wpcard_exp}
+                                <br />
+                                passport : {data?.worker_passport}
+                                <br />
+                                passport Exp : {data?.worker_passport_exp}
+                                <br />
+                                visa Exp : {data?.worker_visa_exp}
+                            </div>
                         </div>
-                        {/* Experience item ends */}
-                    </div>
-
-                    {/* Education Section */}
-                    <div className="bg-white p-6 shadow-sm mb-6">
-                        <h2 className="text-xl font-bold mb-4">ทักษะ</h2>
-                        {/* Repeat this for each education item */}
-                        <div className="mb-4">
-                            <h3 className="text-lg font-bold">
-                                Degree, University/College
-                            </h3>
-                            <p className="text-gray-600">Duration</p>
+                        <div className="w-full py-3 pl-0 sm:w-1/2 pb-0 sm:pl-2">
+                            <div className="bg-white rounded-box shadow-sm p-6 mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faImage}
+                                        className="fa-fw"
+                                    />{' '}
+                                    รูปภาพ
+                                </h2>
+                                <div className="flex justify-center p-0">
+                                    <div className="grid grid-cols-2 grid-rows-2 gap-1">
+                                        <div className="relative">
+                                            <img
+                                                src={`${f_url}/${data?.worker_image}`}
+                                                alt="รูปที่ 1"
+                                                className="w-36 h-36 object-cover rounded-tl-lg"
+                                            />
+                                        </div>
+                                        <div className="relative">
+                                            <img
+                                                src={`${f_url}/${data?.worker_image}`}
+                                                alt="รูปที่ 2"
+                                                className="w-36 h-36 object-cover rounded-tr-lg"
+                                            />
+                                        </div>
+                                        <div className="relative">
+                                            <img
+                                                src={`${f_url}/${data?.worker_image}`}
+                                                alt="รูปที่ 3"
+                                                className="w-36 h-36 object-cover rounded-bl-lg"
+                                            />
+                                        </div>
+                                        <div className="relative">
+                                            <img
+                                                src={`${f_url}/${data?.worker_image}`}
+                                                alt="รูปที่ 4"
+                                                className="w-36 h-36 object-cover rounded-br-lg"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faBroom}
+                                        className="fa-fw"
+                                    />{' '}
+                                    ทักษะ
+                                </h2>
+                                {/* Repeat this for each education item */}
+                                <div className="mb-4">
+                                    <h3 className="text-lg font-bold">
+                                        Degree, University/College
+                                    </h3>
+                                    <p className="text-gray-600">Duration</p>
+                                </div>
+                                {/* Education item ends */}
+                            </div>
                         </div>
-                        {/* Education item ends */}
                     </div>
-
-                    {/* Skills Section */}
-                    <div className="bg-white p-6 shadow-sm mb-6">
-                        <h2 className="text-xl font-bold mb-4">สัญญา</h2>
-                        <div className="flex flex-wrap">
-                            {/* Repeat this for each skill */}
-                            <span className="m-1 bg-blue-100 text-blue-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded">
-                                Skill Name
-                            </span>
-                            {/* Skill ends */}
-                        </div>
-                    </div>
-
-                    {/* Footer or Additional Sections */}
-                    {/* Add more sections as needed */}
                 </div>
             )}
         </AppLayout>

@@ -15,9 +15,9 @@ const NotFoundPage = () => (
         <Head>
             <title>JS-System v3</title>
         </Head>
-        <main>
+        <main className="context">
             <div className="flex items-center justify-center h-screen">
-                <div>
+                <div className="z-30">
                     <h1 className="title-font m-0 font-extrabold text-5xl py-1 text-gray-200 text-center drop-shadow-xl">
                         <FontAwesomeIcon
                             icon={faTriangleExclamation}
@@ -39,6 +39,29 @@ const NotFoundPage = () => (
                     </Link>
                 </div>
             </div>
+
+            <ul className="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
         </main>
     </div>
 )

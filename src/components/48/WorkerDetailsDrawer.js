@@ -75,7 +75,7 @@ const WorkerDetailsDrawer = ({
 
     return (
         <div
-            className={`mt-16 shadow-lg fixed z-20 inset-y-0 right-0 ${
+            className={`mt-12 shadow-lg fixed z-20 inset-y-0 right-0 ${
                 isOpen ? 'translate-x-0' : 'translate-x-full'
             } transition-transform ease-in-out duration-300`}>
             {/* Drawer content */}
