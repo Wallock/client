@@ -17,12 +17,16 @@ import {
     faImage,
     faAddressCard,
     faBroom,
+    faBusinessTime,
+    faBullhorn,
+    faClockRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Page() {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
+    const [logData, setLogData] = useState([]) // New state for log data
 
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
@@ -43,14 +47,29 @@ export default function Page() {
         }
     }
 
+    const fetchLogData = async () => {
+        try {
+            const logApiUrl = `${f_url}/api/logs_a?token=${token}&id=9M-01706`
+            const logResponse = await axios.get(logApiUrl)
+            setLogData(logResponse.data)
+        } catch (error) {
+            console.error('Failed to fetch log data', error)
+        }
+    }
+
     useEffect(() => {
         // ตรวจสอบว่ามีค่า router.query.id และไม่ใช่ค่าเดิมก่อนทำการโหลดข้อมูลใหม่
         if (router.query.id && router.query.id !== data?.worker_id) {
             fetchData()
+            fetchLogData()
         }
     }, [router.query.id])
     const birthday = new Date(data?.worker_birthday)
     const today = new Date()
+    const workerStatusDateStr = data?.worker_status_date
+    const workerStatusDate = workerStatusDateStr
+        ? new Date(workerStatusDateStr.replace(' ', 'T'))
+        : new Date()
     let age = today.getFullYear() - birthday.getFullYear()
     function formatDate(date) {
         const day = date.getDate()
@@ -58,6 +77,7 @@ export default function Page() {
         const year = date.getFullYear() + 543
         return `${day}/${month}/${year}`
     }
+
     const getStatusData = status => {
         switch (status) {
             case 'wait':
@@ -364,6 +384,20 @@ export default function Page() {
                             </div>
                         </div>
                     </div>
+                    {data?.worker_status != 'wait' && (
+                        <>
+                            <div
+                                role="alert"
+                                className="alert bg-amber-200 p-4 mx-auto font-semibold my-3">
+                                <FontAwesomeIcon
+                                    icon={faBullhorn}
+                                    className="fa-xl"
+                                />
+                                <span>{formatDate(workerStatusDate)}</span>
+                                <span>{data?.worker_status_detail}</span>
+                            </div>
+                        </>
+                    )}
                     <div className="flex flex-wrap">
                         <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
                             <div className="bg-white rounded-box p-6 shadow-sm mb-3">
@@ -442,7 +476,7 @@ export default function Page() {
                                     </div>
                                 </div>
 
-                                <div className="divider"></div>
+                                <div className="divider"> </div>
                                 <div className="flex w-full">
                                     <div className="grid h-20 flex-grow place-items-center">
                                         <h3 className="text-lg font-bold">
@@ -477,23 +511,171 @@ export default function Page() {
                                 {/* Experience item ends */}
                             </div>
 
+                            <div className="w-100 h-56 m-auto bg-red-100 rounded-xl relative text-white mb-3">
+                                <img
+                                    className="relative object-cover w-full h-full rounded-xl"
+                                    src="/images/kGkSg1v.png"
+                                />
+
+                                <div className="w-full px-8 absolute top-6">
+                                    <div className="flex justify-between">
+                                        <div className="">
+                                            <p className="font-light">ชื่อ</p>
+                                            <p className="font-medium tracking-widest">
+                                                {data?.worker_fullname}
+                                            </p>
+                                        </div>
+                                        <h2 className="text-xl font-bold mb-4">
+                                            <FontAwesomeIcon
+                                                icon={faAddressCard}
+                                                className="fa-fw"
+                                            />{' '}
+                                            บัตรประจำตัว
+                                        </h2>
+                                    </div>
+                                    <div className="pt-1">
+                                        <p className="font-light">เลขบัตร</p>
+                                        <p className="font-medium tracking-more-wider">
+                                            {data?.worker_wpcard}
+                                        </p>
+                                    </div>
+                                    <div className="pt-3 pr-6">
+                                        <div className="flex justify-between">
+                                            <div className="">
+                                                <p className="font-light text-xs text-xs">
+                                                    หมดอายุ
+                                                </p>
+                                                <p className="font-medium tracking-wider text-sm">
+                                                    {data?.worker_wpcard_exp}
+                                                </p>
+                                            </div>
+                                            <div className="">
+                                                <p className="font-light text-xs">
+                                                    VISA หมดอายุ
+                                                </p>
+                                                <p className="font-medium tracking-wider text-sm">
+                                                    {data?.worker_visa_exp}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <div className="">
+                                                <p className="font-light text-xs text-xs">
+                                                    Passport
+                                                </p>
+                                                <p className="font-medium tracking-wider text-sm">
+                                                    {data?.worker_passport}
+                                                </p>
+                                            </div>
+                                            <div className="">
+                                                <p className="font-light text-xs">
+                                                    PP หมดอายุ
+                                                </p>
+                                                <p className="font-medium tracking-wider text-sm">
+                                                    {data?.worker_passport_exp}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="bg-white rounded-box p-6 shadow-sm mb-3">
                                 <h2 className="text-xl font-bold mb-4">
                                     <FontAwesomeIcon
-                                        icon={faAddressCard}
+                                        icon={faClockRotateLeft}
                                         className="fa-fw"
                                     />{' '}
-                                    บัตรประจำตัว
+                                    ประวัติการทำงาน
                                 </h2>
-                                WP : {data?.worker_wpcard}
-                                <br />
-                                WP Exp : {data?.worker_wpcard_exp}
-                                <br />
-                                passport : {data?.worker_passport}
-                                <br />
-                                passport Exp : {data?.worker_passport_exp}
-                                <br />
-                                visa Exp : {data?.worker_visa_exp}
+                                <ul className="timeline timeline-vertical">
+                                    {data?.workexp_position1 != null ? (
+                                        <li>
+                                            <div className="timeline-start">
+                                                {data?.workexp_name1}{' '}
+                                                {data?.workexp_time1}
+                                            </div>
+                                            <div className="timeline-middle">
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="fa-fw"
+                                                />
+                                            </div>
+                                            <div className="timeline-end timeline-box">
+                                                <p className="underline p-0">
+                                                    {data?.workexp_position1}
+                                                </p>
+                                                {data?.workexp_detail1}
+                                            </div>
+                                            <hr />
+                                        </li>
+                                    ) : null}
+                                    {data?.workexp_position2 != null ? (
+                                        <li>
+                                            <hr />
+                                            <div className="timeline-start">
+                                                {data?.workexp_name2}{' '}
+                                                {data?.workexp_time2}
+                                            </div>
+                                            <div className="timeline-middle">
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="fa-fw"
+                                                />
+                                            </div>
+                                            <div className="timeline-end timeline-box">
+                                                <p className="underline p-0">
+                                                    {data?.workexp_position2}
+                                                </p>
+                                                {data?.workexp_detail2}
+                                            </div>
+                                            <hr />
+                                        </li>
+                                    ) : null}
+                                    {data?.workexp_position3 != null ? (
+                                        <li>
+                                            <hr />
+                                            <div className="timeline-start">
+                                                {data?.workexp_name3}{' '}
+                                                {data?.workexp_time3}
+                                            </div>
+                                            <div className="timeline-middle">
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="fa-fw"
+                                                />
+                                            </div>
+                                            <div className="timeline-end timeline-box">
+                                                <p className="underline p-0">
+                                                    {data?.workexp_position3}
+                                                </p>
+                                                {data?.workexp_detail3}
+                                            </div>
+                                            <hr />
+                                        </li>
+                                    ) : null}
+                                    {data?.workexp_position4 != null ? (
+                                        <li>
+                                            <hr />
+                                            <div className="timeline-start">
+                                                {data?.workexp_name4}{' '}
+                                                {data?.workexp_time4}
+                                            </div>
+                                            <div className="timeline-middle">
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="fa-fw"
+                                                />
+                                            </div>
+                                            <div className="timeline-end timeline-box">
+                                                <p className="underline p-0">
+                                                    {data?.workexp_position4}
+                                                </p>
+                                                {data?.workexp_detail4}
+                                            </div>
+                                            <hr />
+                                        </li>
+                                    ) : null}
+                                </ul>
                             </div>
                         </div>
                         <div className="w-full py-3 pl-0 sm:w-1/2 pb-0 sm:pl-2">
@@ -549,11 +731,73 @@ export default function Page() {
                                 {/* Repeat this for each education item */}
                                 <div className="mb-4">
                                     <h3 className="text-lg font-bold">
-                                        Degree, University/College
+                                        Skill 1
                                     </h3>
-                                    <p className="text-gray-600">Duration</p>
+                                    <p className="text-gray-600">
+                                        {data?.worker_skill1}
+                                    </p>
+                                    <h3 className="text-lg font-bold">
+                                        Skill 2
+                                    </h3>
+                                    <p className="text-gray-600">
+                                        {data?.worker_skill2}
+                                    </p>
+                                    <h3 className="text-lg font-bold">
+                                        Skill 3
+                                    </h3>
+                                    <p className="text-gray-600">
+                                        {data?.worker_skill3}
+                                    </p>
+                                    {data?.worker_skill_food === '1' && (
+                                        <>
+                                            <h3 className="text-lg font-bold">
+                                                Level Food
+                                            </h3>
+                                            <p className="text-gray-600">
+                                                {data?.worker_skill_foodlevel}
+                                            </p>
+                                            <h3 className="text-lg font-bold">
+                                                Status
+                                            </h3>
+                                            <p className="text-gray-600">
+                                                {data?.worker_skill_fooddetail}
+                                            </p>
+                                        </>
+                                    )}
                                 </div>
                                 {/* Education item ends */}
+                            </div>
+
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faBusinessTime}
+                                        className="fa-fw"
+                                    />{' '}
+                                    ประวัติรับงานจากบริษัท
+                                </h2>
+                                <ul className="timeline timeline-vertical">
+                                    {logData.map((log, index) => (
+                                        <li key={index}>
+                                            <div className="timeline-start">
+                                                {log.logs_tmpsyid}
+                                            </div>
+                                            <div className="timeline-middle">
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="fa-fw"
+                                                />
+                                            </div>
+                                            <div className="timeline-end timeline-box">
+                                                <p className="underline p-0">
+                                                    {log.logs_tmpsyid}
+                                                </p>
+                                                {log.logs_tmpsyid}
+                                            </div>
+                                            <hr />
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
                     </div>
