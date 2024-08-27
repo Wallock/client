@@ -80,9 +80,9 @@ const Navigation = ({ user, profile }) => {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        console.log('Profile role:', profile?.role);
-        const { color, text } = getBadgeProps(profile?.role);
-    }, [profile]);
+        console.log('Profile role:', profile?.role)
+        const { color, text } = getBadgeProps(profile?.role)
+    }, [profile])
 
 
     useEffect(() => {
