@@ -75,8 +75,8 @@ const Navigation = ({ user, profile }) => {
         }
     }
     useEffect(() => {
-        console.log('Profile role:', profile?.role);
-    }, [profile]);
+        console.log('Profile role:', profile?.role)
+    }, [profile])
 
     const { color, text } = getBadgeProps(profile?.role);
     const [open, setOpen] = useState(false)
