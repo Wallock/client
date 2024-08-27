@@ -78,7 +78,9 @@ const Navigation = ({ user, profile }) => {
         console.log('Profile role:', profile?.role)
     }, [profile])
 
-    const badgeProps = profile?.role ? getBadgeProps(profile.role) : { color: 'gray', text: 'Loading...' }
+    const badgeProps = profile?.role
+    ? getBadgeProps(profile.role)
+    : { color: 'gray', text: 'Loading...' }
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)
     const [error, setError] = useState(null)
