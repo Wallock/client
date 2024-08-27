@@ -28,9 +28,8 @@ const BroadcastAnnouncement = ({ message }) => {
                 </div>
                 <div className="overflow-hidden whitespace-nowrap my-auto">
                     <div
-                        className={`inline-block animate-marquee text-sm ${
-                            isHovered ? 'animate-marquee-stopped' : ''
-                        }`}
+                        className={`inline-block animate-marquee text-sm ${isHovered ? 'animate-marquee-stopped' : ''
+                            }`}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                     >
