@@ -44,19 +44,19 @@ const BroadcastAnnouncement = ({ message }) => {
 }
 const getBadgeProps = role => {
     switch (role) {
-        case "99":
+        case 99:
             return { color: 'gold', text: 'ผู้พัฒนา' }
-        case "0":
+        case 0:
             return { color: 'ghost', text: 'รอแอดตำแหน่ง' }
-        case "1":
+        case 1:
             return { color: 'primary', text: 'แอดมิน' }
-        case "2":
+        case 2:
             return { color: 'secondary', text: 'เซลล์' }
-        case "3":
+        case 3:
             return { color: 'warning', text: 'ผู้แก้ไข' }
-        case "4":
+        case 4:
             return { color: 'danger', text: 'ผู้จัดการ' }
-        case "5":
+        case 5:
             return { color: 'accent', text: 'ผู้ดูแล' }
         default:
             return { color: 'gray', text: 'Unknown Role' }
@@ -74,6 +74,7 @@ const Navigation = ({ user, profile }) => {
             toast.error('Failed to log out. Please try again.')
         }
     }
+    console.log('Role:', profile?.role)
     const { color, text } = getBadgeProps(profile?.role)
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)

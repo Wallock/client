@@ -33,7 +33,7 @@ const AppLayout = ({ children }) => {
                 }
 
                 const data = await response.json()
-                console.log('Fetched User Data:', data)
+
                 setUser(data)
                 setProfile({
                     id: data.id,
