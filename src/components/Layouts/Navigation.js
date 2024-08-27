@@ -3,7 +3,6 @@ import Dropdown from '@/components/Dropdown'
 import Link from 'next/link'
 import { ResponsiveNavButton } from '@/components/ResponsiveNavLink'
 import { DropdownButton } from '@/components/DropdownLink'
-import supabase from '@/lib/supabaseClient'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -12,8 +11,7 @@ import {
     faEllipsisVertical,
     faBullhorn,
 } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 
 const BroadcastAnnouncement = ({ message }) => {
@@ -43,21 +41,22 @@ const BroadcastAnnouncement = ({ message }) => {
         </div>
     )
 }
+
 const getBadgeProps = role => {
     switch (role) {
-        case 99:
+        case '99':
             return { color: 'gold', text: 'ผู้พัฒนา' }
-        case 0:
+        case '0':
             return { color: 'ghost', text: 'รอแอดตำแหน่ง' }
-        case 1:
+        case '1':
             return { color: 'primary', text: 'แอดมิน' }
-        case 2:
+        case '2':
             return { color: 'secondary', text: 'เซลล์' }
-        case 3:
+        case '3':
             return { color: 'warning', text: 'ผู้แก้ไข' }
-        case 4:
+        case '4':
             return { color: 'danger', text: 'ผู้จัดการ' }
-        case 5:
+        case '5':
             return { color: 'accent', text: 'ผู้ดูแล' }
         default:
             return { color: 'gray', text: 'Unknown Role' }
@@ -66,38 +65,41 @@ const getBadgeProps = role => {
 
 const Navigation = ({ user, profile }) => {
     const router = useRouter()
-    const handleLogout = async () => {
-        await supabase.auth.signOut()
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken')
         router.push('/login')
     }
-    const { color, text } = getBadgeProps(profile?.level)
+
+    const { color, text } = getBadgeProps(profile?.role)
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)
     const [error, setError] = useState(null)
 
     useEffect(() => {
         const fetchAnnouncements = async () => {
-            try {
-                const { data: announcementsData, error } = await supabase
-                    .from('announcements')
-                    .select('*')
-                    .order('startTimestamp', { ascending: false })
+            const token = localStorage.getItem('accessToken')
 
-                if (error) {
-                    throw new Error(error.message)
+            if (!token) {
+                router.push('/login')
+                return
+            }
+
+            try {
+                const response = await fetch('https://beta.wb.in.th/api/announcements', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                })
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch announcements')
                 }
 
-                setAnnouncements(
-                    announcementsData.map(announcement => ({
-                        ...announcement,
-                        startTimestamp: new Date(
-                            announcement.startTimestamp,
-                        ).getTime(),
-                        endTimestamp: new Date(
-                            announcement.endTimestamp,
-                        ).getTime(),
-                    })),
-                )
+                const data = await response.json()
+                setAnnouncements(data)
             } catch (error) {
                 setError(error.message)
             }
@@ -105,13 +107,14 @@ const Navigation = ({ user, profile }) => {
 
         fetchAnnouncements()
 
-        // Check current time every minute
+        // Check current time every 30 seconds
         const interval = setInterval(fetchAnnouncements, 30000)
 
         return () => clearInterval(interval)
-    }, [])
+    }, [router])
 
     const currentTimestamp = new Date().getTime()
+
     return (
         <>
             <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10 shadow">
@@ -243,7 +246,7 @@ const Navigation = ({ user, profile }) => {
 
                                 <div className="ml-3">
                                     <div className="font-medium text-base text-gray-800">
-                                        {user?.name}
+                                        {profile?.name}
                                     </div>
                                     <div className="font-medium text-sm text-gray-500">
                                         {user?.email}
