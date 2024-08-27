@@ -70,7 +70,7 @@ const Navigation = ({ user, profile }) => {
         await supabase.auth.signOut()
         router.push('/login')
     }
-    const { color, text } = getBadgeProps(profile?.level)
+    const { color, text } = getBadgeProps(profile?.role)
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)
     const [error, setError] = useState(null)
