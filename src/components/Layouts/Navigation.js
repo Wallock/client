@@ -12,6 +12,7 @@ import {
     faBullhorn,
 } from '@fortawesome/free-solid-svg-icons'
 import React, { useState, useEffect } from 'react'
+
 const BroadcastAnnouncement = ({ message }) => {
     const [isHovered, setIsHovered] = useState(false)
     return (
@@ -41,7 +42,7 @@ const BroadcastAnnouncement = ({ message }) => {
     )
 }
 
-const getBadgeProps = role => {
+const getBadgeProps = (role) => {
     switch (role) {
         case '99':
             return { color: 'gold', text: 'ผู้พัฒนา' }
@@ -103,8 +104,7 @@ const Navigation = ({ user, profile }) => {
                 const data = await response.json()
                 setAnnouncements(data)
             } catch (error) {
-                console.error('Error fetching announcements:', error)
-                setError('Error Connect API')
+                setError('Error Connect API') // Update error state
             }
         }
 
@@ -119,13 +119,11 @@ const Navigation = ({ user, profile }) => {
     const currentTimestamp = new Date().getTime()
 
     return (
-        <div>
+        <>
             <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10 shadow">
-
                 <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-12">
                         <div className="flex">
-
                             <div className="flex-shrink-0 flex items-center">
                                 <Link href="/">
                                     <ApplicationLogo className="block h-10 w-auto fill-current" />
@@ -140,7 +138,7 @@ const Navigation = ({ user, profile }) => {
                                 </div>
                             )}
                             {announcements &&
-                                announcements.map(announcement => {
+                                announcements.map((announcement) => {
                                     const {
                                         id,
                                         message,
@@ -162,7 +160,7 @@ const Navigation = ({ user, profile }) => {
                                 })}
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ml-6 ">
+                        <div className="hidden sm:flex sm:items-center sm:ml-6">
                             <Dropdown
                                 align="right"
                                 width="48"
@@ -170,7 +168,8 @@ const Navigation = ({ user, profile }) => {
                                 trigger={
                                     <button className="flex items-center  text-gray-600 hover:text-gray-800 focus:outline-none transition duration-150 ease-in-out">
                                         <div
-                                            className={`badge badge-${color} badge-outline mx-1 text-xs font-semibold`}>
+                                            className={`badge badge-${color} badge-outline mx-1 text-xs font-semibold`}
+                                        >
                                             {text}
                                         </div>
                                         <div className="mx-1 font-semibold text-lg">
@@ -184,10 +183,10 @@ const Navigation = ({ user, profile }) => {
                                             />
                                         </div>
                                     </button>
-                                }>
-
+                                }
+                            >
                                 <DropdownButton onClick={handleLogout}>
-                                    <div className="flex items-center font-semibold text-lg text-red-600 justify-center ">
+                                    <div className="flex items-center font-semibold text-lg text-red-600 justify-center">
                                         <FontAwesomeIcon
                                             icon={faRightFromBracket}
                                             className="mr-2 h-5 w-5"
@@ -196,15 +195,19 @@ const Navigation = ({ user, profile }) => {
                                     </div>
                                 </DropdownButton>
                             </Dropdown>
-                        </div><div className="-mr-2 flex items-center sm:hidden">
+                        </div>
+
+                        <div className="-mr-2 flex items-center sm:hidden">
                             <button
-                                onClick={() => setOpen(open => !open)}
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                                onClick={() => setOpen((open) => !open)}
+                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                            >
                                 <svg
                                     className="h-6 w-6"
                                     stroke="currentColor"
                                     fill="none"
-                                    viewBox="0 0 24 24">
+                                    viewBox="0 0 24 24"
+                                >
                                     {open ? (
                                         <path
                                             className="inline-flex"
@@ -264,7 +267,7 @@ const Navigation = ({ user, profile }) => {
                     </div>
                 )}
             </nav>
-        </div>
+        </>
     )
 }
 
