@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
-import supabase from '@/lib/supabaseClient'
 
 export default function dashboard() {
     const [databeta, setDataBeta] = useState(null)
@@ -11,17 +10,11 @@ export default function dashboard() {
     const [datalaos, setDataLaos] = useState(null)
     const [datathai, setDataThai] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [config, setConfig] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true)
-                const { data: config } = await supabase
-                    .from('config')
-                    .select('*')
-                    .eq('data_name', 'config_news')
-                setConfig(config[0])
 
                 const response1 = await axios.get(
                     `https://beta.wb.in.th/api/status_sv`,
@@ -166,9 +159,7 @@ export default function dashboard() {
                                 </div>
                                 <div
                                     className="px-4 py-5 text-center font-1 text-sm lg:text-lg font-semibold text-gray-600"
-                                    dangerouslySetInnerHTML={{
-                                        __html: config.data_text,
-                                    }}></div>
+                                    >Test</div>
                             </div>
                         </div>
                     </div>
