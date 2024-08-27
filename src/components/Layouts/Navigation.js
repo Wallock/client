@@ -86,13 +86,16 @@ const Navigation = ({ user, profile }) => {
             }
 
             try {
-                const response = await fetch('https://beta.wb.in.th/api/announcements', {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                })
+                const response = await fetch(
+                    'https://beta.wb.in.th/api/announcements',
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                )
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch announcements')
