@@ -28,8 +28,9 @@ const BroadcastAnnouncement = ({ message }) => {
                 </div>
                 <div className="overflow-hidden whitespace-nowrap my-auto">
                     <div
-                        className={`inline-block animate-marquee text-sm ${isHovered ? 'animate-marquee-stopped' : ''
-                            }`}
+                        className={`inline-block animate-marquee text-sm ${
+                            isHovered ? 'animate-marquee-stopped' : ''
+                        }`}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                     >
@@ -41,7 +42,7 @@ const BroadcastAnnouncement = ({ message }) => {
     )
 }
 
-const getBadgeProps = (role) => {
+const getBadgeProps = role => {
     switch (role) {
         case '99':
             return { color: 'gold', text: 'ผู้พัฒนา' }
@@ -92,7 +93,7 @@ const Navigation = ({ user, profile }) => {
                         headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json',
-                        },
+                        }
                     }
                 )
 
@@ -103,7 +104,7 @@ const Navigation = ({ user, profile }) => {
                 const data = await response.json()
                 setAnnouncements(data)
             } catch (error) {
-                setError('Error Connect API') // Update error state
+                setError('Error Connect API')
             }
         }
 
@@ -137,7 +138,7 @@ const Navigation = ({ user, profile }) => {
                                 </div>
                             )}
                             {announcements &&
-                                announcements.map((announcement) => {
+                                announcements.map(announcement => {
                                     const {
                                         id,
                                         message,
@@ -198,7 +199,7 @@ const Navigation = ({ user, profile }) => {
 
                         <div className="-mr-2 flex items-center sm:hidden">
                             <button
-                                onClick={() => setOpen((open) => !open)}
+                                onClick={() => setOpen(open => !open)}
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                             >
                                 <svg
