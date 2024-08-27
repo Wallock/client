@@ -43,7 +43,9 @@ const BroadcastAnnouncement = ({ message }) => {
     )
 }
 const getBadgeProps = role => {
-    switch (role) {
+    const numericRole = Number(role) // Convert role to a number
+
+    switch (numericRole) {
         case 99:
             return { color: 'gold', text: 'ผู้พัฒนา' }
         case 0:
@@ -58,6 +60,8 @@ const getBadgeProps = role => {
             return { color: 'danger', text: 'ผู้จัดการ' }
         case 5:
             return { color: 'accent', text: 'ผู้ดูแล' }
+        default:
+            return { color: 'gray', text: 'Unknown Role' }
     }
 }
 
