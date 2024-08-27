@@ -1,7 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import HCaptcha from '@hcaptcha/react-hcaptcha'
 import Head from 'next/head'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,7 +10,6 @@ import {
     faKey,
     faCircleInfo,
 } from '@fortawesome/free-solid-svg-icons'
-import supabase from '@/lib/supabaseClient'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -20,21 +18,26 @@ const LoginPage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
-    const [errors, setErrors] = useState({ email: '', password: '' })
-    const [status, setStatus] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [captchaToken, setCaptchaToken] = useState()
 
     const submitForm = async event => {
         event.preventDefault()
         setLoading(true)
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-                options: { captchaToken },
+            const response = await fetch('https://beta.wb.in.th/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password,
+                }),
             })
-            if (error) {
+
+            const data = await response.json()
+
+            if (data.message === 'Invalid login details') {
                 setLoading(false)
                 toast.error('บัญชีหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่', {
                     position: 'top-right',
@@ -44,14 +47,36 @@ const LoginPage = () => {
                     pauseOnHover: true,
                     draggable: true,
                 })
+            } else if (response.ok) {
+                // Login successful, store the access token and redirect
+                const accessToken = data.access_token
+                // You can store the access token in localStorage or a global state
+                localStorage.setItem('accessToken', accessToken)
+                router.push('/dashboard') // Navigate to your desired page
             } else {
-                // เข้าสู่ระบบสำเร็จ
-                router.push('/dashboard') // หรือไปยังหน้าอื่นที่คุณต้องการ
+                setLoading(false)
+                toast.error('เกิดข้อผิดพลาด กรุณาลองใหม่', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
             }
         } catch (error) {
             setLoading(false)
+            toast.error('เกิดข้อผิดพลาด กรุณาลองใหม่', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
         }
     }
+
     return (
         <div>
             <Head>
@@ -150,16 +175,6 @@ const LoginPage = () => {
                                                 จดจำการเข้าสู่ระบบไว้เสมอ
                                             </span>
                                         </label>
-                                    </div>
-
-                                    <div className="relative my-3">
-                                        <HCaptcha
-                                            sitekey="120d9aa3-d47a-4f36-8197-f04262417241"
-                                            onVerify={token => {
-                                                setCaptchaToken(token)
-                                            }}
-                                            languageCode="th"
-                                        />
                                     </div>
 
                                     <div className="relative">

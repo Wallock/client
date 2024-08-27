@@ -1,6 +1,5 @@
 import Navigation from '@/components/Layouts/Navigation'
 import MenuNav from '@/components/Layouts/MenuNav'
-import supabase from '@/lib/supabaseClient'
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -13,24 +12,45 @@ const AppLayout = ({ children }) => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser()
+            const token = localStorage.getItem('accessToken')
 
-            if (!user) {
+            if (!token) {
                 router.push('/login')
-            } else {
-                setUser(user)
-                const { data: profiles } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('user_id', user.id)
-                setProfile(profiles[0])
+                return
+            }
+
+            try {
+                const response = await fetch('https://beta.wb.in.th/api/user', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                })
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data')
+                }
+
+                const data = await response.json()
+                setUser(data)
+                setProfile({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    username: data.username,
+                    avatar: data.profile_photo_url,
+                    role: data.role,
+                })
+            } catch (error) {
+                console.error('Error fetching user data:', error)
+                router.push('/login')
             }
         }
 
         fetchUserData()
-    }, [])
+    }, [router])
+
     return (
         <div className="min-h-screen bg-gray-100 ">
             <Head>
