@@ -30,8 +30,9 @@ const BroadcastAnnouncement = ({ message }) => {
                 </div>
                 <div className="overflow-hidden whitespace-nowrap my-auto">
                     <div
-                        className={`inline-block animate-marquee text-sm ${isHovered ? 'animate-marquee-stopped' : ''
-                            }`}
+                        className={`inline-block animate-marquee text-sm ${
+                            isHovered ? 'animate-marquee-stopped' : ''
+                        }`}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}>
                         {message}
@@ -73,15 +74,14 @@ const Navigation = ({ user, profile }) => {
             toast.error('Failed to log out. Please try again.')
         }
     }
+    useEffect(() => {
+        console.log('Profile role:', profile?.role);
+    }, [profile]);
 
+    const { color, text } = getBadgeProps(profile?.role);
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)
     const [error, setError] = useState(null)
-
-    useEffect(() => {
-        console.log('Profile role:', profile?.role)
-        const { color, text } = getBadgeProps(profile?.role)
-    }, [profile])
 
     useEffect(() => {
         const fetchAnnouncements = async () => {
