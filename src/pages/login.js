@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
     const router = useRouter()
-    const [Username, setUsername] = useState('')
+    const [username, setUsername] = useState('') // Changed to lowercase
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -30,7 +30,7 @@ const LoginPage = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: username,
+                    username: username, // Updated to use the correct variable
                     password: password,
                 }),
             })
@@ -133,7 +133,7 @@ const LoginPage = () => {
                                             required
                                             autoFocus
                                             autoComplete="username"
-                                            value={username}
+                                            value={username} // Updated to use the correct variable
                                             className="w-full p-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
                                         />
                                     </div>
