@@ -67,11 +67,11 @@ const Navigation = ({ user, profile }) => {
     const router = useRouter()
     const handleLogout = async () => {
         try {
-            localStorage.removeItem('accessToken');
-            router.push('/login');
+            localStorage.removeItem('accessToken')
+            router.push('/login')
         } catch (error) {
-            console.error('Error logging out:', error);
-            toast.error('Failed to log out. Please try again.');
+            console.error('Error logging out:', error)
+            toast.error('Failed to log out. Please try again.')
         }
     }
     const { color, text } = getBadgeProps(profile?.role)
