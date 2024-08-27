@@ -75,10 +75,10 @@ const Navigation = ({ user, profile }) => {
         }
     }
     useEffect(() => {
-        console.log('Profile role:', profile.role)
+        console.log('Profile role:', profile?.role)
     }, [profile])
 
-    const { color, text } = getBadgeProps(profile.role)
+    const badgeProps = profile?.role ? getBadgeProps(profile.role) : { color: 'gray', text: 'Loading...' };
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)
     const [error, setError] = useState(null)
@@ -167,8 +167,8 @@ const Navigation = ({ user, profile }) => {
                                 trigger={
                                     <button className="flex items-center  text-gray-600 hover:text-gray-800 focus:outline-none transition duration-150 ease-in-out">
                                         <div
-                                            className={`badge badge-${color} badge-outline mx-1 text-xs font-semibold`}>
-                                            {text}
+                                            className={`badge badge-${badgeProps.color} badge-outline mx-1 text-xs font-semibold`}>
+                                            {badgeProps.text}
                                         </div>
                                         <div className="mx-1 font-semibold text-lg">
                                             {profile?.name}
