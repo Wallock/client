@@ -74,11 +74,16 @@ const Navigation = ({ user, profile }) => {
             toast.error('Failed to log out. Please try again.')
         }
     }
-    console.log('Role:', profile?.role)
-    const { color, text } = getBadgeProps(profile?.role)
+
     const [open, setOpen] = useState(false)
     const [announcements, setAnnouncements] = useState(null)
     const [error, setError] = useState(null)
+
+    useEffect(() => {
+        console.log('Profile role:', profile?.role);
+        const { color, text } = getBadgeProps(profile?.role);
+    }, [profile]);
+
 
     useEffect(() => {
         const fetchAnnouncements = async () => {
