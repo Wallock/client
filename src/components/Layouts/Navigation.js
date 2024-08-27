@@ -93,7 +93,7 @@ const Navigation = ({ user, profile }) => {
                         headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json',
-                        },
+                        }, // Comma added here
                     }
                 )
 
