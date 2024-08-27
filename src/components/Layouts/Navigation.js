@@ -16,7 +16,7 @@ const BroadcastAnnouncement = ({ message }) => {
     const [isHovered, setIsHovered] = useState(false)
     return (
         <div className="bg-gray-200 text-black m-auto p-1 font-semibold rounded-xl shadow-md">
-            <div className="px-2 inline-flex ">
+            <div className="px-2 inline-flex">
                 <div className="text-bold text-md text-red-500">
                     <FontAwesomeIcon
                         icon={faBullhorn}
@@ -31,7 +31,8 @@ const BroadcastAnnouncement = ({ message }) => {
                             isHovered ? 'animate-marquee-stopped' : ''
                         }`}
                         onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}>
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
                         {message}
                     </div>
                 </div>
@@ -195,8 +196,7 @@ const Navigation = ({ user, profile }) => {
                                     </div>
                                 </DropdownButton>
                             </Dropdown>
-                        </div>
-                        <div className="-mr-2 flex items-center sm:hidden">
+                        </div><div className="-mr-2 flex items-center sm:hidden">
                             <button
                                 onClick={() => setOpen(open => !open)}
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
