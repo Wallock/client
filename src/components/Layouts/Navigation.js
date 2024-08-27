@@ -259,7 +259,7 @@ const Navigation = ({ user, profile }) => {
                                             icon={faRightFromBracket}
                                             className="mr-2 h-5 w-5"
                                         />
-                                        ออกจากระบบ
+                                        ออกจากระบบ.
                                     </div>
                                 </ResponsiveNavButton>
                             </div>
