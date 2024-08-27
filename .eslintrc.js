@@ -12,7 +12,7 @@ module.exports = {
         es6: true,
         commonjs: true,
     },
-    extends: ['prettier'],
+    extends: [],
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
@@ -23,7 +23,7 @@ module.exports = {
             presets: ['@babel/preset-react'],
         },
     },
-    plugins: ['react', '@next/eslint-plugin-next', 'prettier'],
+    plugins: ['react', '@next/eslint-plugin-next'],
     rules: {
         'import/prefer-default-export': 0,
         'no-console': 'warn',
@@ -46,7 +46,7 @@ module.exports = {
         'prettier/prettier': [
             'error',
             { endOfLine: 'auto' },
-            { usePrettierrc: true },
+            { usePrettierrc: false },
         ],
     },
 }
