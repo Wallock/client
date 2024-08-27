@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
     const router = useRouter()
-    const [email, setEmail] = useState('')
+    const [Username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -30,7 +30,7 @@ const LoginPage = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: email,
+                    username: username,
                     password: password,
                 }),
             })
@@ -125,15 +125,15 @@ const LoginPage = () => {
                                             บัญชีอีเมล
                                         </label>
                                         <input
-                                            id="email"
-                                            type="email"
+                                            id="username"
+                                            type="text"
                                             onChange={event =>
-                                                setEmail(event.target.value)
+                                                setUsername(event.target.value)
                                             }
                                             required
                                             autoFocus
-                                            autoComplete="email"
-                                            value={email}
+                                            autoComplete="username"
+                                            value={username}
                                             className="w-full p-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
                                         />
                                     </div>
