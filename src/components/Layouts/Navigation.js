@@ -12,8 +12,6 @@ import {
     faBullhorn,
 } from '@fortawesome/free-solid-svg-icons'
 import React, { useState, useEffect } from 'react'
-import { toast, ToastContainer } from 'react-toastify'
-
 const BroadcastAnnouncement = ({ message }) => {
     const [isHovered, setIsHovered] = useState(false)
     return (
@@ -93,9 +91,9 @@ const Navigation = ({ user, profile }) => {
                         headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json',
-                        }, // This comma is correct
-                    } // This is also correct
-                );
+                        },
+                    }
+                )
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch announcements')
@@ -104,7 +102,8 @@ const Navigation = ({ user, profile }) => {
                 const data = await response.json()
                 setAnnouncements(data)
             } catch (error) {
-                setError(error.message)
+                console.error('Error fetching announcements:', error)
+                setError('Error Connect API')
             }
         }
 
@@ -119,13 +118,13 @@ const Navigation = ({ user, profile }) => {
     const currentTimestamp = new Date().getTime()
 
     return (
-        <>
+        <div>
             <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10 shadow">
-                {/* Primary Navigation Menu */}
+
                 <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-12">
                         <div className="flex">
-                            {/* Logo */}
+
                             <div className="flex-shrink-0 flex items-center">
                                 <Link href="/">
                                     <ApplicationLogo className="block h-10 w-auto fill-current" />
@@ -134,6 +133,11 @@ const Navigation = ({ user, profile }) => {
                         </div>
 
                         <div className="hidden sm:flex sm:items-center">
+                            {error && (
+                                <div className="text-red-500 font-bold">
+                                    {error}
+                                </div>
+                            )}
                             {announcements &&
                                 announcements.map(announcement => {
                                     const {
@@ -156,7 +160,7 @@ const Navigation = ({ user, profile }) => {
                                     return null
                                 })}
                         </div>
-                        {/* Settings Dropdown */}
+
                         <div className="hidden sm:flex sm:items-center sm:ml-6 ">
                             <Dropdown
                                 align="right"
@@ -180,7 +184,7 @@ const Navigation = ({ user, profile }) => {
                                         </div>
                                     </button>
                                 }>
-                                {/* Authentication */}
+
                                 <DropdownButton onClick={handleLogout}>
                                     <div className="flex items-center font-semibold text-lg text-red-600 justify-center ">
                                         <FontAwesomeIcon
@@ -192,8 +196,6 @@ const Navigation = ({ user, profile }) => {
                                 </DropdownButton>
                             </Dropdown>
                         </div>
-
-                        {/* Hamburger */}
                         <div className="-mr-2 flex items-center sm:hidden">
                             <button
                                 onClick={() => setOpen(open => !open)}
@@ -226,18 +228,8 @@ const Navigation = ({ user, profile }) => {
                     </div>
                 </div>
 
-                {/* Responsive Navigation Menu */}
                 {open && (
                     <div className="block sm:hidden">
-                        {/* <div className="pt-2 pb-3 space-y-1">
-                         <ResponsiveNavLink
-                            href="/dashboard"
-                            active={router.pathname === '/'}>
-                            หน้าหลัก
-                        </ResponsiveNavLink>
-                    </div> */}
-
-                        {/* Responsive Settings Options */}
                         <div className="pt-4 pb-1 border-t border-gray-200">
                             <div className="flex items-center px-4">
                                 <div className="flex-shrink-0">
@@ -258,7 +250,6 @@ const Navigation = ({ user, profile }) => {
                             </div>
 
                             <div className="mt-3 space-y-1">
-                                {/* Authentication */}
                                 <ResponsiveNavButton onClick={handleLogout}>
                                     <div className="flex items-center font-semibold rounded-box text-lg bg-red-600 text-white p-1 justify-center">
                                         <FontAwesomeIcon
@@ -273,7 +264,7 @@ const Navigation = ({ user, profile }) => {
                     </div>
                 )}
             </nav>
-        </>
+        </div>
     )
 }
 
