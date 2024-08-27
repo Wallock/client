@@ -93,9 +93,9 @@ const Navigation = ({ user, profile }) => {
                         headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json',
-                        }, // Comma added here
-                    }
-                )
+                        }, // This comma is correct
+                    } // This is also correct
+                );
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch announcements')
