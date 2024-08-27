@@ -3,7 +3,6 @@ import Dropdown from '@/components/Dropdown'
 import Link from 'next/link'
 import { ResponsiveNavButton } from '@/components/ResponsiveNavLink'
 import { DropdownButton } from '@/components/DropdownLink'
-import supabase from '@/lib/supabaseClient'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -67,8 +66,13 @@ const getBadgeProps = role => {
 const Navigation = ({ user, profile }) => {
     const router = useRouter()
     const handleLogout = async () => {
-        await supabase.auth.signOut()
-        router.push('/login')
+        try {
+            localStorage.removeItem('accessToken');
+            router.push('/login');
+        } catch (error) {
+            console.error('Error logging out:', error);
+            toast.error('Failed to log out. Please try again.');
+        }
     }
     const { color, text } = getBadgeProps(profile?.role)
     const [open, setOpen] = useState(false)
