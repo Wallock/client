@@ -157,9 +157,9 @@ export default function dashboard() {
                                         ข่าวสาร & อัพเดทล่าสุด
                                     </div>
                                 </div>
-                                <div
-                                    className="px-4 py-5 text-center font-1 text-sm lg:text-lg font-semibold text-gray-600"
-                                    >Test</div>
+                                <div className="px-4 py-5 text-center font-1 text-sm lg:text-lg font-semibold text-gray-600">
+                                    ทดสอบ
+                                </div>
                             </div>
                         </div>
                     </div>
