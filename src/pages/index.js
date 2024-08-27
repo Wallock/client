@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
-import supabase from '@/lib/supabaseClient'
 
 /***
  *     ___       __   ________  ___       ___       ________  ________  ________ _________
@@ -21,17 +20,15 @@ import supabase from '@/lib/supabaseClient'
 
 const Home = () => {
     const router = useRouter()
-    const [user, setUser] = useState(null)
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser()
-            if (!user) {
+            const token = localStorage.getItem('accessToken')
+
+            if (!token) {
                 router.push('/login')
-            } else {
-                router.push('/dashboard')
+            }else{
+                router.push('/login')
             }
         }
 
