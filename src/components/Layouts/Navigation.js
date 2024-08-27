@@ -58,8 +58,6 @@ const getBadgeProps = role => {
             return { color: 'danger', text: 'ผู้จัดการ' }
         case 5:
             return { color: 'accent', text: 'ผู้ดูแล' }
-        default:
-            return { color: 'gray', text: 'Unknown Role' }
     }
 }
 
