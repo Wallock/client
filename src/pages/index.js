@@ -27,8 +27,11 @@ const Home = () => {
 
             if (!token) {
                 router.push('/login')
-            }else{
-                router.push('/login')
+                return
+            }
+            else {
+                router.push('/dashboard')
+                return
             }
         }
 
