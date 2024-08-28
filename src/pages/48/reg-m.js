@@ -9,15 +9,15 @@ import {
     faUserNurse,
 } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
-
-export default function regM({ profile }) {
+import { useProfile } from '@/lib/ProfileContext'
+export default function regM() {
     const [weight, setWeight] = useState('')
     const [height, setHeight] = useState('')
     const [phone, setPhone] = useState('')
     const [altPhone, setAltPhone] = useState('')
     const [provinces, setProvinces] = useState([])
     const [selectedProvince, setSelectedProvince] = useState('')
-
+    const profile = useProfile()
     useEffect(() => {
         const checkUserStatus = () => {
             // Check the user's type48 status from the profile prop

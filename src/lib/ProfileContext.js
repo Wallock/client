@@ -1,15 +1,12 @@
-import Navigation from '@/components/Layouts/Navigation'
-import MenuNav from '@/components/Layouts/MenuNav'
-import Head from 'next/head'
-import { useState, useEffect } from 'react'
+// context/ProfileContext.js
+import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import React from 'react'
-import { useProfile } from '@/lib/ProfileContext'
-//UPDATE
-const AppLayout = ({ children }) => {
+
+const ProfileContext = createContext()
+
+export function ProfileProvider({ children }) {
+    const [profile, setProfile] = useState(null)
     const router = useRouter()
-    const profile = useProfile()
-    const [user, setUser] = useState(null)
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -37,8 +34,18 @@ const AppLayout = ({ children }) => {
                 }
 
                 const data = await response.json()
-
-                setUser(data)
+                setProfile({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    username: data.username,
+                    avatar: data.profile_photo_url,
+                    role: data.role,
+                    type48: data.type48,
+                    type82: data.type82,
+                    typethai: data.typethai,
+                    typelaos: data.typelaos,
+                })
             } catch (error) {
                 router.push('/login')
             }
@@ -48,20 +55,12 @@ const AppLayout = ({ children }) => {
     }, [router])
 
     return (
-        <div className="min-h-screen bg-gray-100 ">
-            <Head>
-                <title>JS-System v3</title>
-            </Head>
-            <main>
-                <Navigation user={user} profile={profile} />
-                <div className="flex justify-between mx-auto px-0 mt-12">
-                    <MenuNav user={user} profile={profile} />
-
-                    <div className="w-5/6 ml-auto p-3">{children}</div>
-                </div>
-            </main>
-        </div>
+        <ProfileContext.Provider value={profile}>
+            {children}
+        </ProfileContext.Provider>
     )
 }
 
-export default AppLayout
+export function useProfile() {
+    return useContext(ProfileContext)
+}

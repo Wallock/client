@@ -1,6 +1,7 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useProfile } from '@/lib/ProfileContext'
 
 import SearchFilter from '@/components/48/SearchFilter'
 import Pagination from '@/components/48/Pagination'
@@ -8,7 +9,7 @@ import WorkerCard from '@/components/48/WorkerCard'
 import WorkerDetailsDrawer from '@/components/48/WorkerDetailsDrawer'
 import axios from 'axios'
 
-export default function Home({ profile }) {
+export default function Home() {
     const router = useRouter()
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -30,6 +31,7 @@ export default function Home({ profile }) {
     const [selectedZone, setSelectedZone] = useState(null)
     const [selectedOutside, setSelectedOutside] = useState(null)
     const [filteredData, setFilteredData] = useState([])
+    const profile = useProfile()
 
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`

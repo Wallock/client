@@ -6,8 +6,8 @@ import WorkerCard from '@/components/online/WorkerCard'
 import WorkerDetailsDrawer from '@/components/online/WorkerDetailsDrawer'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-
-export default function Home({ profile }) {
+import { useProfile } from '@/lib/ProfileContext'
+export default function Home() {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1)
@@ -29,7 +29,7 @@ export default function Home({ profile }) {
     const [selectedOutside, setSelectedOutside] = useState(null)
     const [filteredData, setFilteredData] = useState([])
     const router = useRouter()
-
+    const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://thai.wb.in.th`
 

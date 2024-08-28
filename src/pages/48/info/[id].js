@@ -1,5 +1,6 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
+import { useProfile } from '@/lib/ProfileContext'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -22,12 +23,12 @@ import {
     faClockRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
-export default function Page({ profile }) {
+export default function Page() {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
     const [logData, setLogData] = useState([]) // New state for log data
-
+    const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
     const getname = `48`
