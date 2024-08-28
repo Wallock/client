@@ -37,7 +37,7 @@ export default function Page({ profile }) {
             // Check the user's type48 status from the profile prop
             const userType48 = profile?.type48
 
-            if (userType48 !== 0) {
+            if (userType48 !== 1) {
                 router.push('/dashboard')
             }
         }
