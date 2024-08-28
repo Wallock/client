@@ -24,7 +24,7 @@ const LoginPage = () => {
         event.preventDefault()
         setLoading(true)
         try {
-            const response = await fetch('https://beta.wb.in.th/api/login', {
+            const response = await fetch('https://server.wb.in.th/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

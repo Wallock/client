@@ -20,7 +20,7 @@ const AppLayout = ({ children }) => {
             }
 
             try {
-                const response = await fetch('https://beta.wb.in.th/api/user', {
+                const response = await fetch('https://server.wb.in.th/api/user', {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
