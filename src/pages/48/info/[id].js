@@ -22,7 +22,7 @@ import {
     faClockRotateLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
-export default function Page() {
+export default function Page({ profile }) {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
@@ -31,6 +31,19 @@ export default function Page() {
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
     const getname = `48`
+
+    useEffect(() => {
+        const checkUserStatus = () => {
+            // Check the user's type48 status from the profile prop
+            const userType48 = profile?.type48
+
+            if (userType48 !== 0) {
+                router.push('/dashboard')
+            }
+        }
+
+        checkUserStatus()
+    }, [profile])
 
     const fetchData = async () => {
         try {

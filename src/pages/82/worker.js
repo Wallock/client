@@ -7,7 +7,7 @@ import WorkerDetailsDrawer from '@/components/82/WorkerDetailsDrawer'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
-export default function Home() {
+export default function Home({ profile }) {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1)
@@ -32,6 +32,19 @@ export default function Home() {
 
     const token = `1amwall0ck`
     const f_url = `https://dd.wb.in.th`
+
+    useEffect(() => {
+        const checkUserStatus = () => {
+            // Check the user's type48 status from the profile prop
+            const userType82 = profile?.type82
+
+            if (userType82 !== 0) {
+                router.push('/dashboard')
+            }
+        }
+
+        checkUserStatus()
+    }, [profile])
 
     const fetchData = async () => {
         try {

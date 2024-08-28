@@ -42,7 +42,7 @@ const MenuNav = ({ user, profile }) => {
                         label="Dashboard"
                     />
                 </li>
-                {profile?.type48 === 1 && (
+                {Number(profile?.type48) === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/48/worker"
@@ -51,7 +51,7 @@ const MenuNav = ({ user, profile }) => {
                         />
                     </li>
                 )}
-                {profile?.type82 === 1 && (
+                {Number(profile?.type82) === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/82/worker"
@@ -60,7 +60,7 @@ const MenuNav = ({ user, profile }) => {
                         />
                     </li>
                 )}
-                {profile?.typelaos === 1 && (
+                {Number(profile?.typelaos) === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/laos/worker"
@@ -69,7 +69,7 @@ const MenuNav = ({ user, profile }) => {
                         />
                     </li>
                 )}
-                {profile?.typethai === 1 && (
+                {Number(profile?.typethai) === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/online/worker"

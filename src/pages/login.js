@@ -8,6 +8,7 @@ import {
     faSpinner,
     faRightToBracket,
     faKey,
+    faUserPlus,
     faCircleInfo,
 } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify'
@@ -122,7 +123,7 @@ const LoginPage = () => {
                                     </div>
                                     <div className="relative mb-4">
                                         <label className="mb-1 block text-sm font-bold text-gray-700">
-                                            บัญชีอีเมล
+                                            บัญชีผู้ใช้
                                         </label>
                                         <input
                                             id="username"
@@ -193,6 +194,17 @@ const LoginPage = () => {
                                         />{' '}
                                         หากลืมรหัสผ่านให้ติดต่อผู้พัฒนาโดยตรง
                                     </p>
+                                    <div className=" pt-4 text-center ">
+                                        <a
+                                            href="https://server.wb.in.th/"
+                                            className="link link-hover">
+                                            <FontAwesomeIcon
+                                                icon={faUserPlus}
+                                                className="fa-fw"
+                                            />{' '}
+                                            สมัครบัญชีใช้งาน
+                                        </a>
+                                    </div>
                                 </form>
                             )}
                         </div>

@@ -76,9 +76,6 @@ const Navigation = ({ user, profile }) => {
             toast.error('Failed to log out. Please try again.')
         }
     }
-    useEffect(() => {
-        console.log('Profile role:', profile?.role)
-    }, [profile])
 
     let badgeProps = { color: 'gray', text: 'Loading...' }
 
@@ -86,23 +83,41 @@ const Navigation = ({ user, profile }) => {
         badgeProps = getBadgeProps(profile.role)
     }
     const [open, setOpen] = useState(false)
-    const [announcements, setAnnouncements] = useState(null)
+    const [announcement, setAnnouncement] = useState(null)
     const [error, setError] = useState(null)
 
     useEffect(() => {
         const fetchAnnouncements = async () => {
-            try {
-                const { data: announcementsData, error } = await supabase
-                    .from('announcements')
-                    .select('*')
-                    .order('startTimestamp', { ascending: false })
+            const token = localStorage.getItem('accessToken')
 
-                if (error) {
-                    throw new Error(error.message)
+            if (!token) {
+                router.push('/login')
+                return
+            }
+
+            try {
+                const response = await fetch(
+                    'https://server.wb.in.th/api/announcements',
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch announcements')
                 }
 
-                setAnnouncements(
-                    announcementsData.map(announcement => ({
+                const { data: announcementsData } = await response.json()
+
+                const currentTimestamp = new Date().getTime()
+
+                // Sort announcements by startTimestamp in descending order
+                const sortedAnnouncements = announcementsData
+                    .map(announcement => ({
                         ...announcement,
                         startTimestamp: new Date(
                             announcement.startTimestamp,
@@ -110,8 +125,20 @@ const Navigation = ({ user, profile }) => {
                         endTimestamp: new Date(
                             announcement.endTimestamp,
                         ).getTime(),
-                    })),
-                )
+                    }))
+                    .filter(
+                        announcement =>
+                            currentTimestamp >= announcement.startTimestamp &&
+                            currentTimestamp <= announcement.endTimestamp,
+                    )
+                    .sort((a, b) => b.startTimestamp - a.startTimestamp)
+
+                // Set the latest valid announcement
+                if (sortedAnnouncements.length > 0) {
+                    setAnnouncement(sortedAnnouncements[0])
+                } else {
+                    setAnnouncement(null)
+                }
             } catch (error) {
                 setError(error.message)
             }
@@ -123,7 +150,7 @@ const Navigation = ({ user, profile }) => {
         const interval = setInterval(fetchAnnouncements, 30000)
 
         return () => clearInterval(interval)
-    }, [])
+    }, [router])
 
     const currentTimestamp = new Date().getTime()
     return (
@@ -142,27 +169,11 @@ const Navigation = ({ user, profile }) => {
                         </div>
 
                         <div className="hidden sm:flex sm:items-center">
-                            {announcements &&
-                                announcements.map(announcement => {
-                                    const {
-                                        id,
-                                        message,
-                                        startTimestamp,
-                                        endTimestamp,
-                                    } = announcement
-                                    if (
-                                        currentTimestamp >= startTimestamp &&
-                                        currentTimestamp <= endTimestamp
-                                    ) {
-                                        return (
-                                            <BroadcastAnnouncement
-                                                key={id}
-                                                message={message}
-                                            />
-                                        )
-                                    }
-                                    return null
-                                })}
+                            {announcement && (
+                                <BroadcastAnnouncement
+                                    message={announcement.content}
+                                />
+                            )}
                         </div>
                         {/* Settings Dropdown */}
                         <div className="hidden sm:flex sm:items-center sm:ml-6 ">

@@ -45,6 +45,10 @@ const AppLayout = ({ children }) => {
                     username: data.username,
                     avatar: data.profile_photo_url,
                     role: data.role,
+                    type48: data.type48,
+                    type82: data.type82,
+                    typethai: data.typethai,
+                    typelaos: data.typelaos,
                 })
             } catch (error) {
                 //console.error('Error fetching user data:', error)
@@ -54,7 +58,6 @@ const AppLayout = ({ children }) => {
 
         fetchUserData()
     }, [router])
-
     return (
         <div className="min-h-screen bg-gray-100 ">
             <Head>

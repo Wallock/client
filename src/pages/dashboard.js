@@ -3,42 +3,69 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import { format } from 'date-fns'
+import { th } from 'date-fns/locale'
 
 export default function dashboard() {
     const [databeta, setDataBeta] = useState(null)
     const [datadd, setDataDD] = useState(null)
     const [datalaos, setDataLaos] = useState(null)
     const [datathai, setDataThai] = useState(null)
+    const [announcements, setAnnouncements] = useState([])
     const [loading, setLoading] = useState(true)
+    const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 5
+
+    const formatDate = dateString => {
+        return format(new Date(dateString), 'd MMM yyyy เวลา HH:mm', {
+            locale: th,
+        })
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true)
 
-                const response1 = await axios.get(
-                    `https://beta.wb.in.th/api/status_sv`,
-                )
-                const result1 = response1.data
-                setDataBeta(result1)
+                const token = localStorage.getItem('accessToken')
+                if (!token) {
+                    throw new Error('No access token found')
+                }
 
-                const response2 = await axios.get(
-                    `https://dd.wb.in.th/api/status_sv`,
-                )
-                const result2 = response2.data
-                setDataDD(result2)
+                const [
+                    response1,
+                    response2,
+                    response3,
+                    response4,
+                ] = await Promise.all([
+                    axios.get(`https://beta.wb.in.th/api/status_sv`),
+                    axios.get(`https://dd.wb.in.th/api/status_sv`),
+                    axios.get(`https://laos.wb.in.th/api/status_sv`),
+                    axios.get(`https://thai.wb.in.th/api/status_sv`),
+                ])
 
-                const response3 = await axios.get(
-                    `https://laos.wb.in.th/api/status_sv`,
-                )
-                const result3 = response3.data
-                setDataLaos(result3)
+                setDataBeta(response1.data)
+                setDataDD(response2.data)
+                setDataLaos(response3.data)
+                setDataThai(response4.data)
 
-                const response4 = await axios.get(
-                    `https://thai.wb.in.th/api/status_sv`,
+                const headers = {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+
+                const responseAnnouncements = await axios.get(
+                    'https://server.wb.in.th/api/announcements',
+                    { headers },
                 )
-                const result4 = response4.data
-                setDataThai(result4)
+                setAnnouncements(
+                    responseAnnouncements.data.data.sort(
+                        (a, b) =>
+                            new Date(b.created_at) - new Date(a.created_at),
+                    ),
+                )
 
                 setLoading(false)
             } catch (error) {
@@ -48,6 +75,13 @@ export default function dashboard() {
 
         fetchData()
     }, [])
+
+    const indexOfLastItem = currentPage * itemsPerPage
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage
+    const currentItems = announcements.slice(indexOfFirstItem, indexOfLastItem)
+    const totalPages = Math.ceil(announcements.length / itemsPerPage)
+
+    const paginate = pageNumber => setCurrentPage(pageNumber)
 
     return (
         <AppLayout>
@@ -139,7 +173,7 @@ export default function dashboard() {
                             </div>
 
                             <div className="hero text-gray-300">
-                                <div className="hero-content my-12">
+                                <div className="hero-content my-3">
                                     <div className="text-center p-3">
                                         <h1 className="text-6xl font-bold font-2 m-0">
                                             Welcome Back
@@ -157,12 +191,76 @@ export default function dashboard() {
                                         ข่าวสาร & อัพเดทล่าสุด
                                     </div>
                                 </div>
-                                <div className="px-4 py-5 text-center font-1 text-sm lg:text-lg font-semibold text-gray-600">
-                                    ทดสอบ
+                                <div className="card bg-base-100 px-4 m-2">
+                                    <ul
+                                        role="list"
+                                        className="divide-y divide-gray-100">
+                                        {currentItems.map(announcement => (
+                                            <li
+                                                key={announcement.id}
+                                                className="flex justify-between gap-x-6 py-5"
+                                                onClick={() =>
+                                                    setSelectedAnnouncement(
+                                                        announcement,
+                                                    )
+                                                }>
+                                                <div className="text-lg font-semibold">
+                                                    {announcement.title}
+                                                </div>
+                                                <div className="text-sm text-gray-600">
+                                                    {formatDate(
+                                                        announcement.created_at,
+                                                    )}
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                    <div className="flex justify-center my-2">
+                                        {Array.from(
+                                            { length: totalPages },
+                                            (_, index) => (
+                                                <button
+                                                    key={index + 1}
+                                                    className={`btn btn-sm mx-1 ${
+                                                        currentPage ===
+                                                        index + 1
+                                                            ? 'btn-active'
+                                                            : ''
+                                                    }`}
+                                                    onClick={() =>
+                                                        paginate(index + 1)
+                                                    }>
+                                                    {index + 1}
+                                                </button>
+                                            ),
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {selectedAnnouncement && (
+                        <div className="modal modal-open">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-lg">
+                                    {selectedAnnouncement.title}
+                                </h3>
+                                <p className="py-4">
+                                    {selectedAnnouncement.content}
+                                </p>
+                                <div className="modal-action">
+                                    <button
+                                        className="btn"
+                                        onClick={() =>
+                                            setSelectedAnnouncement(null)
+                                        }>
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </>
             )}
         </AppLayout>

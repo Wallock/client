@@ -8,7 +8,7 @@ import WorkerCard from '@/components/48/WorkerCard'
 import WorkerDetailsDrawer from '@/components/48/WorkerDetailsDrawer'
 import axios from 'axios'
 
-export default function Home() {
+export default function Home({ profile }) {
     const router = useRouter()
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -34,6 +34,19 @@ export default function Home() {
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
     const getname = `48`
+
+    useEffect(() => {
+        const checkUserStatus = () => {
+            // Check the user's type48 status from the profile prop
+            const userType48 = profile?.type48
+
+            if (userType48 !== 0) {
+                router.push('/dashboard')
+            }
+        }
+
+        checkUserStatus()
+    }, [profile])
 
     const fetchData = async () => {
         try {
