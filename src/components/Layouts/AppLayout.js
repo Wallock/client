@@ -20,7 +20,16 @@ const AppLayout = ({ children }) => {
             }
 
             try {
-                const response = await fetch('https://server.wb.in.th/api/user', { method: 'GET',headers: { Authorization: `Bearer ${token}`,'Content-Type': 'application/json',},})
+                const response = await fetch(
+                    'https://server.wb.in.th/api/user',
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch user data')
@@ -38,7 +47,7 @@ const AppLayout = ({ children }) => {
                     role: data.role,
                 })
             } catch (error) {
-                console.error('Error fetching user data:', error)
+                //console.error('Error fetching user data:', error)
                 router.push('/login')
             }
         }
