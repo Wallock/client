@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import React from 'react'
-
+//UPDATE
 const AppLayout = ({ children }) => {
     const router = useRouter()
     const [user, setUser] = useState(null)
