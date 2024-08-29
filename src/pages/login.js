@@ -212,6 +212,8 @@ const LoginPage = () => {
                         <div className="lg:w-2/6 md:w-1/2 p-8 flex flex-col md:ml-auto w-full mt-3 md:mt-0">
                             <p className="text-sm text-gray-100 mt-3 text-center font-bold drop-shadow-xl">
                                 Developer & Design By Wallock
+                                <br />
+                                v1.1.2 (BF)
                             </p>
                         </div>
                     </div>
