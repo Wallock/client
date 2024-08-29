@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUserGroup,
-    faHouse,
+    faNewspaper,
     faGear,
+    faUsers,
     faUserPlus,
     faFlaskVial,
 } from '@fortawesome/free-solid-svg-icons'
@@ -31,23 +32,25 @@ const MenuItem = ({ href, icon, label }) => {
     )
 }
 
-const MenuNav = ({ user, profile }) => {
+const MenuNav = ({ profile }) => {
+    const [settingsOpen, setSettingsOpen] = useState(false)
+
     return (
         <div className="w-1/6 h-screen fixed bg-white lg:p-3 p-0 lg:overflow-y-auto overflow-hidden lg:border-r-0 border-r">
             <ul className="menu mb-3 m-0 p-0 text-gray-600">
                 <li className="py-1">
                     <MenuItem
                         href="/dashboard"
-                        icon={faHouse}
-                        label="Dashboard"
+                        icon={faNewspaper}
+                        label="ข่าวสาร"
                     />
                 </li>
                 {Number(profile?.type48) === 1 && (
                     <li className="py-1">
                         <MenuItem
                             href="/48/worker"
-                            icon={faUserGroup}
-                            label="นาซ่า48"
+                            icon={faUsers}
+                            label="นาซ่า"
                         />
                     </li>
                 )}
@@ -55,8 +58,8 @@ const MenuNav = ({ user, profile }) => {
                     <li className="py-1">
                         <MenuItem
                             href="/82/worker"
-                            icon={faUserGroup}
-                            label="แม่บ้านดีดี"
+                            icon={faUsers}
+                            label="ดีดีเมท"
                         />
                     </li>
                 )}
@@ -64,8 +67,8 @@ const MenuNav = ({ user, profile }) => {
                     <li className="py-1">
                         <MenuItem
                             href="/laos/worker"
-                            icon={faUserGroup}
-                            label="เมทอินเตอร์"
+                            icon={faUsers}
+                            label="ลาว"
                         />
                     </li>
                 )}
@@ -73,8 +76,8 @@ const MenuNav = ({ user, profile }) => {
                     <li className="py-1">
                         <MenuItem
                             href="/online/worker"
-                            icon={faUserGroup}
-                            label="ออนไลน์คนไทย"
+                            icon={faUsers}
+                            label="ไทยออนไลน์"
                         />
                     </li>
                 )}
@@ -85,42 +88,80 @@ const MenuNav = ({ user, profile }) => {
                         label="สมัครใหม่"
                     />
                 </li>
-                <li className="py-1">
-                    <MenuItem href="/test" icon={faFlaskVial} label="ทดสอบ" />
+                <li className="py-1 text-red-500">
+                    <MenuItem
+                        href="/test"
+                        icon={faFlaskVial}
+                        label="Function Test"
+                    />
                 </li>
-                <li className="pb-1">
-                    <details className="lg:inline-block hidden h-full">
-                        <summary className="lg:px-4 px-3">
-                            <div className="flex items-center justify-center">
+                {Number(profile?.role) === 99 && (
+                    <li className="pb-1 lg:inline-block hidden">
+                        <div
+                            className={`lg:inline-block hidden w-full cursor-pointer ${
+                                settingsOpen ? 'open' : ''
+                            }`}
+                            onClick={() => setSettingsOpen(!settingsOpen)}>
+                            <div className="flex items-center justify-start">
                                 <FontAwesomeIcon
                                     icon={faGear}
                                     className="mr-4 h-8 w-8 text-blue-500"
                                 />
-                                <p className="text-xl">Setting</p>
+                                <p className="text-xl">ตั้งค่า</p>
                             </div>
-                        </summary>
-                        <ul>
-                            <li>
-                                <a href="/settings/system">ตั้งค่าระบบ</a>
-                            </li>
-                            <li>
-                                <a href="/settings/announcements">ประกาศ</a>
-                            </li>
-                        </ul>
-                    </details>
-                    <Link
-                        href="/settings"
-                        className="px-4 lg:hidden inline-blocks">
-                        <div
-                            className="tooltip tooltip-bottom"
-                            data-tip="setting">
-                            <FontAwesomeIcon
-                                icon={faGear}
-                                className="h-8 w-8 text-blue-600"
-                            />
+                            {settingsOpen && (
+                                <ul className="mt-2">
+                                    <li>
+                                        <Link href="/settings/users">
+                                            ผู้ใช้งาน
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/settings/system">
+                                            ตั้งค่าระบบ
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/settings/announcements">
+                                            ประกาศ
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
                         </div>
-                    </Link>
-                </li>
+                        <div
+                            className="lg:hidden inline-blocks px-4 "
+                            onClick={() => setSettingsOpen(!settingsOpen)}>
+                            <div
+                                className="tooltip tooltip-bottom"
+                                data-tip="ตั้งค่า">
+                                <FontAwesomeIcon
+                                    icon={faGear}
+                                    className="h-8 w-8 text-blue-600"
+                                />
+                            </div>
+                            {settingsOpen && (
+                                <ul className="mt-2">
+                                    <li>
+                                        <Link href="/settings/users">
+                                            ผู้ใช้งาน
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/settings/system">
+                                            ตั้งค่าระบบ
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/settings/announcements">
+                                            ประกาศ
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                    </li>
+                )}
             </ul>
         </div>
     )

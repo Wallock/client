@@ -33,7 +33,7 @@ const SearchFilter = ({
     setSelectedOutside,
 }) => {
     return (
-        <div className="w-full flex items-center justify-center">
+        <div className="flex items-center justify-center">
             <div className="navbar rounded-box bg-white my-2  ">
                 <div className="navbar navbar-start w-full lg:w-auto hidden lg:flex">
                     <div className="collapse collapse-arrow bg-base-200">

@@ -12,7 +12,7 @@ const Pagination = ({
     generatePageNumbers,
 }) => {
     return (
-        <div className="navbar rounded-box z-20 glass my-2 w-4/5 fixed bottom-0">
+        <div className="navbar rounded-box z-20 glass my-2 w-full  bottom-0">
             <div className="navbar-start">
                 <button
                     className="btn btn-neutral"

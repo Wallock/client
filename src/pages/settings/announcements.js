@@ -4,7 +4,12 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+    faTrashAlt,
+    faEdit,
+    faPlusCircle,
+} from '@fortawesome/free-solid-svg-icons'
 export default function Announcements() {
     const [announcements, setAnnouncements] = useState([])
     const [loading, setLoading] = useState(true)
@@ -168,8 +173,8 @@ export default function Announcements() {
                 <h1 className="text-2xl font-bold mb-4">ข่าวสาร & อัพเดท</h1>
                 <button
                     onClick={() => handleOpenModal()}
-                    className="btn btn-primary mb-4 px-4 py-2">
-                    เพิ่มใหม่
+                    className="btn btn-neutral mb-4 px-4 py-2">
+                    <FontAwesomeIcon icon={faPlusCircle} /> เพิ่มใหม่
                 </button>
                 {loading ? (
                     <div className="w-full p-3">
@@ -182,75 +187,80 @@ export default function Announcements() {
                     </div>
                 ) : (
                     <div>
-                        <table className="w-full table-auto mb-4">
-                            <thead>
-                                <tr>
-                                    <th className="border px-4 py-2">หัวข้อ</th>
-                                    <th className="border px-4 py-2">
-                                        วันที่สร้าง
-                                    </th>
-                                    <th className="border px-4 py-2">#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {announcements.map(announcement => (
-                                    <tr key={announcement.id}>
-                                        <td className="border px-4 py-2">
-                                            {announcement.title}
-                                        </td>
-                                        <td className="border px-4 py-2">
-                                            {new Date(
-                                                announcement.created_at,
-                                            ).toLocaleString('th-TH', {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            })}
-                                        </td>
-                                        <td className="border px-4 py-2">
-                                            <button
-                                                onClick={() =>
-                                                    handleOpenModal(
-                                                        announcement,
-                                                    )
-                                                }
-                                                className="btn btn-warning me-1">
-                                                แก้ไข
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDelete(
-                                                        announcement.id,
-                                                    )
-                                                }
-                                                className="btn btn-error ms-1">
-                                                ลบ
-                                            </button>
-                                        </td>
+                        <div className="card card bg-base-100 shadow-xl p-1 overflow-x-auto">
+                            <table className="table table-zebra w-full">
+                                <thead>
+                                    <tr>
+                                        <th className="text-center">หัวข้อ</th>
+                                        <th className="text-center">
+                                            วันที่สร้าง
+                                        </th>
+                                        <th className="text-center">#</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {announcements.map(announcement => (
+                                        <tr key={announcement.id}>
+                                            <td>{announcement.title}</td>
+                                            <td className="text-center">
+                                                {new Date(
+                                                    announcement.created_at,
+                                                ).toLocaleString('th-TH', {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                })}
+                                            </td>
+                                            <td className="text-center">
+                                                <button
+                                                    onClick={() =>
+                                                        handleOpenModal(
+                                                            announcement,
+                                                        )
+                                                    }
+                                                    className="btn btn-square btn-sm me-1">
+                                                    <FontAwesomeIcon
+                                                        icon={faEdit}
+                                                    />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            announcement.id,
+                                                        )
+                                                    }
+                                                    className="btn btn-square btn-sm ms-1">
+                                                    <FontAwesomeIcon
+                                                        icon={faTrashAlt}
+                                                        className="text-red-500"
+                                                    />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
 
-                        {/* Pagination Controls */}
-                        <div className="flex justify-between items-center">
-                            <button
-                                onClick={handlePrevPage}
-                                disabled={currentPage === 1}
-                                className="btn disabled:btn-disabled">
-                                Previous
-                            </button>
-                            <span>
-                                Page {currentPage} of {totalPages}
-                            </span>
-                            <button
-                                onClick={handleNextPage}
-                                disabled={currentPage === totalPages}
-                                className="btn disabled:btn-disabled">
-                                Next
-                            </button>
+                            {/* Pagination Controls */}
+                            <div className="flex justify-between items-center m-4">
+                                <button
+                                    onClick={handlePrevPage}
+                                    disabled={currentPage === 1}
+                                    className="btn btn-outline btn-sm disabled:btn-disabled">
+                                    Previous
+                                </button>
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <button
+                                    onClick={handleNextPage}
+                                    disabled={currentPage === totalPages}
+                                    className="btn btn-outline btn-sm disabled:btn-disabled">
+                                    Next
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -261,9 +271,7 @@ export default function Announcements() {
                 <div className="modal modal-open">
                     <div className="modal-box">
                         <h2 className="text-xl font-bold mb-4">
-                            {isEditMode
-                                ? 'Edit Announcement'
-                                : 'Add Announcement'}
+                            {isEditMode ? 'แก้ไขข่าวสาร' : 'เพิ่มใหม่'}
                         </h2>
                         <div className="mb-4">
                             <label className="block text-sm font-semibold">
@@ -271,7 +279,7 @@ export default function Announcements() {
                             </label>
                             <input
                                 type="text"
-                                className="input input-bordered w-full max-w-xs"
+                                className="input input-bordered w-full"
                                 value={modalData.title || ''}
                                 onChange={e =>
                                     setModalData({
@@ -331,13 +339,13 @@ export default function Announcements() {
                         <div className="modal-action">
                             <button
                                 onClick={handleSave}
-                                className="btn btn-success me-1">
-                                {isEditMode ? 'Update' : 'Add'}
+                                className="btn btn-neutral me-1">
+                                {isEditMode ? 'อัพเดท' : 'เพิ่ม'}
                             </button>
                             <button
                                 onClick={handleCloseModal}
-                                className="btn btn-active ms-1">
-                                Cancel
+                                className="btn ms-1">
+                                ยกเลิก
                             </button>
                         </div>
                     </div>

@@ -119,6 +119,11 @@ ul {
 
 
 .badge-gold {
+    color: #353535;
+    background: -webkit-linear-gradient(rgb(255 191 2), rgb(255 150 0));
+}
+
+.badge-gold.badge-outline {
     color: #ffcc00;
     background: -webkit-linear-gradient(rgb(255 191 2), rgb(255 150 0));
     -webkit-background-clip: text;

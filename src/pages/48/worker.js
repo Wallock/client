@@ -299,7 +299,7 @@ export default function Home() {
                     </div>
                 </div>
             ) : (
-                <div className="w-full p-3 mb-20">
+                <div className="w-full p-3">
                     <div className="flex items-center justify-center flex-wrap gap-4">
                         {filteredData.map(item => (
                             <WorkerCard

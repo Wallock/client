@@ -10,6 +10,8 @@ import {
     faRightFromBracket,
     faEllipsisVertical,
     faBullhorn,
+    faCircleUser,
+    faGear,
 } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 import { useState, useEffect } from 'react'
@@ -158,7 +160,7 @@ const Navigation = ({ user, profile }) => {
             <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10 shadow">
                 {/* Primary Navigation Menu */}
                 <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-12">
+                    <div className="flex justify-between h-14">
                         <div className="flex">
                             {/* Logo */}
                             <div className="flex-shrink-0 flex items-center">
@@ -177,39 +179,54 @@ const Navigation = ({ user, profile }) => {
                         </div>
                         {/* Settings Dropdown */}
                         <div className="hidden sm:flex sm:items-center sm:ml-6 ">
-                            <Dropdown
-                                align="right"
-                                width="48"
-                                className="shadow-lg"
-                                trigger={
-                                    <button className="flex items-center  text-gray-600 hover:text-gray-800 focus:outline-none transition duration-150 ease-in-out">
-                                        <div
-                                            className={`badge badge-${badgeProps.color} badge-outline mx-1 text-xs font-semibold`}>
-                                            {badgeProps.text}
-                                        </div>
-                                        <div className="mx-1 font-semibold text-lg">
-                                            {profile?.name}
-                                        </div>
-
-                                        <div className="mx-1">
-                                            <FontAwesomeIcon
-                                                icon={faEllipsisVertical}
-                                                className="fa-fw"
+                            <div className="dropdown dropdown-end">
+                                <div
+                                    tabIndex={0}
+                                    role="button"
+                                    className="btn btn-ghost btn-circle">
+                                    <div className="avatar">
+                                        <div className="w-9 mask rounded-full outline-dashed outline-1 outline-blue-500">
+                                            <img
+                                                src={profile?.avatar}
+                                                alt="Profile Photo"
                                             />
                                         </div>
-                                    </button>
-                                }>
-                                {/* Authentication */}
-                                <DropdownButton onClick={handleLogout}>
-                                    <div className="flex items-center font-semibold text-lg text-red-600 justify-center ">
-                                        <FontAwesomeIcon
-                                            icon={faRightFromBracket}
-                                            className="mr-2 h-5 w-5"
-                                        />
-                                        ออกจากระบบ
                                     </div>
-                                </DropdownButton>
-                            </Dropdown>
+                                </div>
+                                <ul
+                                    tabIndex={0}
+                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-2 w-40 p-2 shadow-lg">
+                                    <li className="mb-1">
+                                        <a className="justify-start">
+                                            <FontAwesomeIcon
+                                                icon={faCircleUser}
+                                                className="fa-lg"
+                                            />
+                                            โปรไฟล์
+                                        </a>
+                                    </li>
+                                    <li className="mb-1">
+                                        <a className="justify-start">
+                                            <FontAwesomeIcon
+                                                icon={faGear}
+                                                className="fa-lg"
+                                            />
+                                            ตั้งค่า
+                                        </a>
+                                    </li>
+                                    <li className="mb-1">
+                                        <a
+                                            onClick={handleLogout}
+                                            className="text-error justify-start">
+                                            <FontAwesomeIcon
+                                                icon={faRightFromBracket}
+                                                className="fa-lg"
+                                            />{' '}
+                                            ออกจากระบบ
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
                         {/* Hamburger */}
@@ -260,15 +277,23 @@ const Navigation = ({ user, profile }) => {
                         <div className="pt-4 pb-1 border-t border-gray-200">
                             <div className="flex items-center px-4">
                                 <div className="flex-shrink-0">
-                                    <FontAwesomeIcon
-                                        icon={faUser}
-                                        className="h-8 w-8"
-                                    />
+                                    <div className="avatar">
+                                        <div className="w-9 h-9 mask mask-squircle">
+                                            <img
+                                                src={profile?.avatar}
+                                                alt="Profile Photo"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="ml-3">
                                     <div className="font-medium text-base text-gray-800">
                                         {user?.name}
+                                        <div
+                                            className={`badge badge-${badgeProps.color} badge-outline mx-1 text-xs font-semibold`}>
+                                            {badgeProps.text}
+                                        </div>
                                     </div>
                                     <div className="font-medium text-sm text-gray-500">
                                         {user?.email}

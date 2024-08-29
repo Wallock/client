@@ -2,30 +2,18 @@
 
 ## Introduction
 
-This repository is an implementation of the [Laravel Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Next.js](https://nextjs.org). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Next.js frontend with a powerful Laravel backend.
+หลักการทำงาน
 
-## Official Documentation
+ระบบจะอิง API คนละตัวแต่
+แต่เมื่อมีการลงทะเบียนใหม่
+จะมีการเอาเลข WP หรือบัตรประชาชนไปค้นหาในฐานข้อมูล API ทุกระบบ ว่าเคยมีข้อมูอยู่ไหม ถ้ามีก็สามารถกด Copy ข้อมูลมาใส่ได้เลย
 
-### Installation
+-> ส่วนระบบจอง หรือทำสัญญา หรือหน้าโปรไฟล์คนงานใดๆก็แล้วแต่
+ถ้ามีการทำงานหรือโปรเสกเกิดขึ้น ต้องเอา WP หรือบัตรประชาชนไปค้นในฐานข้อมูลระบบอื่นด้วย ถ้ามีข้อมูลก็ให้อัพเดทสถานะของระบบอื่นไปด้วย
+เพื่อป้องกัน การส่งคนงานคนเดียวกันซ้ำกัน
+(ทั้งมวลนี้ต้องทดสอบ การเปิดสองระบบพร้อมกันว่ามีความไวในการอัพเดทข้อมูลล่าสุดมากแค่ไหนก่อน เพราะอาจเกิดเหตุการณ์ที่ว่าอีกคนจอง อีกคนสถานะไม่อัพเดท แล้วจองพร้อมกัน ทำให้โดนแย่งคนงานเกิดขึ้น)
 
-First, create a Next.js compatible Laravel backend by installing Laravel Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
+-> ระบบค้นหาคนงานแบบ WP หรือบัตรประชาชน หรือชื่อสกุล หรือเบอร์โทรแบบล้วงลึก ทำไว้กรณีทีมต้องการค้นหาข้อมูลคนงานทุกระบบ
+อันนี้ทำไว้เผื่ออนาคต มีแค่ทีมงานที่สามารถเข้าดูได้เท่านั้น
 
-### Named Routes
-
-For convenience, [Ziggy](https://github.com/tighten/ziggy#spas-or-separate-repos) may be used to reference your Laravel application's named route URLs from your React application.
-
-## Contributing
-
-Thank you for considering contributing to Breeze Next! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-Please review [our security policy](https://github.com/laravel/breeze-next/security/policy) on how to report security vulnerabilities.
-
-## License
-
-Laravel Breeze Next is open-sourced software licensed under the [MIT license](LICENSE.md).
+-> ระบบทำสัญญา

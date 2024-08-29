@@ -54,7 +54,7 @@ const AppLayout = ({ children }) => {
             </Head>
             <main>
                 <Navigation user={user} profile={profile} />
-                <div className="flex justify-between mx-auto px-0 mt-12">
+                <div className="flex justify-between mx-auto px-0 mt-14">
                     <MenuNav user={user} profile={profile} />
 
                     <div className="w-5/6 ml-auto p-3">{children}</div>
