@@ -3,24 +3,50 @@ import { useRouter } from 'next/router'
 import { useProfile } from '@/lib/ProfileContext'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUserLock,
     faRightLeft,
+    faSyringe,
+    faFileExcel,
+    faChildren,
     faUserGroup,
+    faCircle,
     faCircleXmark,
     faUser,
+    faBicycle,
+    faMotorcycle,
+    faSmoking,
+    faCar,
+    faComment,
     faPhoneVolume,
     faCircleCheck,
     faPersonWalkingArrowLoopLeft,
+    faPerson,
+    faPersonDress,
+    faCarSide,
+    faHospitalUser,
+    faCakeCandles,
+    faWeightScale,
+    faTextHeight,
     faFileCirclePlus,
     faCircleInfo,
     faImage,
     faAddressCard,
     faBroom,
+    faUtensils,
+    faSquarePhone,
+    faMobileScreenButton,
+    faBars,
     faBusinessTime,
+    faHouseUser,
     faBullhorn,
+    faFlagCheckered,
+    faStarOfLife,
     faClockRotateLeft,
+    faPaw,
+    faHeartbeat,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Page() {
@@ -39,25 +65,38 @@ export default function Page() {
             const userType48 = profile?.type48
 
             if (userType48 !== 1) {
+                console.error('Error Profile Type48 Token', profile?.type48)
                 router.push('/dashboard')
             }
         }
 
         checkUserStatus()
-    }, [profile])
+        fetchData()
+        const intervalId = setInterval(() => {
+            fetchData(false)
+        }, 10000)
+        return () => clearInterval(intervalId)
+    }, [])
 
-    const fetchData = async () => {
+    const fetchData = async (showLoading = true) => {
         try {
-            setLoading(true)
+            if (showLoading) {
+                setLoading(true)
+            }
 
             let apiUrl = `${f_url}/api/i_worker?token=${token}&data_id=${router.query.id}`
-
             const response = await axios.get(apiUrl)
             const newData = response.data
+
             setData(newData[0])
-            setLoading(false)
+
+            if (showLoading) {
+                setLoading(false)
+            }
         } catch (error) {
-            setLoading(false)
+            if (showLoading) {
+                setLoading(false)
+            }
         }
     }
 
@@ -96,42 +135,50 @@ export default function Page() {
         switch (status) {
             case 'wait':
                 return {
-                    styles: 'bg-red-100 text-red-500',
+                    styles:
+                        'bg-gradient-to-r from-slate-900 to-slate-700 text-white',
                     text: 'ว่างงาน',
                 }
             case 'save':
                 return {
-                    styles: 'bg-amber-100 text-amber-500',
+                    styles:
+                        'bg-gradient-to-r from-amber-200 to-yellow-500 text-slate-900',
                     text: 'จอง',
                 }
             case 'incomplete':
                 return {
-                    styles: 'bg-blue-100 text-blue-500',
+                    styles:
+                        'bg-gradient-to-r from-indigo-500 to-blue-500 text-white',
                     text: 'รอทำสัญญา',
                 }
             case 'woker':
                 return {
-                    styles: 'bg-emerald-100 text-emerald-500',
+                    styles:
+                        'bg-gradient-to-r from-emerald-400 to-cyan-400 text-emerald-700',
                     text: 'ได้งานแล้ว',
                 }
             case 'retry':
                 return {
-                    styles: 'bg-purple-100 text-purple-500',
+                    styles:
+                        'bg-gradient-to-r from-violet-500 to-purple-500 text-white',
                     text: 'เคลม',
                 }
             case 'changepp':
                 return {
-                    styles: 'bg-gray-100 text-black',
+                    styles:
+                        'bg-gradient-to-r from-slate-300 to-slate-500 text-black',
                     text: 'เปลี่ยน',
                 }
             case 'bfprocess':
                 return {
-                    styles: 'bg-sky-100 text-sky-500',
+                    styles:
+                        'bg-gradient-to-r from-blue-200 to-cyan-200 text-slate-700',
                     text: 'สพ.แล้ว',
                 }
             case 'export':
                 return {
-                    styles: 'bg-red-100 text-red-500',
+                    styles:
+                        'bg-gradient-to-r from-red-500 to-orange-500 text-slate-800',
                     text: 'ห้ามส่งงาน',
                 }
             default:
@@ -140,6 +187,19 @@ export default function Page() {
                     text: 'Unknown Status',
                 }
         }
+    }
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [selectedImage, setSelectedImage] = useState(null)
+    const datapacks = data?.datapacks || []
+
+    const handleImageClick = imageUrl => {
+        setSelectedImage(imageUrl)
+        setIsModalOpen(true)
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+        setSelectedImage(null)
     }
     return (
         <AppLayout>
@@ -189,9 +249,9 @@ export default function Page() {
                             </h1>
                             {/* Profile Image */}
 
-                            <div className="rounded-full border-4 border-white absolute bottom-0 transform translate-y-3/4 w-48 h-48 ml-16 sm:mt-72 w-32 h-32">
+                            <div className="rounded-full transition-transform transform hover:scale-105 border-4 border-white absolute bottom-0 transform translate-y-3/4 w-48 h-48 ml-16 sm:mt-72 w-32 h-32">
                                 <img
-                                    className="rounded-full object-cover w-48 h-48"
+                                    className="rounded-full object-cover w-48 h-48 "
                                     src={`${f_url}/${data?.worker_image}`}
                                     alt={data?.worker_id}
                                 />
@@ -214,12 +274,33 @@ export default function Page() {
                                         {data?.worker_race}
                                     </p>
                                     <span className="mx-1 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                                        ฉีดวัคซีนแล้ว {data?.worker_covid} เข็ม
+                                        <FontAwesomeIcon
+                                            icon={faSyringe}
+                                            className="fa-fw"
+                                        />{' '}
+                                        ฉีดวัคซีน {data?.worker_covid} เข็ม
                                     </span>
                                     {data?.worker_namelist === 1 ? (
                                         <span className="mx-1 bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                            <FontAwesomeIcon
+                                                icon={faFileExcel}
+                                                className="fa-fw"
+                                            />{' '}
                                             NameList
                                         </span>
+                                    ) : null}
+                                    {data?.worker_duo &&
+                                    data?.worker_duo !== '-' ? (
+                                        <Link
+                                            href={`/${getname}/info/${data?.worker_duo}`}>
+                                            <span className="mx-1 bg-rose-100 text-rose-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                                <FontAwesomeIcon
+                                                    icon={faChildren}
+                                                    className="fa-fw"
+                                                />{' '}
+                                                งานคู่กับ {data?.worker_duo}
+                                            </span>
+                                        </Link>
                                     ) : null}
                                 </div>
                             </div>
@@ -398,23 +479,9 @@ export default function Page() {
                             </div>
                         </div>
                     </div>
-                    {data?.worker_status != 'wait' && (
-                        <>
-                            <div
-                                role="alert"
-                                className="alert bg-amber-200 p-4 mx-auto font-semibold my-3">
-                                <FontAwesomeIcon
-                                    icon={faBullhorn}
-                                    className="fa-xl"
-                                />
-                                <span>{formatDate(workerStatusDate)}</span>
-                                <span>{data?.worker_status_detail}</span>
-                            </div>
-                        </>
-                    )}
-                    <div className="flex flex-wrap">
+                    <div className="flex flex-wrap ">
                         <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
-                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                            <div className="bg-white rounded-box p-5 shadow-sm mb-3">
                                 <h2 className="text-xl font-bold mb-4">
                                     <FontAwesomeIcon
                                         icon={faCircleInfo}
@@ -422,113 +489,218 @@ export default function Page() {
                                     />{' '}
                                     ข้อมูลประวัติ
                                 </h2>
-                                <div className="flex justify-between items-center mt-4">
-                                    <div>
+                                <div className="flex flex-wrap justify-between items-center mt-4">
+                                    <div className="px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold ">
                                             เพศ
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
-                                            {data?.worker_gender === 1
-                                                ? 'ชาย'
-                                                : 'หญิง'}
+                                        <span className="mt-2 text-xl font-medium text-gray-500">
+                                            {data?.worker_gender === 1 ? (
+                                                <>
+                                                    <FontAwesomeIcon
+                                                        icon={faPerson}
+                                                        className="text-blue-500"
+                                                    />{' '}
+                                                    ชาย
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <FontAwesomeIcon
+                                                        icon={faPersonDress}
+                                                        className="text-pink-500"
+                                                    />{' '}
+                                                    หญิง
+                                                </>
+                                            )}
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className="px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <FontAwesomeIcon
+                                                icon={faCakeCandles}
+                                                className="fa-fw"
+                                            />{' '}
                                             อายุ
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                        <span className="mt-2 text-xl font-medium text-gray-500">
                                             {age} ปี
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className="px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <FontAwesomeIcon
+                                                icon={faWeightScale}
+                                                className="fa-fw"
+                                            />{' '}
                                             น้ำหนัก
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                        <span className="mt-2 text-xl font-medium text-gray-500">
                                             {data?.worker_weight}กก.
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className="px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <FontAwesomeIcon
+                                                icon={faTextHeight}
+                                                className="fa-fw"
+                                            />{' '}
                                             ส่วนสูง
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
-                                            {data?.worker_height}cm.
+                                        <span className="mt-2 text-xl font-medium text-gray-500">
+                                            {data?.worker_height}ซม.
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-center mt-4">
-                                    <div>
+                                <div className="flex flex-wrap justify-between items-center mt-4">
+                                    <div className="px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold ">
-                                            วันเดือนปีเกิด
+                                            ที่อยู่
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                        <span className="mt-2 text-lg font-medium text-gray-500">
+                                            {data?.worker_address}
+                                        </span>
+                                    </div>
+                                    <div className="border-l border-gray-100 px-4">
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            สถานะ
+                                        </h4>
+                                        <span className="mt-2 text-lg font-medium text-gray-500">
+                                            {data?.worker_relationship === '1'
+                                                ? 'โสด'
+                                                : data?.worker_relationship ===
+                                                  '2'
+                                                ? 'แต่งงาน'
+                                                : data?.worker_relationship ===
+                                                  '3'
+                                                ? 'ม่าย'
+                                                : data?.worker_relationship ===
+                                                  '4'
+                                                ? 'แยกทาง'
+                                                : data?.worker_relationship ===
+                                                  '5'
+                                                ? 'มีแฟน'
+                                                : 'ไม่ระบุ'}
+                                        </span>
+                                    </div>
+                                    <div className="border-l border-gray-100 px-4">
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            ลูก
+                                        </h4>
+                                        <span className="mt-2 text-lg font-medium text-gray-500">
+                                            {data?.worker_baby === null
+                                                ? 'ไม่มี'
+                                                : data?.worker_baby}
+                                        </span>
+                                    </div>
+                                    <div className="border-l border-gray-100 px-4">
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            อยู่ไทยมา
+                                        </h4>
+                                        <span className="mt-2 text-lg font-medium text-gray-500">
+                                            {data?.worker_inthai === '0'
+                                                ? 'ตั้งแต่เกิด'
+                                                : data?.worker_inthai}
+                                        </span>
+                                    </div>
+                                    <div className="border-l border-gray-100 px-4">
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            ศาสนา
+                                        </h4>
+                                        <span className="mt-2 text-lg font-medium text-gray-500">
+                                            {data?.worker_religion}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap justify-between items-center mt-4">
+                                    <div className="px-4">
+                                        <h4 className="text-gray-600 text-sm font-semibold ">
+                                            วันเกิด
+                                        </h4>
+                                        <span className="mt-2 text-md font-medium text-gray-500">
                                             {formatDate(birthday)}
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className="border-l border-gray-100 px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold">
                                             รูปแบบ
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                        <span className="mt-2 text-md font-medium text-gray-500">
                                             {data?.worker_overnight === 1
                                                 ? 'อยู่ประจำ'
                                                 : 'ไป-กลับ'}
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className="border-l border-gray-100 px-4">
                                         <h4 className="text-gray-600 text-sm font-semibold">
                                             เดินทาง
                                         </h4>
-                                        <span className="mt-2 text-xl font-medium text-gray-800">
+                                        <span className="mt-2 text-md font-medium text-gray-500">
                                             {data?.worker_outside === 1
                                                 ? 'ไปได้ทุกที่'
                                                 : 'ในพื้นที่อยู่เท่านั้น'}
                                         </span>
                                     </div>
+                                    <div className="border-l border-gray-100 px-4">
+                                        <h4 className="text-gray-600 text-sm font-semibold">
+                                            ทราบข่าวจาก
+                                        </h4>
+                                        <span className="mt-2 text-md font-medium text-gray-500">
+                                            {data?.worker_knownews}
+                                        </span>
+                                    </div>
                                 </div>
 
-                                <div className="divider"> </div>
-                                <div className="flex w-full">
-                                    <div className="grid h-20 flex-grow place-items-center">
+                                <div className="border-t border-gray-100 mt-5">
+                                    {' '}
+                                </div>
+                                <div className="flex flex-wrap w-full p-3">
+                                    <div className="grid flex-grow place-items-center">
                                         <h3 className="text-lg font-bold">
+                                            <FontAwesomeIcon
+                                                icon={faSquarePhone}
+                                                className="fa-fw"
+                                            />{' '}
                                             เบอร์ติดต่อ
                                         </h3>
-                                        <p>
-                                            <a
-                                                href={`tel:${data?.worker_phone}`}>
-                                                <kbd className="kbd">
-                                                    {data?.worker_phone}
-                                                </kbd>
-                                            </a>
-                                        </p>
+
+                                        <a href={`tel:${data?.worker_phone}`}>
+                                            <kbd className="kbd">
+                                                {data?.worker_phone}
+                                            </kbd>
+                                        </a>
                                     </div>
                                     <div className="divider divider-horizontal">
                                         หรือ
                                     </div>
-                                    <div className="grid h-20 flex-grow place-items-center">
+                                    <div className="grid flex-grow place-items-center">
                                         <h3 className="text-lg font-bold">
+                                            <FontAwesomeIcon
+                                                icon={faMobileScreenButton}
+                                                className="fa-fw"
+                                            />{' '}
                                             เบอร์สำรอง
                                         </h3>
-                                        <p>
-                                            <a
-                                                href={`tel:${data?.worker_phone2}`}>
-                                                <kbd className="kbd">
-                                                    {data?.worker_phone2}
-                                                </kbd>
-                                            </a>
-                                        </p>
+                                        <a href={`tel:${data?.worker_phone2}`}>
+                                            <kbd className="kbd">
+                                                {data?.worker_phone2}
+                                            </kbd>
+                                        </a>
                                     </div>
                                 </div>
-                                {/* Experience item ends */}
+                                <div className="border-t border-gray-100 mt-5">
+                                    {' '}
+                                </div>
+                                <div className="card bg-base-300 rounded-box grid h-10 place-items-center">
+                                    หมายเหตุ : {data?.worker_detailother}
+                                </div>
                             </div>
 
                             <div className="w-100 h-56 m-auto bg-red-100 rounded-xl relative text-white mb-3">
                                 <img
                                     className="relative object-cover w-full h-full rounded-xl"
-                                    src="/images/kGkSg1v.png"
+                                    src="/images/passport.png"
                                 />
 
                                 <div className="w-full px-8 absolute top-6">
@@ -547,13 +719,28 @@ export default function Page() {
                                             บัตรประจำตัว
                                         </h2>
                                     </div>
-                                    <div className="pt-1">
-                                        <p className="font-light">เลขบัตร</p>
-                                        <p className="font-medium tracking-more-wider">
-                                            {data?.worker_wpcard}
-                                        </p>
+
+                                    <div className="flex flex-wrap justify-between">
+                                        <div>
+                                            <p className="font-light">
+                                                เลขบัตร
+                                            </p>
+                                            <p className="font-medium tracking-more-wider">
+                                                {data?.worker_wpcard}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="font-light">
+                                                สัญชาติ
+                                            </p>
+                                            <p className="font-medium tracking-more-wider">
+                                                {data?.worker_nationality} -{' '}
+                                                {data?.worker_race}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="pt-3 pr-6">
+
+                                    <div className="pt-2">
                                         <div className="flex justify-between">
                                             <div className="">
                                                 <p className="font-light text-xs text-xs">
@@ -691,97 +878,6 @@ export default function Page() {
                                     ) : null}
                                 </ul>
                             </div>
-                        </div>
-                        <div className="w-full py-3 pl-0 sm:w-1/2 pb-0 sm:pl-2">
-                            <div className="bg-white rounded-box shadow-sm p-6 mb-3">
-                                <h2 className="text-xl font-bold mb-4">
-                                    <FontAwesomeIcon
-                                        icon={faImage}
-                                        className="fa-fw"
-                                    />{' '}
-                                    รูปภาพ
-                                </h2>
-                                <div className="flex justify-center p-0">
-                                    <div className="grid grid-cols-2 grid-rows-2 gap-1">
-                                        <div className="relative">
-                                            <img
-                                                src={`${f_url}/${data?.worker_image}`}
-                                                alt="รูปที่ 1"
-                                                className="w-36 h-36 object-cover rounded-tl-lg"
-                                            />
-                                        </div>
-                                        <div className="relative">
-                                            <img
-                                                src={`${f_url}/${data?.worker_image}`}
-                                                alt="รูปที่ 2"
-                                                className="w-36 h-36 object-cover rounded-tr-lg"
-                                            />
-                                        </div>
-                                        <div className="relative">
-                                            <img
-                                                src={`${f_url}/${data?.worker_image}`}
-                                                alt="รูปที่ 3"
-                                                className="w-36 h-36 object-cover rounded-bl-lg"
-                                            />
-                                        </div>
-                                        <div className="relative">
-                                            <img
-                                                src={`${f_url}/${data?.worker_image}`}
-                                                alt="รูปที่ 4"
-                                                className="w-36 h-36 object-cover rounded-br-lg"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
-                                <h2 className="text-xl font-bold mb-4">
-                                    <FontAwesomeIcon
-                                        icon={faBroom}
-                                        className="fa-fw"
-                                    />{' '}
-                                    ทักษะ
-                                </h2>
-                                {/* Repeat this for each education item */}
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-bold">
-                                        Skill 1
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        {data?.worker_skill1}
-                                    </p>
-                                    <h3 className="text-lg font-bold">
-                                        Skill 2
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        {data?.worker_skill2}
-                                    </p>
-                                    <h3 className="text-lg font-bold">
-                                        Skill 3
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        {data?.worker_skill3}
-                                    </p>
-                                    {data?.worker_skill_food === '1' && (
-                                        <>
-                                            <h3 className="text-lg font-bold">
-                                                Level Food
-                                            </h3>
-                                            <p className="text-gray-600">
-                                                {data?.worker_skill_foodlevel}
-                                            </p>
-                                            <h3 className="text-lg font-bold">
-                                                Status
-                                            </h3>
-                                            <p className="text-gray-600">
-                                                {data?.worker_skill_fooddetail}
-                                            </p>
-                                        </>
-                                    )}
-                                </div>
-                                {/* Education item ends */}
-                            </div>
-
                             <div className="bg-white rounded-box p-6 shadow-sm mb-3">
                                 <h2 className="text-xl font-bold mb-4">
                                     <FontAwesomeIcon
@@ -812,6 +908,614 @@ export default function Page() {
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                        </div>
+                        <div className="w-full py-3 pl-0 sm:w-1/2 pb-0 sm:pl-2">
+                            {data?.worker_status != 'wait' && (
+                                <div
+                                    className={`card w-full rounded-box p-5 mb-3 shadow-sm border-2 border-white ${(() => {
+                                        const { styles } = getStatusData(
+                                            data?.worker_status,
+                                        )
+                                        return styles
+                                    })()}`}>
+                                    <div className="flex justify-between">
+                                        <div>
+                                            <h2 className="text-4xl font-bold">
+                                                {(() => {
+                                                    const {
+                                                        styles,
+                                                        icon,
+                                                        text,
+                                                    } = getStatusData(
+                                                        data?.worker_status,
+                                                    )
+                                                    return (
+                                                        <p
+                                                            className={`font-bold text-shadow-sm`}>
+                                                            {text}
+                                                        </p>
+                                                    )
+                                                })()}
+                                            </h2>
+                                            <p className="font-semibold text-gray-800 mb-3">
+                                                {data?.worker_status_detail}
+                                            </p>
+                                            <p className="text-xs text-gray-400">
+                                                อัพเดทล่าสุด{' '}
+                                                {formatDate(workerStatusDate)}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <img
+                                                className=" rounded-xl object-cover right-6 -mt-12 z-10 w-32 h-32 shadow"
+                                                src={`${f_url}/${data?.worker_image}`}
+                                                alt={data?.worker_id}
+                                            />
+                                            <p className="whitespace-nowrap">
+                                                ผู้ดูแล : {data?.emp_id}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="bg-white rounded-box shadow-sm p-6 mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faImage}
+                                        className="fa-fw"
+                                    />{' '}
+                                    รูปภาพ
+                                </h2>
+                                <div className="flex justify-center p-0">
+                                    {datapacks.length === 0 ? (
+                                        <div className="flex justify-center items-center">
+                                            <img
+                                                src="/images/blank-picture.webp"
+                                                alt="No image available"
+                                                className="w-72 h-72 object-cover rounded-lg"
+                                            />
+                                        </div>
+                                    ) : datapacks.length === 1 ? (
+                                        <div className="relative flex justify-center items-center">
+                                            <img
+                                                src={`${f_url}/${datapacks[0].values}`}
+                                                alt="รูปที่ 1"
+                                                className="w-72 h-72 object-cover rounded-xl border-2 border-gray-100 hover:border-blue-600 hover:border-dashed transition duration-300 ease-in-out"
+                                            />
+                                            <div
+                                                className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 rounded-xl transition duration-300 ease-in-out"
+                                                onClick={() =>
+                                                    handleImageClick(
+                                                        `${f_url}/${datapacks[0].values}`,
+                                                    )
+                                                }>
+                                                <span className="text-white text-lg font-semibold">
+                                                    คลิ๊กเพื่อซูม
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 gap-1">
+                                            {datapacks
+                                                .slice(0, 4)
+                                                .map((datapack, index) => (
+                                                    <div
+                                                        key={datapack.id}
+                                                        className="relative">
+                                                        <img
+                                                            src={
+                                                                datapack.values
+                                                                    ? `${f_url}/${datapack.values}`
+                                                                    : '/images/blank-picture.webp'
+                                                            }
+                                                            alt={`รูปที่ ${
+                                                                index + 1
+                                                            }`}
+                                                            className={`w-36 h-36 object-cover ${
+                                                                index === 0
+                                                                    ? 'rounded-tl-lg'
+                                                                    : index ===
+                                                                      1
+                                                                    ? 'rounded-tr-lg'
+                                                                    : index ===
+                                                                      2
+                                                                    ? 'rounded-bl-lg'
+                                                                    : 'rounded-br-lg'
+                                                            }`}
+                                                            onClick={() =>
+                                                                handleImageClick(
+                                                                    datapack.values
+                                                                        ? `${f_url}/${datapack.values}`
+                                                                        : '/images/blank-picture.webp',
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Modal */}
+                                {isModalOpen && (
+                                    <div
+                                        className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 ${
+                                            isModalOpen
+                                                ? 'opacity-100 visible'
+                                                : 'opacity-0 invisible'
+                                        }`}>
+                                        <div
+                                            className={`bg-white rounded-lg overflow-hidden max-w-3xl w-full mx-4 transform transition-transform duration-300 ${
+                                                isModalOpen
+                                                    ? 'scale-100'
+                                                    : 'scale-90'
+                                            }`}>
+                                            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+                                                <h2 className="text-lg font-semibold">
+                                                    พรีวิวรูป
+                                                </h2>
+                                                <button
+                                                    className="text-gray-500 hover:text-gray-700"
+                                                    onClick={closeModal}>
+                                                    ✕
+                                                </button>
+                                            </div>
+                                            <div className="flex justify-center">
+                                                <img
+                                                    src={selectedImage}
+                                                    alt="Selected"
+                                                    className="max-w-full max-h-[70vh] object-contain"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faHouseUser}
+                                        className="fa-fw"
+                                    />{' '}
+                                    งานที่ต้องการ
+                                </h2>
+                                {/* Repeat this for each education item */}
+                                <ul className="list-none space-y-1">
+                                    {data?.workposition_id1 !== '-' && (
+                                        <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="text-gray-300">
+                                                    <FontAwesomeIcon
+                                                        icon={faBars}
+                                                        className="text-2xl"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-lg font-bold">
+                                                        {data?.workposition_id1}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="badge badge-outline">
+                                                    เงินเดือน ฿
+                                                    {Number(
+                                                        data?.workposition_salary1,
+                                                    )?.toLocaleString()}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )}
+                                    {data?.workposition_id2 !== '-' && (
+                                        <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="text-gray-300">
+                                                    <FontAwesomeIcon
+                                                        icon={faBars}
+                                                        className="text-2xl"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-lg font-bold">
+                                                        {data?.workposition_id2}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="badge badge-outline">
+                                                    เงินเดือน ฿
+                                                    {Number(
+                                                        data?.workposition_salary2,
+                                                    )?.toLocaleString()}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )}
+                                    {data?.workposition_id3 !== '-' && (
+                                        <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="text-gray-300">
+                                                    <FontAwesomeIcon
+                                                        icon={faBars}
+                                                        className="text-2xl"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-lg font-bold">
+                                                        {data?.workposition_id3}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="badge badge-outline">
+                                                    เงินเดือน ฿
+                                                    {Number(
+                                                        data?.workposition_salary3,
+                                                    )?.toLocaleString()}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )}
+                                    {data?.workposition_id4 !== '-' && (
+                                        <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="text-gray-300 ">
+                                                    <FontAwesomeIcon
+                                                        icon={faBars}
+                                                        className="text-2xl"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-lg font-bold">
+                                                        {data?.workposition_id4}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="badge badge-outline">
+                                                    เงินเดือน ฿
+                                                    {Number(
+                                                        data?.workposition_salary4,
+                                                    )?.toLocaleString()}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faBroom}
+                                        className="fa-fw"
+                                    />{' '}
+                                    ทักษะ
+                                </h2>
+                                <div className="grid md:grid-cols-1 xl:grid-cols-3 gap-0">
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-blue-500 bg-blue-100 border hover:border-blue-800  rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faBicycle}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                จักรยาน
+                                            </div>
+                                            <div className="text-lg font-semibold text-gray-700">
+                                                <p
+                                                    className={
+                                                        data?.worker_skill1 ===
+                                                        '1'
+                                                            ? 'text-green-500'
+                                                            : 'text-red-500'
+                                                    }>
+                                                    {data?.worker_skill1 === '1'
+                                                        ? 'ได้'
+                                                        : 'ไม่ได้'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-blue-500 bg-blue-100 border hover:border-blue-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faMotorcycle}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                จักรยานยนต์
+                                            </div>
+                                            <div className="text-lg font-semibold text-gray-700">
+                                                <p
+                                                    className={
+                                                        data?.worker_skill2 ===
+                                                        '1'
+                                                            ? 'text-green-500'
+                                                            : 'text-red-500'
+                                                    }>
+                                                    {data?.worker_skill2 === '1'
+                                                        ? 'ได้'
+                                                        : 'ไม่ได้'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-blue-500 bg-blue-100 border hover:border-blue-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faCar}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                รถยนต์
+                                            </div>
+                                            <div className="text-lg font-semibold text-gray-700">
+                                                <p
+                                                    className={
+                                                        data?.worker_skill3 ===
+                                                        '1'
+                                                            ? 'text-green-500'
+                                                            : 'text-red-500'
+                                                    }>
+                                                    {data?.worker_skill3 === '1'
+                                                        ? 'ได้'
+                                                        : 'ไม่ได้'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-purple-500 bg-purple-100 border hover:border-purple-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faPaw}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                ไม่ถูกกับ
+                                            </div>
+                                            <div className="text-sm font-semibold text-purple-700">
+                                                {data?.worker_smalldog === 0
+                                                    ? ''
+                                                    : 'สัตว์ตัวเล็ก'}{' '}
+                                                และ{' '}
+                                                {data?.worker_bigdog === 0
+                                                    ? ''
+                                                    : 'สัตว์ตัวใหญ่'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-pink-500 bg-pink-100 border hover:border-pink-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faCarSide}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                การเดินทาง
+                                            </div>
+                                            <div className="text-md font-semibold text-gray-700">
+                                                {data?.worker_boathunk === 0
+                                                    ? 'ไม่มีปัญหา'
+                                                    : 'เมารถเมาเรือ'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-yellow-500 bg-yellow-100 border hover:border-yellow-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faUtensils}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                ทำอาหาร
+                                            </div>
+                                            <div className="text-md font-semibold text-gray-700">
+                                                {data?.worker_skill_foodlevel ===
+                                                '1'
+                                                    ? 'เบื้องต้น'
+                                                    : data?.worker_skill_foodlevel ===
+                                                      '2'
+                                                    ? 'ตามสั่ง'
+                                                    : data?.worker_skill_foodlevel ===
+                                                      '3'
+                                                    ? 'ได้ทุกอย่าง'
+                                                    : 'ไม่ได้'}
+                                            </div>
+                                            <p className="text-xs font-semibold text-gray-400">
+                                                {data?.worker_skill_fooddetail}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-emerald-500 bg-emerald-100 border hover:border-emerald-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faHeartbeat}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                สุขภาพ
+                                            </div>
+                                            <div className="text-md font-semibold text-gray-700">
+                                                {data?.worker_sick === '0'
+                                                    ? 'ไม่มีโรค'
+                                                    : 'โรคประจำตัว'}
+                                            </div>
+                                            <div className="text-xs font-semibold text-gray-400">
+                                                {data?.worker_sick_detail}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-red-500 bg-red-100 border hover:border-red-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faHospitalUser}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                การรักษา
+                                            </div>
+                                            <div className="text-md font-semibold text-gray-700">
+                                                {data?.worker_verysick === '0'
+                                                    ? 'ไม่ป่วย'
+                                                    : 'เคยป่วยหนัก'}
+                                            </div>
+                                            <div className="text-xs font-semibold text-gray-400">
+                                                {data?.worker_verysick_detail}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
+                                        <div className="p-4 mr-4 text-zinc-500 bg-zinc-100 border hover:border-zinc-800 rounded-full">
+                                            <FontAwesomeIcon
+                                                icon={faSmoking}
+                                                className="fa-lg"
+                                            />
+                                        </div>
+                                        <div>
+                                            <div className="text-sm font-medium text-gray-600">
+                                                สิ่งเสพติด
+                                            </div>
+                                            <div className="text-md font-semibold text-gray-700">
+                                                {data?.worker_drinksmork === '0'
+                                                    ? 'ไม่เลย'
+                                                    : data?.worker_drinksmork ===
+                                                      1
+                                                    ? 'บางครั้ง'
+                                                    : 'ติดหนัก'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <h2 className="text-xl font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faFlagCheckered}
+                                        className="fa-fw"
+                                    />{' '}
+                                    ภาษา
+                                </h2>
+                                {/* Repeat this for each education item */}
+
+                                <div className="stats stats-vertical lg:stats-horizontal w-full">
+                                    <div className="stat p-3">
+                                        <div className="stat-title text-2xl font-semibold text-center">
+                                            ไทย
+                                        </div>
+                                        <div className="stat-desc text-lg">
+                                            {data?.worker_landth_talk === 0 ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className="text-error fa-fw"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="text-success fa-fw"
+                                                />
+                                            )}
+                                            พูด
+                                            <br />
+                                            {data?.worker_landth_view === 0 ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className="text-error fa-fw"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="text-success fa-fw"
+                                                />
+                                            )}
+                                            อ่าน
+                                            <br />
+                                            {data?.worker_landth_write === 0 ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className="text-error fa-fw"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="text-success fa-fw"
+                                                />
+                                            )}
+                                            เขียน
+                                        </div>
+                                    </div>
+
+                                    <div className="stat p-3">
+                                        <div className="stat-title text-2xl font-semibold text-center">
+                                            อังกฤษ
+                                        </div>
+                                        <div className="stat-desc text-lg">
+                                            {data?.worker_landen_talk === 0 ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className="text-error fa-fw"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="text-success fa-fw"
+                                                />
+                                            )}
+                                            พูด
+                                            <br />
+                                            {data?.worker_landen_view === 0 ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className="text-error fa-fw"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="text-success fa-fw"
+                                                />
+                                            )}
+                                            อ่าน
+                                            <br />
+                                            {data?.worker_landen_write === 0 ? (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleXmark}
+                                                    className="text-error fa-fw"
+                                                />
+                                            ) : (
+                                                <FontAwesomeIcon
+                                                    icon={faCircleCheck}
+                                                    className="text-success fa-fw"
+                                                />
+                                            )}
+                                            เขียน
+                                        </div>
+                                    </div>
+
+                                    <div className="stat p-3">
+                                        <div className="stat-title text-2xl font-semibold text-center">
+                                            อื่นๆ
+                                        </div>
+                                        <div className="stat-desc text-lg text-center">
+                                            {data?.worker_landother}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -10,8 +10,7 @@ export default function user() {
                 <div
                     className="hero rounded-lg"
                     style={{
-                        backgroundImage:
-                            'url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)',
+                        backgroundImage: 'url(/images/bg.webp)',
                     }}>
                     <div className="hero-overlay bg-opacity-60 rounded-lg"></div>
                     <div className="hero-content text-center text-neutral-content">
@@ -45,7 +44,7 @@ export default function user() {
                                         className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/m.jpeg" />
+                                                <img src="/icon/m.webp" />
                                             </div>
                                         </div>
                                         พม่า
@@ -55,7 +54,7 @@ export default function user() {
                                         className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/l.png" />
+                                                <img src="/icon/l.webp" />
                                             </div>
                                         </div>
                                         ลาว
@@ -65,7 +64,7 @@ export default function user() {
                                         className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/c.png" />
+                                                <img src="/icon/c.webp" />
                                             </div>
                                         </div>
                                         กัมพูชา
@@ -91,7 +90,7 @@ export default function user() {
                                     <button className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/m.jpeg" />
+                                                <img src="/icon/m.webp" />
                                             </div>
                                         </div>
                                         พม่า
@@ -117,7 +116,7 @@ export default function user() {
                                     <button className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/t.png" />
+                                                <img src="/icon/t.webp" />
                                             </div>
                                         </div>
                                         รหัส 48
@@ -125,7 +124,7 @@ export default function user() {
                                     <button className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/t.png" />
+                                                <img src="/icon/t.webp" />
                                             </div>
                                         </div>
                                         รหัส G
@@ -133,7 +132,7 @@ export default function user() {
                                     <button className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/t.png" />
+                                                <img src="/icon/t.webp" />
                                             </div>
                                         </div>
                                         รหัส JN
@@ -159,7 +158,7 @@ export default function user() {
                                     <button className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/l.png" />
+                                                <img src="/icon/l.webp" />
                                             </div>
                                         </div>
                                         ลาว

@@ -154,6 +154,14 @@ export default function Home() {
     ])
 
     useEffect(() => {
+        console.log('Drawer Open State Updated:', drawerOpen)
+    }, [drawerOpen])
+
+    useEffect(() => {
+        console.log('Selected Worker ID Updated:', selectedWorkerId)
+    }, [selectedWorkerId])
+
+    useEffect(() => {
         const intervalId = setInterval(() => {
             fetchData()
         }, 1 * 60 * 1000)
@@ -199,11 +207,11 @@ export default function Home() {
     }
 
     const handleFreeButtonClick = workerId => {
-        // Set the worker ID and open the drawer
+        console.log('Worker ID:', workerId) // Log the worker ID
         setSelectedWorkerId(workerId)
         setDrawerOpen(true)
+        console.log('Drawer Open:', drawerOpen) // Log the drawer state
     }
-
     const getBackgroundClass = workpositionId => {
         switch (workpositionId) {
             case 'แม่บ้านทั่วไป':
