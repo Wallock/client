@@ -53,6 +53,7 @@ export default function Page() {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
+    const [empData, setEmpData] = useState(null)
     const [logData, setLogData] = useState([]) // New state for log data
     const profile = useProfile()
     const token = `1amwall0ck`
@@ -100,6 +101,19 @@ export default function Page() {
         }
     }
 
+    const fetchEmpData = async () => {
+        // ตรวจสอบว่า emp_id มีค่าก่อนทำการดึงข้อมูล
+        if (data?.emp_id) {
+            try {
+                const empApiUrl = `${f_url}/api/i_emp?token=${token}&data_id=${data.emp_id}`
+                const empResponse = await axios.get(empApiUrl)
+                setEmpData(empResponse.data[0]) // สมมติว่าข้อมูลพนักงานเป็น item แรก
+            } catch (error) {
+                console.error('Failed to fetch employee data', error)
+            }
+        }
+    }
+
     const fetchLogData = async () => {
         try {
             const logApiUrl = `${f_url}/api/logs_a?token=${token}&id=9M-01706`
@@ -114,9 +128,17 @@ export default function Page() {
         // ตรวจสอบว่ามีค่า router.query.id และไม่ใช่ค่าเดิมก่อนทำการโหลดข้อมูลใหม่
         if (router.query.id && router.query.id !== data?.worker_id) {
             fetchData()
+            fetchEmpData()
             fetchLogData()
         }
     }, [router.query.id])
+
+    useEffect(() => {
+        // ตรวจสอบให้แน่ใจว่า data ถูกโหลดก่อนเรียก fetchEmpData
+        if (data?.emp_id) {
+            fetchEmpData()
+        }
+    }, [data?.emp_id])
     const birthday = new Date(data?.worker_birthday)
     const today = new Date()
     const workerStatusDateStr = data?.worker_status_date
@@ -946,16 +968,20 @@ export default function Page() {
                                                 {formatDate(workerStatusDate)}
                                             </p>
                                         </div>
-                                        <div>
-                                            <img
-                                                className=" rounded-xl object-cover right-6 -mt-12 z-10 w-32 h-32 shadow"
-                                                src={`${f_url}/${data?.worker_image}`}
-                                                alt={data?.worker_id}
-                                            />
-                                            <p className="whitespace-nowrap">
-                                                ผู้ดูแล : {data?.emp_id}
-                                            </p>
-                                        </div>
+                                        {empData ? (
+                                            <div>
+                                                <img
+                                                    className=" rounded-xl object-cover right-6 -mt-12 z-10 w-32 h-32 shadow"
+                                                    src={`${empData?.profile_photo_url}`}
+                                                    alt={empData?.id}
+                                                />
+                                                <p className="whitespace-nowrap">
+                                                    ผู้ดูแล : {empData.name}
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            'กำลังโหลดข้อมูลผู้ดูแล...'
+                                        )}
                                     </div>
                                 </div>
                             )}
