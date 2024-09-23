@@ -8,6 +8,15 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            keyframes: {
+                'gradient-move': {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '100%': { backgroundPosition: '100% 50%' },
+                },
+            },
+            animation: {
+                'gradient-move': 'gradient-move 5s ease infinite',
+            },
         },
     },
     variants: {
@@ -15,6 +24,8 @@ module.exports = {
             opacity: ['disabled'],
         },
     },
-    plugins: [require('@tailwindcss/forms')],
-    plugins: [require('daisyui')],
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('daisyui'), // Combine plugins here
+    ],
 }

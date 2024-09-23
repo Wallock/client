@@ -243,13 +243,11 @@ export default function Page() {
             ) : (
                 <div className="bg-gray-100 p-0">
                     {/* Header Section with Background Image */}
-                    <div className="rounded-box bg-white">
-                        <div className="rounded-box bg-gradient-to-t from-indigo-500 to-blue-500 h-48 w-full relative sm:h-62">
-                            <img
-                                className="rounded-box absolute inset-0 w-full h-full object-cover object-top"
-                                src="/images/bg-blue.webp"
-                                alt="Cover Image"
-                            />
+                    <div className="rounded-box bg-white shadow-lg mb-5 border">
+                        <div className="rounded-box bg-white h-20 w-full relative sm:h-62">
+                            <div className="rounded-t-box absolute inset-0 w-full bg-gradient-to-bl from-slate-50 to-zinc-300">
+                                {' '}
+                            </div>
 
                             <div className="ribbon ribbon-top-left">
                                 {(() => {
@@ -266,27 +264,61 @@ export default function Page() {
                                 })()}
                             </div>
 
-                            <h1 className="title-font m-0 font-extrabold text-center text-4xl  flex justify-center items-center sm:text-7xl text-white opacity-30 pt-10 sm:pt-3 px-2 h-48">
+                            <h1 className="title-font m-0 font-extrabold text-center text-2xl drop-shadow flex justify-center items-center sm:text-5xl text-slate-900 opacity-30 pt-9 sm:pt-2 px-2 h-20">
                                 {data?.worker_id}
                             </h1>
                             {/* Profile Image */}
 
-                            <div className="rounded-full transition-transform transform hover:scale-105 border-4 border-white absolute bottom-0 transform translate-y-3/4 w-48 h-48 ml-16 sm:mt-72 w-32 h-32">
-                                <img
-                                    className="rounded-full object-cover w-48 h-48 "
-                                    src={`${f_url}/${data?.worker_image}`}
-                                    alt={data?.worker_id}
-                                />
-                            </div>
+                            <div className="rounded-full transition-transform transform hover:scale-105 absolute bottom-0 translate-y-3/4 w-48 h-48 ml-16 sm:mt-72">
+                                {/* Gradient Border */}
+                                <div
+                                    className={`w-full h-full rounded-full p-5 animate-spin bg-gradient-to-r ${
+                                        data?.worker_status === 'wait'
+                                            ? 'from-gray-800 to-gray-400' // เพิ่มความแตกต่างระหว่างสีเข้มและสว่าง
+                                            : data?.worker_status === 'save'
+                                            ? 'from-yellow-300 to-yellow-600' // เพิ่มความสว่างและคอนทราสต์
+                                            : data?.worker_status ===
+                                              'incomplete'
+                                            ? 'from-indigo-400 to-blue-700' // ใช้สีที่เข้มและสว่างขึ้น
+                                            : data?.worker_status === 'woker'
+                                            ? 'from-green-400 to-cyan-500' // เพิ่มสีที่สดใสขึ้น
+                                            : data?.worker_status === 'retry'
+                                            ? 'from-purple-400 to-pink-600' // เพิ่มคอนทราสต์ระหว่างสี
+                                            : data?.worker_status === 'changepp'
+                                            ? 'from-gray-300 to-gray-500' // ใช้สีที่มีความแตกต่างมากขึ้น
+                                            : data?.worker_status ===
+                                              'bfprocess'
+                                            ? 'from-blue-300 to-cyan-400' // ใช้สีน้ำเงินที่สว่างขึ้น
+                                            : data?.worker_status === 'export'
+                                            ? 'from-red-400 to-orange-500' // เพิ่มความสดใสของสีแดงและส้ม
+                                            : 'from-gray-400 to-gray-600' // ค่าเริ่มต้นที่เพิ่มคอนทราสต์เล็กน้อย
+                                    }`}>
+                                    <div className="w-full h-full bg-white rounded-full">
+                                        {' '}
+                                    </div>
+                                </div>
 
-                            <div className="absolute bottom-0 right-0 bg-gray-800 text-white py-1 px-2 rounded-br-lg">
-                                เปลี่ยนรูป
+                                {/* Static Image */}
+                                <div className="absolute inset-0 z-10 rounded-full">
+                                    <img
+                                        className="rounded-full object-cover w-full p-1 h-full"
+                                        src={
+                                            data?.worker_image
+                                                ? `${f_url}/${data.worker_image}`
+                                                : '/images/blank-picture.webp'
+                                        }
+                                        alt={
+                                            data?.worker_id ||
+                                            'No image available'
+                                        } // แสดงข้อความสำรองหากไม่มี worker_id
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div className="flex flex-wrap justify-center py-3 lg:pt-6 sm:justify-start mx-auto sm:ml-64 pt-40">
                             <div className="w-full flex justify-center sm:w-1/2 sm:justify-start">
                                 {/* Profile Summary Section */}
-                                <div className="px-6 py-3">
+                                <div className="px-6 py-2">
                                     <h1 className="text-3xl font-bold">
                                         {data?.worker_fullname} (
                                         {data?.worker_nickname})
@@ -312,7 +344,8 @@ export default function Page() {
                                         </span>
                                     ) : null}
                                     {data?.worker_duo &&
-                                    data?.worker_duo !== '-' ? (
+                                    data?.worker_duo !== '-' &&
+                                    data?.worker_duo !== '0' ? (
                                         <Link
                                             href={`/${getname}/info/${data?.worker_duo}`}>
                                             <span className="mx-1 bg-rose-100 text-rose-800 text-xs font-semibold px-2.5 py-0.5 rounded">
@@ -971,9 +1004,16 @@ export default function Page() {
                                         {empData ? (
                                             <div>
                                                 <img
-                                                    className=" rounded-xl object-cover right-6 -mt-12 z-10 w-32 h-32 shadow"
-                                                    src={`${empData?.profile_photo_url}`}
-                                                    alt={empData?.id}
+                                                    className="rounded-3xl object-cover glass right-6 -mt-12 z-10 w-32 h-32 shadow"
+                                                    src={
+                                                        empData?.profile_photo_url
+                                                            ? empData.profile_photo_url
+                                                            : '/images/blank-picture.webp'
+                                                    }
+                                                    alt={
+                                                        empData?.id ||
+                                                        'No image available'
+                                                    } // แสดงข้อความสำรองหากไม่มี empData.id
                                                 />
                                                 <p className="whitespace-nowrap">
                                                     ผู้ดูแล : {empData.name}

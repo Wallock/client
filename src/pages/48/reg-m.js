@@ -1,901 +1,2074 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState, useRef } from 'react'
+import axios from 'axios'
+import Select from 'react-select'
+import { useProfile } from '@/lib/ProfileContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faListCheck,
-    faLanguage,
-    faSimCard,
-    faPassport,
-    faUserNurse,
+    faAngleLeft,
+    faAngleRight,
+    faXmark,
+    faCircleInfo,
+    faPlus,
+    faCamera,
+    faFloppyDisk,
+    faHashtag,
 } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
-import { useProfile } from '@/lib/ProfileContext'
-export default function regM() {
-    const [weight, setWeight] = useState('')
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+export default function RegistrationForm() {
+    const router = useRouter()
+    const [step, setStep] = useState(0)
+    const [capturedPhoto, setCapturedPhoto] = useState(null)
+    const videoRef = useRef(null) // useRef ที่ถูกต้อง
+
+    // Step 1: Personal Info
+    const [workerId, setworkerId] = useState('')
+    const [flag, setFlag] = useState('m') // เพิ่ม flag
+    const [fullName, setFullName] = useState('')
+    const [nickname, setNickname] = useState('')
+    const [birthdate, setBirthdate] = useState('')
+    const [gender, setGender] = useState('')
     const [height, setHeight] = useState('')
+    const [weight, setWeight] = useState('')
+    const [ethnicity, setEthnicity] = useState('') // เชื้อชาติ (race)
+    const [nationality, setNationality] = useState('')
+    const [religion, setReligion] = useState('')
     const [phone, setPhone] = useState('')
     const [altPhone, setAltPhone] = useState('')
+    const [status, setStatus] = useState('')
+    const [children, setChildren] = useState('')
+    const [relationship, setRelationship] = useState('') // สถานะความสัมพันธ์
+    const [race, setRace] = useState('') // ฟิลด์ race
+
+    // Step 2: Address Info
     const [provinces, setProvinces] = useState([])
     const [selectedProvince, setSelectedProvince] = useState('')
-    const profile = useProfile()
-    useEffect(() => {
-        const checkUserStatus = () => {
-            // Check the user's type48 status from the profile prop
-            const userType48 = profile?.type48
+    const [currentAddress, setCurrentAddress] = useState('')
+    const [yearsInThailand, setYearsInThailand] = useState('')
+    const [canTravel, setCanTravel] = useState('')
+    const [workType, setWorkType] = useState('')
 
-            if (userType48 !== 1) {
-                router.push('/dashboard')
-            }
-        }
+    // Step 3: Language and Skills
+    const [thaiSpeaking, setThaiSpeaking] = useState('')
+    const [thaiReading, setThaiReading] = useState('')
+    const [thaiWriting, setThaiWriting] = useState('')
+    const [englishSpeaking, setEnglishSpeaking] = useState('')
+    const [englishReading, setEnglishReading] = useState('')
+    const [englishWriting, setEnglishWriting] = useState('')
+    const [otherLanguage, setOtherLanguage] = useState('')
+    const [bikeSkill, setBikeSkill] = useState('')
+    const [motorcycleSkill, setMotorcycleSkill] = useState('')
+    const [carSkill, setCarSkill] = useState('')
+    const [illness, setIllness] = useState('')
+    const [illnessDetails, setIllnessDetails] = useState('')
+    const [seriousIllness, setSeriousIllness] = useState('')
+    const [seriousIllnessDetails, setSeriousIllnessDetails] = useState('')
+    const [fearSmallPets, setFearSmallPets] = useState('')
+    const [fearBigPets, setFearBigPets] = useState('')
+    const [alcohol, setAlcohol] = useState('')
+    const [motionSickness, setMotionSickness] = useState('')
 
-        checkUserStatus()
-    }, [profile])
+    // Step 4: Work History
+    const [workHistory, setWorkHistory] = useState([
+        { companyName: '', position: '', workDetails: '', duration: '' },
+    ])
+    const [desiredJobs, setDesiredJobs] = useState([
+        { jobPosition: '', salary: '' },
+    ])
 
+    // Step 5: Documents
+    const [hasWorkPermit, setHasWorkPermit] = useState(false)
+    const [workPermitNo, setWorkPermitNo] = useState('')
+    const [workPermitExpiry, setWorkPermitExpiry] = useState('')
+    const [passportNo, setPassportNo] = useState('')
+    const [passportExpiry, setPassportExpiry] = useState('')
+    const [visaExpiry, setVisaExpiry] = useState('')
+    const [vaccinationNo, setVaccinationNo] = useState('') // ใช้เป็น covidanti
+    const [source, setSource] = useState('') // แหล่งที่มาของข่าวสาร (knownews)
+    const [note, setNote] = useState('') // detailother
+    const [jobCode, setJobCode] = useState('')
+
+    // เพิ่ม empidlock (emp_id, emp_id_lock)
+    const [empidlock, setEmpidlock] = useState('')
+
+    // Load Provinces Data
     useEffect(() => {
         axios
             .get(
                 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json',
             )
-            .then(response => {
-                setProvinces(response.data)
-                if (response.data.length > 0) {
-                    setSelectedProvince(response.data[0].name_th) // เลือกจังหวัดแรกเป็นค่าเริ่มต้น
-                }
-            })
+            .then(response => setProvinces(response.data))
             .catch(error => console.error('Error:', error))
     }, [])
 
-    const handleChange = event => {
-        setSelectedProvince(event.target.value)
+    const handleNextStep = () => {
+        if (validateStep()) {
+            setStep(prevStep => prevStep + 1)
+        } else {
+            toast.error('กรุณากรอกข้อมูลให้ครบถ้วน!')
+        }
     }
+    const handlePrevStep = () => setStep(prevStep => prevStep - 1)
 
-    const handlePhoneChange = (value, setValue) => {
-        // ตรวจสอบว่าข้อมูลที่ป้อนเป็นตัวเลขและมีความยาวไม่เกิน 11 ตัวอักษร
-        if (/^\d{0,10}$/.test(value)) {
-            setValue(value)
+    useEffect(() => {
+        // ตรวจสอบว่ากล้องควรเปิดเฉพาะใน step ที่ 6 เท่านั้น
+        if (step === 5 && videoRef.current) {
+            const video = videoRef.current
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices
+                    .getUserMedia({ video: { width: 1280, height: 720 } })
+                    .then(stream => {
+                        video.srcObject = stream
+                        video.play()
+                    })
+                    .catch(error => {
+                        console.error('Error accessing camera: ', error)
+                        alert(
+                            'ไม่สามารถเข้าถึงกล้องได้ โปรดตรวจสอบการตั้งค่าและอนุญาตให้เข้าถึงกล้อง',
+                        )
+                    })
+            } else {
+                alert('เบราว์เซอร์ของคุณไม่รองรับการเปิดกล้อง')
+            }
+        }
+    }, [step])
+
+    // ฟังก์ชันถ่ายรูป
+    const capturePhoto = () => {
+        const video = videoRef.current
+        const canvas = document.getElementById('canvas')
+        const context = canvas.getContext('2d')
+
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        context.drawImage(video, 0, 0, canvas.width, canvas.height)
+        const dataUrl = canvas.toDataURL('image/png')
+        setCapturedPhoto(dataUrl)
+    }
+    const handleFinalStep = async () => {
+        const formData = new FormData()
+        formData.append('worker_id', workerId)
+        formData.append('flag', flag)
+        formData.append('race', ethnicity) // เพิ่มฟิลด์ race
+        formData.append('nationality', nationality)
+        formData.append('religion', religion)
+        formData.append('fullname', fullName)
+        formData.append('nickname', nickname)
+        formData.append('birthday', birthdate)
+        formData.append('gender', gender)
+        formData.append('weight', weight)
+        formData.append('height', height)
+        formData.append('phone', phone)
+        formData.append('altPhone', altPhone)
+        formData.append('inthai', yearsInThailand)
+        formData.append('address', currentAddress)
+        formData.append('province', selectedProvince)
+        formData.append('outside', canTravel)
+        formData.append('overnight', workType)
+        formData.append('relationship', relationship) // เพิ่ม relationship
+        formData.append('wpcard', workPermitNo)
+        formData.append('wpcardexp', workPermitExpiry)
+        formData.append('ppcard', passportNo)
+        formData.append('ppcardexp', passportExpiry)
+        formData.append('visacardexp', visaExpiry)
+
+        formData.append('covidanti', vaccinationNo) // ใช้ vaccinationNo เป็น covidanti
+        formData.append('knownews', source) // แหล่งข่าว knownews
+        formData.append('detailother', note) // ข้อมูลเพิ่มเติม
+
+        formData.append('emp_id', empidlock) // เพิ่ม emp_id
+        formData.append('emp_id_lock', empidlock) // เพิ่ม emp_id_lock
+
+        // Convert capturedPhoto (Base64) to Blob
+        const blob = dataURItoBlob(capturedPhoto)
+        formData.append('image', blob, 'capturedPhoto.png') // Append image as a file
+
+        // ประสบการณ์การทำงาน (Work History)
+        workHistory.forEach((work, index) => {
+            formData.append(`workexp_name${index + 1}`, work.companyName)
+            formData.append(`workexp_position${index + 1}`, work.position)
+            formData.append(`workexp_detail${index + 1}`, work.workDetails)
+            formData.append(`workexp_time${index + 1}`, work.duration)
+        })
+
+        // ตำแหน่งงานที่ต้องการ (Desired Jobs)
+        desiredJobs.forEach((job, index) => {
+            formData.append(`workposition_id${index + 1}`, job.jobPosition)
+            formData.append(`workposition_salary${index + 1}`, job.salary)
+        })
+
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`)
+        }
+
+        try {
+            const response = await fetch(
+                'https://beta.wb.in.th/api/addworker',
+                {
+                    method: 'POST',
+                    body: formData, // ส่งข้อมูลในรูปแบบ FormData
+                    headers: {},
+                },
+            )
+
+            // ตรวจสอบว่า response สำเร็จหรือไม่
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+
+            const result = await response.json() // ถ้า API ส่งข้อมูลกลับมาในรูปแบบ JSON
+            console.log('Success:', result)
+            alert('Worker added successfully')
+        } catch (error) {
+            console.error('Error:', error)
+            alert(`Error: ${error.message}`)
         }
     }
 
-    const handleNumberChange = (value, setValue, max) => {
-        if (
-            /^\d*$/.test(value) &&
-            (value === '' || (value >= 0 && value <= max))
-        ) {
-            setValue(value)
+    function dataURItoBlob(dataURI) {
+        const byteString = atob(dataURI.split(',')[1])
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+        const ab = new ArrayBuffer(byteString.length)
+        const ia = new Uint8Array(ab)
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i)
         }
+        return new Blob([ab], { type: mimeString })
+    }
+
+    const removeWorkHistory = index => {
+        if (workHistory.length > 1) {
+            const newHistory = workHistory.filter((_, i) => i !== index)
+            setWorkHistory(newHistory)
+        } else {
+            alert('จำเป็นต้องมีขั้นต่ำ 1 รายการ')
+        }
+    }
+    // ฟังก์ชัน removeDesiredJob
+    const removeDesiredJob = index => {
+        if (desiredJobs.length > 1) {
+            const newJobs = desiredJobs.filter((_, i) => i !== index)
+            setDesiredJobs(newJobs)
+        } else {
+            alert('จำเป็นต้องมีขั้นต่ำ 1 รายการ')
+        }
+    }
+
+    const addWorkHistory = () => {
+        if (workHistory.length < 8) {
+            setWorkHistory([
+                ...workHistory,
+                {
+                    companyName: '',
+                    position: '',
+                    workDetails: '',
+                    duration: '',
+                },
+            ])
+        } else {
+            alert('คุณสามารถเพิ่มได้ไม่เกิน 8 ประสบการณ์การทำงาน')
+        }
+    }
+    const addDesiredJob = () => {
+        if (desiredJobs.length < 4) {
+            setDesiredJobs([...desiredJobs, { jobPosition: '', salary: '' }])
+        } else {
+            alert('คุณสามารถเพิ่มได้ไม่เกิน 4 ตำแหน่งงานที่ต้องการ')
+        }
+    }
+    const [errorFields, setErrorFields] = useState({})
+    const provinceOptions = provinces.map(province => ({
+        value: province.name_th,
+        label: province.name_th,
+    }))
+    const validateStep = () => {
+        let errors = {}
+        let isValid = true
+
+        if (step === 0) {
+            // Step 1: ตรวจสอบข้อมูลส่วนตัว
+            if (!workerId) {
+                errors.workerId = 'กรุณาใส่รหัสสมัครงาน'
+                isValid = false
+            } else if (!/^[a-zA-Z0-9-]+$/.test(workerId)) {
+                errors.workerId =
+                    'รหัสสมัครงานต้องเป็นภาษาอังกฤษ ตัวเลข และเครื่องหมาย - เท่านั้น'
+                isValid = false
+            }
+            if (!fullName) {
+                errors.fullName = 'กรุณาใส่ชื่อ-นามสกุล'
+                isValid = false
+            }
+            if (!nickname) {
+                errors.nickname = 'กรุณาใส่ชื่อเล่น'
+                isValid = false
+            }
+            if (!birthdate) {
+                errors.birthdate = 'ยังไม่ได้ใส่วันเดือนปีเกิด'
+                isValid = false
+            }
+            if (!height) {
+                errors.height = 'กรุณาใส่ส่วนสูง'
+                isValid = false
+            }
+            if (!weight) {
+                errors.weight = 'กรุณาใส่น้ำหนัก'
+                isValid = false
+            }
+            if (!ethnicity) {
+                errors.ethnicity = 'กรุณาใส่เชื้อชาติ'
+                isValid = false
+            }
+            if (!nationality) {
+                errors.nationality = 'กรุณาใส่สัญชาติ'
+                isValid = false
+            }
+            if (!religion) {
+                errors.religion = 'กรุณาใส่ศาสนา'
+                isValid = false
+            }
+            if (!phone) {
+                errors.phone = 'กรุณาใส่เบอร์'
+                isValid = false
+            }
+            if (!altPhone) {
+                errors.altPhone = 'กรุณาใส่เบอร์สำรอง'
+                isValid = false
+            }
+            if (!children) {
+                errors.children = 'กรุณาระบุจำนวนลูกถ้าไม่มีให้ใส่ 0 '
+                isValid = false
+            }
+            // สามารถเพิ่มเงื่อนไขเพิ่มเติมได้ เช่นการตรวจสอบวันเกิด เบอร์โทรศัพท์ เพศ เป็นต้น
+        } else if (step === 1) {
+            // Step 2: ตรวจสอบข้อมูลที่อยู่
+            if (!selectedProvince) {
+                errors.selectedProvince = 'กรุณาเลือกจังหวัด'
+                isValid = false
+            }
+            if (!currentAddress) {
+                errors.currentAddress = 'กรุณาใส่ที่อยู่ปัจจุบัน'
+                isValid = false
+            }
+        }
+        // ตรวจสอบข้อมูลสำหรับ step อื่นๆ เพิ่มเติมได้ที่นี่
+
+        setErrorFields(errors) // เก็บ errorFields ที่เจอ
+        return isValid
+    }
+    const getInputClassName = fieldName => {
+        return errorFields[fieldName]
+            ? 'input input-bordered input-error' // ถ้ามีข้อผิดพลาดให้แสดงเป็นขอบสีแดง
+            : 'input input-bordered'
     }
 
     return (
         <AppLayout>
             <div className="w-full">
+                <div className="text-center my-6">
+                    {/* Steps Navigation */}
+                    <ul className="steps">
+                        <li
+                            className={`step ${
+                                step >= 0 ? 'step-neutral' : ''
+                            }`}>
+                            ข้อมูลส่วนตัว
+                        </li>
+                        <li
+                            className={`step ${
+                                step >= 1 ? 'step-neutral' : ''
+                            }`}>
+                            ข้อมูลที่อยู่
+                        </li>
+                        <li
+                            className={`step ${
+                                step >= 2 ? 'step-neutral' : ''
+                            }`}>
+                            ข้อมูลภาษาและความสามารถ
+                        </li>
+                        <li
+                            className={`step ${
+                                step >= 3 ? 'step-neutral' : ''
+                            }`}>
+                            ประวัติการทำงาน
+                        </li>
+                        <li
+                            className={`step ${
+                                step >= 4 ? 'step-neutral' : ''
+                            }`}>
+                            เอกสาร
+                        </li>
+                        <li
+                            className={`step ${
+                                step >= 5 ? 'step-neutral' : ''
+                            }`}>
+                            ถ่ายรูป
+                        </li>
+                    </ul>
+                </div>
                 <div className="card bg-base-100 text-neutral shadow-xl">
                     <div className="card-body">
-                        <div className="divider">
-                            <h1 className="card-title lg:text-3xl text-2xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-blue-500 text-4xl font-bold justify-center">
-                                <FontAwesomeIcon
-                                    icon={faListCheck}
-                                    className="pr-1 text-primary"
-                                />{' '}
-                                ลงทะเบียน!
-                            </h1>
+                        <ToastContainer />
+                        <div className="form-control my-0">
+                            <label className="input input-bordered w-1/2 input-lg flex items-center gap-2">
+                                <span className="whitespace-nowrap">
+                                    <FontAwesomeIcon
+                                        icon={faHashtag}
+                                        className="fa-fw"
+                                    />
+                                    ใบสมัคร
+                                </span>
+                                <input
+                                    type="text"
+                                    value={workerId}
+                                    onChange={e => setworkerId(e.target.value)}
+                                    className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                    placeholder="0M-000000"
+                                />
+                            </label>
+                            <div className="label">
+                                <span className="label-text-alt text-red-500 font-semibold">
+                                    **ไม่สามารถเปลี่ยนรหัสคนงานได้ภายหลัง
+                                    กรุณาตรวจสอบก่อนบันทึก
+                                </span>
+                                <span className="label-text-alt">
+                                    ระบบสมัครงาน - นาซ่า
+                                </span>
+                            </div>
                         </div>
-                        <form className="space-y-4">
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/2 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            รหัสสมัครงาน / รหัสลงทะเบียน
-                                        </span>
-                                    </div>
+                        <hr className="mb-3" />
+                        {/* Step 1: Personal Information */}
+                        {step === 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div className="form-control">
+                                    <label className="label">
+                                        ชื่อ-นามสกุล
+                                    </label>
                                     <input
                                         type="text"
-                                        placeholder="5M-000000"
-                                        className="input input-bordered w-full"
+                                        value={fullName}
+                                        onChange={e =>
+                                            setFullName(e.target.value)
+                                        }
+                                        className={getInputClassName(
+                                            'fullName',
+                                        )}
+                                        placeholder="กรอกชื่อ-นามสกุล"
                                     />
+                                    {errorFields.fullName && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.fullName}
+                                        </span>
+                                    )}
                                 </div>
-                                <div className="form-control w-full md:w-1/2 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ประเทศที่เกิดและเดินทางมา
-                                        </span>
-                                        <span className="label-text-alt text-gray-300">
-                                            **ไม่สามารถแก้ไขภายหลังได้
-                                            หากเลือกผิด
-                                        </span>
-                                    </div>
-                                    <select className="select select-bordered w-full">
-                                        <option disabled selected>
-                                            กรุณาเลือก
-                                        </option>
-                                        <option>พม่า</option>
-                                        <option>ลาว</option>
-                                        <option>กัมพูชา</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            เชื้อชาติ
-                                        </span>
-                                    </div>
+                                <div className="form-control">
+                                    <label className="label">ชื่อเล่น</label>
                                     <input
                                         type="text"
-                                        placeholder="เชื้อชาติ"
-                                        className="input input-bordered w-full"
+                                        value={nickname}
+                                        onChange={e =>
+                                            setNickname(e.target.value)
+                                        }
+                                        className={getInputClassName(
+                                            'nickname',
+                                        )}
+                                        placeholder="กรอกชื่อเล่น"
                                     />
-                                </div>
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            สัญชาติ
+                                    {errorFields.nickname && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.nickname}
                                         </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="สัญชาติ"
-                                        className="input input-bordered w-full"
-                                    />
+                                    )}
                                 </div>
-                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ศาสนา
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="ศาสนา"
-                                        className="input input-bordered w-full"
-                                    />
-                                </div>
-                            </div>
-                            <div className="divider">ข้อมูลส่วนตัว</div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ชื่อ-นามสกุล (ชื่อเต็ม)
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="ชื่อตามบัตรประชาชน"
-                                        className="input input-bordered w-full"
-                                    />
-                                </div>
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ชื่อเล่น
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="ชื่อเล่น"
-                                        className="input input-bordered w-full"
-                                    />
-                                </div>
-                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            เพศ
-                                        </span>
-                                    </div>
-                                    <select className="select select-bordered w-full">
-                                        <option disabled selected>
-                                            กรุณาเลือก
-                                        </option>
-                                        <option>ชาย</option>
-                                        <option>หญิง</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            วันเดือนปีเกิด (คศ.)
-                                        </span>
-                                    </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        วันเดือนปีเกิด
+                                    </label>
                                     <input
                                         type="date"
-                                        className="input input-bordered w-full"
-                                    />
-                                </div>
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            น้ำหนัก
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full"
-                                        placeholder="น้ำหนัก"
-                                        value={weight}
+                                        value={birthdate}
                                         onChange={e =>
-                                            handleNumberChange(
-                                                e.target.value,
-                                                setWeight,
-                                                300,
-                                            )
+                                            setBirthdate(e.target.value)
                                         }
+                                        className={getInputClassName(
+                                            'birthdate',
+                                        )}
                                     />
-                                </div>
-                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ส่วนสูง
+                                    {errorFields.birthdate && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.birthdate}
                                         </span>
-                                    </div>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">เพศ</label>
+                                    <select
+                                        value={gender}
+                                        onChange={e =>
+                                            setGender(e.target.value)
+                                        }
+                                        className="select select-bordered">
+                                        <option disabled>กรุณาเลือก</option>
+                                        <option value="1">ชาย</option>
+                                        <option value="0">หญิง</option>
+                                    </select>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        ส่วนสูง (ซม.)
+                                    </label>
                                     <input
-                                        type="text"
-                                        className="input input-bordered w-full"
-                                        placeholder="ส่วนสูง"
+                                        type="number"
                                         value={height}
-                                        onChange={e =>
-                                            handleNumberChange(
+                                        onChange={e => {
+                                            const value = parseInt(
                                                 e.target.value,
-                                                setHeight,
-                                                250,
+                                                10,
                                             )
-                                        }
+                                            if (value >= 0) {
+                                                setHeight(e.target.value)
+                                            }
+                                        }}
+                                        className={getInputClassName('height')}
+                                        placeholder="กรอกส่วนสูง"
                                     />
-                                </div>
-                            </div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            เบอร์ติดต่อ
+                                    {errorFields.height && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.height}
                                         </span>
-                                    </div>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        น้ำหนัก (กก.)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={weight}
+                                        onChange={e => {
+                                            const value = parseInt(
+                                                e.target.value,
+                                                10,
+                                            )
+                                            if (value >= 0) {
+                                                setWeight(e.target.value)
+                                            }
+                                        }}
+                                        className={getInputClassName('weight')}
+                                        placeholder="กรอกน้ำหนัก"
+                                    />
+                                    {errorFields.weight && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.weight}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">เชื้อชาติ</label>
                                     <input
                                         type="text"
-                                        className="input input-bordered w-full"
+                                        value={ethnicity}
+                                        onChange={e =>
+                                            setEthnicity(e.target.value)
+                                        }
+                                        className={getInputClassName(
+                                            'ethnicity',
+                                        )}
+                                        placeholder="กรอกเชื้อชาติ"
+                                    />
+                                    {errorFields.ethnicity && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.ethnicity}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">สัญชาติ</label>
+                                    <input
+                                        type="text"
+                                        value={nationality}
+                                        onChange={e =>
+                                            setNationality(e.target.value)
+                                        }
+                                        className={getInputClassName(
+                                            'nationality',
+                                        )}
+                                        placeholder="กรอกสัญชาติ"
+                                    />
+                                    {errorFields.nationality && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.nationality}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">ศาสนา</label>
+                                    <input
+                                        type="text"
+                                        value={religion}
+                                        onChange={e =>
+                                            setReligion(e.target.value)
+                                        }
+                                        className={getInputClassName(
+                                            'religion',
+                                        )}
+                                        placeholder="กรอกศาสนา"
+                                    />
+                                    {errorFields.religion && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.religion}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">เบอร์ติดต่อ</label>
+                                    <input
+                                        type="text"
                                         value={phone}
-                                        onChange={e =>
-                                            handlePhoneChange(
-                                                e.target.value,
-                                                setPhone,
-                                            )
-                                        }
-                                        placeholder="หมายเลขโทรศัพท์"
+                                        onChange={e => setPhone(e.target.value)}
+                                        className={getInputClassName('phone')}
+                                        placeholder="กรอกเบอร์ติดต่อ"
                                     />
-                                </div>
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            เบอร์ติดต่อสำรอง
+                                    {errorFields.phone && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.phone}
                                         </span>
-                                    </div>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">เบอร์สำรอง</label>
                                     <input
                                         type="text"
-                                        className="input input-bordered w-full"
                                         value={altPhone}
                                         onChange={e =>
-                                            handlePhoneChange(
-                                                e.target.value,
-                                                setAltPhone,
-                                            )
+                                            setAltPhone(e.target.value)
                                         }
-                                        placeholder="หมายเลขโทรศัพท์สำรอง"
+                                        className={getInputClassName(
+                                            'altPhone',
+                                        )}
+                                        placeholder="กรอกเบอร์สำรอง"
                                     />
-                                </div>
-                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            อยู่ไทยมากี่ปี
+                                    {errorFields.altPhone && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.altPhone}
                                         </span>
-                                    </div>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">สถานะ</label>
+                                    <select
+                                        value={relationship}
+                                        onChange={e =>
+                                            setRelationship(e.target.value)
+                                        }
+                                        className="select select-bordered">
+                                        <option disabled>กรุณาเลือก</option>
+                                        <option value="1">โสด</option>
+                                        <option value="2">มีแฟน</option>
+                                        <option value="3">แต่งงาน</option>
+                                        <option value="4">ม่าย</option>
+                                        <option value="5">แยกทาง</option>
+                                    </select>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">จำนวนลูก</label>
                                     <input
-                                        type="text"
-                                        placeholder="จำนวนปีที่อยู่ไทย"
-                                        className="input input-bordered w-full"
+                                        type="number"
+                                        value={children}
+                                        onChange={e => {
+                                            const value = parseInt(
+                                                e.target.value,
+                                                10,
+                                            )
+                                            if (value >= 0) {
+                                                setChildren(value)
+                                            }
+                                        }}
+                                        className={getInputClassName(
+                                            'children',
+                                        )}
+                                        placeholder="กรอกจำนวนลูก"
                                     />
+                                    {errorFields.children && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.children}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            จังหวัด
-                                        </span>
-                                    </div>
+                        )}
+
+                        {/* Step 2: Address Information */}
+                        {step === 1 && (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="form-control">
+                                    <label className="label">
+                                        จังหวัดที่อยู่
+                                    </label>
                                     <select
-                                        className="select select-bordered w-full "
                                         value={selectedProvince}
-                                        onChange={handleChange}>
-                                        <option disabled selected>
-                                            กรุณาเลือก
-                                        </option>
+                                        onChange={e =>
+                                            setSelectedProvince(e.target.value)
+                                        }
+                                        className={getInputClassName(
+                                            'selectedProvince',
+                                        )}>
                                         {provinces.map((province, index) => (
                                             <option
                                                 key={index}
-                                                value={province.id}>
+                                                value={province.name_th}>
                                                 {province.name_th}
                                             </option>
                                         ))}
                                     </select>
-                                </div>
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ที่อยู่ปัจจุบัน
+                                    {errorFields.selectedProvince && (
+                                        <span className="text-red-500 text-sm">
+                                            {errorFields.selectedProvince}
                                         </span>
-                                    </div>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        ที่อยู่ปัจจุบัน
+                                    </label>
                                     <input
                                         type="text"
-                                        className="input input-bordered w-full"
-                                        placeholder="ที่อยู่ปัจจุบันที่พักอาศัย"
+                                        value={currentAddress}
+                                        onChange={e =>
+                                            setCurrentAddress(e.target.value)
+                                        }
+                                        className="input input-bordered"
+                                        placeholder="กรอกที่อยู่ปัจจุบัน"
                                     />
                                 </div>
-                                <div className="form-control  w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ไปงานต่างจังหวัด
-                                        </span>
-                                    </div>
-                                    <select className="select select-bordered w-full">
-                                        <option disabled selected>
-                                            กรุณาเลือก
-                                        </option>
-                                        <option>ได้</option>
-                                        <option>ไม่ได้</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/2 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            สถานะ
-                                        </span>
-                                    </div>
-                                    <select className="select select-bordered w-full">
-                                        <option disabled selected>
-                                            กรุณาเลือก
-                                        </option>
-                                        <option>โสด</option>
-                                        <option>มีแฟน</option>
-                                        <option>แต่งงานแล้ว</option>
-                                        <option>ม่าย</option>
-                                        <option>แยกทาง</option>
-                                    </select>
-                                </div>
-                                <div className="form-control w-full md:w-1/2 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            มีลูกกี่คน
-                                        </span>
-                                    </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        อยู่ไทยกี่ปี
+                                    </label>
                                     <input
                                         type="number"
-                                        placeholder="หากไม่มีให้ใส่ 0"
-                                        className="input input-bordered w-full"
+                                        value={yearsInThailand}
+                                        onChange={e =>
+                                            setYearsInThailand(e.target.value)
+                                        }
+                                        className="input input-bordered"
+                                        placeholder="กรอกจำนวนปีที่อยู่ไทย"
                                     />
                                 </div>
-                            </div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            รูปแบบงาน
-                                        </span>
-                                    </div>
-                                    <select className="select select-bordered w-full ">
-                                        <option disabled selected>
-                                            กรุณาเลือก
-                                        </option>
-                                        <option>อยู่ประจำ</option>
-                                        <option>ไป-กลับ</option>
-                                        <option>ได้ทั้งหมด</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="divider">เอกสาร</div>
-                            <div className="flex flex-wrap">
-                                <div className="form-control w-full md:w-1/3 p-3 mb-1 max-w-md mx-auto bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg border border-gray-200 shadow-md overflow-hidden">
-                                    <div className="flex justify-center mb-4">
-                                        <h5 className="text-white text-xl font-bold">
-                                            <FontAwesomeIcon icon={faSimCard} />{' '}
-                                            รหัสประชาชน / Work permit
-                                        </h5>
-                                    </div>
-                                    <div className="flex items-center px-3">
-                                        <p className="text-lg font-semibold text-white">
-                                            เลขบัตร
-                                        </p>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered"
-                                            placeholder="เลข 13 หลัก"
-                                            maxLength="13"
-                                            minLength="13"
-                                        />
-                                    </div>
-                                    <div className="flex items-center px-3 my-4">
-                                        <p className="text-lg font-semibold text-white">
-                                            วันหมดอายุ
-                                        </p>
-                                        <input
-                                            type="date"
-                                            className="input input-bordered"
-                                            placeholder=""
-                                        />
-                                    </div>
-                                </div>
-                                <div className="form-control w-full md:w-1/3 p-3 mb-1 max-w-md mx-auto bg-gradient-to-r from-red-500 to-pink-500 rounded-lg border border-gray-200 shadow-md overflow-hidden">
-                                    <div className="flex justify-center mb-4">
-                                        <h5 className="text-white text-xl font-bold">
-                                            <FontAwesomeIcon
-                                                icon={faPassport}
-                                            />{' '}
-                                            หนังสือเดินทาง / Passport
-                                        </h5>
-                                    </div>
-                                    <div className="flex items-center px-3">
-                                        <p className="text-lg font-semibold text-white">
-                                            เลขบัตร
-                                        </p>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered"
-                                            placeholder="เลขหนังสือเดินทาง"
-                                        />
-                                    </div>
-                                    <div className="flex items-center px-3 my-3">
-                                        <p className="text-lg font-semibold text-white">
-                                            วันหมดอายุ
-                                        </p>
-                                        <input
-                                            type="date"
-                                            className="input input-bordered"
-                                            placeholder=""
-                                        />
-                                    </div>
-                                </div>
-                                <div className="form-control w-full md:w-1/3 p-3 mb-1 max-w-md mx-auto bg-gradient-to-r from-red-500 to-pink-500 rounded-lg border border-gray-200 shadow-md overflow-hidden">
-                                    <div className="flex justify-center mb-4">
-                                        <h5 className="text-white text-xl font-bold">
-                                            <FontAwesomeIcon
-                                                icon={faUserNurse}
-                                            />{' '}
-                                            วีซ่า / VISA
-                                        </h5>
-                                    </div>
-                                    <div className="flex items-center px-3">
-                                        <p className="text-lg font-semibold text-white">
-                                            วันหมดอายุบัตร VISA
-                                        </p>
-                                        <input
-                                            type="date"
-                                            className="input input-bordered w-full"
-                                            placeholder=""
-                                        />
-                                    </div>
-                                    <div className="flex justify-between items-center px-3">
-                                        <div className="label">
-                                            <span className="text-lg font-semibold text-white">
-                                                ใบอนุญาต
+                                <div className="form-control">
+                                    <label className="label">
+                                        ไปต่างจังหวัด
+                                    </label>
+                                    <div className="flex space-x-4">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="canTravel"
+                                                value="ได้"
+                                                checked={canTravel === 'ได้'}
+                                                onChange={e =>
+                                                    setCanTravel(e.target.value)
+                                                }
+                                                className="radio me-2"
+                                            />
+                                            <span className="label-text">
+                                                ได้
                                             </span>
-                                        </div>
-                                        <select className="select w-1/2">
-                                            <option disabled selected>
-                                                กรุณาเลือก
-                                            </option>
-                                            <option>มี</option>
-                                            <option>ไม่มี</option>
-                                        </select>
+                                        </label>
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="canTravel"
+                                                value="ไม่ได้"
+                                                checked={canTravel === 'ไม่ได้'}
+                                                onChange={e =>
+                                                    setCanTravel(e.target.value)
+                                                }
+                                                className="radio me-2"
+                                            />
+                                            <span className="label-text">
+                                                ไม่ได้
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">รูปแบบงาน</label>
+                                    <div className="flex space-x-4">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="workType"
+                                                value="อยู่ประจำ"
+                                                checked={
+                                                    workType === 'อยู่ประจำ'
+                                                }
+                                                onChange={e =>
+                                                    setWorkType(e.target.value)
+                                                }
+                                                className="radio me-2"
+                                            />
+                                            <span className="label-text">
+                                                อยู่ประจำ
+                                            </span>
+                                        </label>
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="workType"
+                                                value="ไป/กลับ"
+                                                checked={workType === 'ไป/กลับ'}
+                                                onChange={e =>
+                                                    setWorkType(e.target.value)
+                                                }
+                                                className="radio me-2"
+                                            />
+                                            <span className="label-text">
+                                                ไป/กลับ
+                                            </span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
+                        )}
 
-                            <div className="divider">ภาษาและการสื่อสาร</div>
-                            <div className="flex flex-wrap">
-                                <div className="w-full md:w-1/3 px-2 mb-1">
-                                    <div className="card bg-base-100 shadow-xl">
-                                        <figure className="bg-neutral-500 text-white font-bold p-2 text-lg justify-center">
-                                            <FontAwesomeIcon
-                                                icon={faLanguage}
-                                                className="pr-2"
+                        {/* Step 3: Language and Skills */}
+                        {step === 2 && (
+                            <div className="space-y-8">
+                                {/* โซนภาษา */}
+                                <div className="card bg-base-100 border-2 border-gray-200 shadow-md p-4">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        ทักษะภาษา
+                                    </h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        {/* ทักษะภาษาไทย */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทักษะภาษาไทย - พูด
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="thaiSpeaking"
+                                                        value="ได้"
+                                                        checked={
+                                                            thaiSpeaking ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setThaiSpeaking(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="thaiSpeaking"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            thaiSpeaking ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setThaiSpeaking(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทักษะภาษาไทย - อ่าน
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="thaiReading"
+                                                        value="ได้"
+                                                        checked={
+                                                            thaiReading ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setThaiReading(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="thaiReading"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            thaiReading ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            thaiReading(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทักษะภาษาไทย - เขียน
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="thaiWriting"
+                                                        value="ได้"
+                                                        checked={
+                                                            thaiWriting ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setThaiWriting(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="thaiWriting"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            thaiWriting ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setThaiWriting(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* ทักษะภาษาอังกฤษ */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทักษะภาษาอังกฤษ - พูด
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="englishSpeaking"
+                                                        value="ได้"
+                                                        checked={
+                                                            englishSpeaking ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setEnglishSpeaking(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="englishSpeaking"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            englishSpeaking ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setEnglishSpeaking(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทักษะภาษาอังกฤษ - อ่าน
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="englishReading"
+                                                        value="ได้"
+                                                        checked={
+                                                            englishReading ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setEnglishReading(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="englishReading"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            englishReading ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setEnglishReading(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทักษะภาษาอังกฤษ - เขียน
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="englishWriting"
+                                                        value="ได้"
+                                                        checked={
+                                                            englishWriting ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setEnglishWriting(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="englishWriting"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            englishWriting ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setEnglishWriting(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {/* ภาษาอื่นๆ */}
+                                        <div className="form-control col-span-3">
+                                            <label className="label">
+                                                ภาษาอื่นๆ
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={otherLanguage}
+                                                onChange={e =>
+                                                    setOtherLanguage(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="input input-bordered"
                                             />
-                                            ภาษาไทย
-                                        </figure>
-                                        <div className="card-body p-0">
-                                            <div className="flex">
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        พูด
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-0"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-0"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                                <div className="divider divider-horizontal p-0 mx-1"></div>
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        อ่าน
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-2"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-2"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                                <div className="divider divider-horizontal p-0 mx-1"></div>
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        เขียน
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-3"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-3"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* โซนขับขี่ */}
+                                <div className="card bg-base-100 border-2 border-gray-200 shadow-md p-4">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        ทักษะการขับขี่
+                                    </h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ขี่จักรยาน
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="bikeSkill"
+                                                        value="ได้"
+                                                        checked={
+                                                            bikeSkill === 'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setBikeSkill(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="bikeSkill"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            bikeSkill ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setBikeSkill(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ขี่จักรยานยนต์
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="motorcycleSkill"
+                                                        value="ได้"
+                                                        checked={
+                                                            motorcycleSkill ===
+                                                            'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setMotorcycleSkill(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="motorcycleSkill"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            motorcycleSkill ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setMotorcycleSkill(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ขับรถยนต์
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="carSkill"
+                                                        value="ได้"
+                                                        checked={
+                                                            carSkill === 'ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setCarSkill(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="carSkill"
+                                                        value="ไม่ได้"
+                                                        checked={
+                                                            carSkill ===
+                                                            'ไม่ได้'
+                                                        }
+                                                        onChange={e =>
+                                                            setCarSkill(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-full md:w-1/3 px-2 mb-1">
-                                    <div className="card bg-base-100 shadow-xl">
-                                        <figure className="bg-neutral-500 text-white font-bold p-2 text-lg justify-center">
-                                            <FontAwesomeIcon
-                                                icon={faLanguage}
-                                                className="pr-2"
-                                            />
-                                            ภาษาอังกฤษ
-                                        </figure>
-                                        <div className="card-body p-0">
-                                            <div className="flex">
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        พูด
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-4"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-4"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                                <div className="divider divider-horizontal p-0 mx-1"></div>
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        อ่าน
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-5"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-5"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                                <div className="divider divider-horizontal p-0 mx-1"></div>
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        เขียน
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-6"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-6"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
+
+                                {/* โซนสุขภาพ */}
+                                <div className="card bg-base-100 border-2 border-gray-200 shadow-md p-4">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        ข้อมูลสุขภาพ
+                                    </h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {/* โรคประจำตัว */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                โรคประจำตัว
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="illness"
+                                                        value="มี"
+                                                        checked={
+                                                            illness === 'มี'
+                                                        }
+                                                        onChange={e =>
+                                                            setIllness(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        มี
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="illness"
+                                                        value="ไม่มี"
+                                                        checked={
+                                                            illness === 'ไม่มี'
+                                                        }
+                                                        onChange={e =>
+                                                            setIllness(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่มี
+                                                    </span>
+                                                </label>
                                             </div>
+                                        </div>
+                                        {illness === 'มี' && (
+                                            <div className="form-control col-span-2">
+                                                <label className="label">
+                                                    ระบุโรคประจำตัว
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={illnessDetails}
+                                                    onChange={e =>
+                                                        setIllnessDetails(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="input input-bordered"
+                                                />
+                                            </div>
+                                        )}
+
+                                        {/* เคยป่วยหนัก */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                เคยป่วยหนัก
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="seriousIllness"
+                                                        value="เคย"
+                                                        checked={
+                                                            seriousIllness ===
+                                                            'เคย'
+                                                        }
+                                                        onChange={e =>
+                                                            setSeriousIllness(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        เคย
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="seriousIllness"
+                                                        value="ไม่เคย"
+                                                        checked={
+                                                            seriousIllness ===
+                                                            'ไม่เคย'
+                                                        }
+                                                        onChange={e =>
+                                                            setSeriousIllness(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่เคย
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {seriousIllness === 'เคย' && (
+                                            <div className="form-control col-span-2">
+                                                <label className="label">
+                                                    ระบุการป่วยหนัก
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={
+                                                        seriousIllnessDetails
+                                                    }
+                                                    onChange={e =>
+                                                        setSeriousIllnessDetails(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="input input-bordered"
+                                                />
+                                            </div>
+                                        )}
+
+                                        {/* กลัวสัตว์เลี้ยง */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                กลัวสัตว์เลี้ยงตัวเล็ก
+                                            </label>
+                                            <select
+                                                value={fearSmallPets}
+                                                onChange={e =>
+                                                    setFearSmallPets(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="select select-bordered">
+                                                <option disabled>
+                                                    กรุณาเลือก
+                                                </option>
+                                                <option value="กลัว">
+                                                    กลัว
+                                                </option>
+                                                <option value="ไม่กลัว">
+                                                    ไม่กลัว
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                กลัวสัตว์เลี้ยงตัวใหญ่
+                                            </label>
+                                            <select
+                                                value={fearBigPets}
+                                                onChange={e =>
+                                                    setFearBigPets(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="select select-bordered">
+                                                <option disabled>
+                                                    กรุณาเลือก
+                                                </option>
+                                                <option value="กลัว">
+                                                    กลัว
+                                                </option>
+                                                <option value="ไม่กลัว">
+                                                    ไม่กลัว
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        {/* ดื่มเหล้า/สูบบุหรี่ */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ดื่มเหล้า/สูบบุหรี่
+                                            </label>
+                                            <select
+                                                value={alcohol}
+                                                onChange={e =>
+                                                    setAlcohol(e.target.value)
+                                                }
+                                                className="select select-bordered">
+                                                <option disabled>
+                                                    กรุณาเลือก
+                                                </option>
+                                                <option value="ไม่สนใจเลย">
+                                                    ไม่สนใจเลย
+                                                </option>
+                                                <option value="มีบางครั้ง">
+                                                    มีบางครั้ง
+                                                </option>
+                                                <option value="ขาดไม่ได้">
+                                                    ขาดไม่ได้
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        {/* เมารถ/เมาเรือ */}
+                                        <div className="form-control">
+                                            <label className="label">
+                                                เมารถ/เมาเรือ
+                                            </label>
+                                            <select
+                                                value={motionSickness}
+                                                onChange={e =>
+                                                    setMotionSickness(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="select select-bordered">
+                                                <option disabled>
+                                                    กรุณาเลือก
+                                                </option>
+                                                <option value="ไม่เมา">
+                                                    ไม่เมา
+                                                </option>
+                                                <option value="เมา">เมา</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="form-control w-full md:w-1/3 px-2 mb-1">
-                                    <div className="label">
-                                        <span className="label-text font-semibold">
-                                            ภาษาอื่น ๆ หากมี
+                            </div>
+                        )}
+
+                        {/* Step 4: Work History */}
+                        {step === 3 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Work History Table */}
+                                <div className="card bg-base-100 shadow-md p-4">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        ประสบการณ์การทำงาน{' '}
+                                        <span className="badge badge-ghost font-normal text-xs">
+                                            <FontAwesomeIcon
+                                                icon={faCircleInfo}
+                                                className="fa-fw me-1"
+                                            />{' '}
+                                            สามารถเพิ่มได้ ขั้นต่ำ 1 รายการ /
+                                            สูงสุด 8 รายการ
                                         </span>
+                                    </h2>
+                                    <div className="overflow-x-auto">
+                                        <table className="table w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th>ชื่อสถานที่</th>
+                                                    <th>ตำแหน่ง</th>
+                                                    <th>ลักษณะงาน</th>
+                                                    <th>ระยะเวลา (ปี)</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {workHistory.map(
+                                                    (work, index) => (
+                                                        <tr key={index}>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        work.companyName
+                                                                    }
+                                                                    onChange={e => {
+                                                                        const newHistory = [
+                                                                            ...workHistory,
+                                                                        ]
+                                                                        newHistory[
+                                                                            index
+                                                                        ].companyName =
+                                                                            e.target.value
+                                                                        setWorkHistory(
+                                                                            newHistory,
+                                                                        )
+                                                                    }}
+                                                                    className="input input-bordered w-full"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        work.position
+                                                                    }
+                                                                    onChange={e => {
+                                                                        const newHistory = [
+                                                                            ...workHistory,
+                                                                        ]
+                                                                        newHistory[
+                                                                            index
+                                                                        ].position =
+                                                                            e.target.value
+                                                                        setWorkHistory(
+                                                                            newHistory,
+                                                                        )
+                                                                    }}
+                                                                    className="input input-bordered w-full"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        work.workDetails
+                                                                    }
+                                                                    onChange={e => {
+                                                                        const newHistory = [
+                                                                            ...workHistory,
+                                                                        ]
+                                                                        newHistory[
+                                                                            index
+                                                                        ].workDetails =
+                                                                            e.target.value
+                                                                        setWorkHistory(
+                                                                            newHistory,
+                                                                        )
+                                                                    }}
+                                                                    className="input input-bordered w-full"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="number"
+                                                                    value={
+                                                                        work.duration
+                                                                    }
+                                                                    onChange={e => {
+                                                                        const newHistory = [
+                                                                            ...workHistory,
+                                                                        ]
+                                                                        newHistory[
+                                                                            index
+                                                                        ].duration =
+                                                                            e.target.value
+                                                                        setWorkHistory(
+                                                                            newHistory,
+                                                                        )
+                                                                    }}
+                                                                    className="input input-bordered w-full"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        removeWorkHistory(
+                                                                            index,
+                                                                        )
+                                                                    }
+                                                                    className="btn btn-outline btn-circle btn-error btn-sm">
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                            faXmark
+                                                                        }
+                                                                        className="fa-fw"
+                                                                    />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ),
+                                                )}
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full"
-                                        placeholder="หากไม่มีให้ใส่ขีด"
+                                    {/* แสดงปุ่มเพิ่มประสบการณ์เมื่อจำนวนประสบการณ์น้อยกว่า 8 */}
+                                    {workHistory.length < 8 && (
+                                        <button
+                                            onClick={addWorkHistory}
+                                            className="btn btn-neutral mt-4">
+                                            <FontAwesomeIcon
+                                                icon={faPlus}
+                                                className="fa-fw me-1"
+                                            />
+                                            เพิ่มประสบการณ์
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Desired Jobs Table */}
+                                <div className="card bg-base-100 shadow-md p-4">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        ตำแหน่งงานที่ต้องการ{' '}
+                                        <span className="badge badge-ghost font-normal text-xs">
+                                            <FontAwesomeIcon
+                                                icon={faCircleInfo}
+                                                className="fa-fw me-1"
+                                            />{' '}
+                                            สามารถเพิ่มได้ ขั้นต่ำ 1 รายการ /
+                                            สูงสุด 4 รายการ
+                                        </span>
+                                    </h2>
+                                    <div className="overflow-x-auto">
+                                        <table className="table w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>ตำแหน่งที่ต้องการ</th>
+                                                    <th>เงินเดือนที่ต้องการ</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {desiredJobs.map(
+                                                    (job, index) => (
+                                                        <tr key={index}>
+                                                            <td>{index + 1}</td>
+                                                            <td>
+                                                                <select
+                                                                    value={
+                                                                        job.jobPosition
+                                                                    }
+                                                                    onChange={e => {
+                                                                        const newJobs = [
+                                                                            ...desiredJobs,
+                                                                        ]
+                                                                        newJobs[
+                                                                            index
+                                                                        ].jobPosition =
+                                                                            e.target.value
+                                                                        setDesiredJobs(
+                                                                            newJobs,
+                                                                        )
+                                                                    }}
+                                                                    className="select select-bordered w-full">
+                                                                    <option
+                                                                        disabled>
+                                                                        กรุณาเลือก
+                                                                    </option>
+                                                                    <option value="แม่บ้าน">
+                                                                        แม่บ้าน
+                                                                    </option>
+                                                                    <option value="พี่เลี้ยง">
+                                                                        พี่เลี้ยง
+                                                                    </option>
+                                                                    <option value="ดูแลผู้สูงอายุ">
+                                                                        ดูแลผู้สูงอายุ
+                                                                    </option>
+                                                                    <option value="แม่บ้าน+พี่เลี้ยง">
+                                                                        แม่บ้าน+พี่เลี้ยง
+                                                                    </option>
+                                                                    <option value="แม่บ้าน+ดูแลผู้สูงอายุ">
+                                                                        แม่บ้าน+ดูแลผู้สูงอายุ
+                                                                    </option>
+                                                                    <option value="กรรมกร">
+                                                                        กรรมกร
+                                                                    </option>
+                                                                    <option value="พ่อบ้าน">
+                                                                        พ่อบ้าน
+                                                                    </option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    value={
+                                                                        job.salary
+                                                                    }
+                                                                    onChange={e => {
+                                                                        const newJobs = [
+                                                                            ...desiredJobs,
+                                                                        ]
+                                                                        newJobs[
+                                                                            index
+                                                                        ].salary =
+                                                                            e.target.value
+                                                                        setDesiredJobs(
+                                                                            newJobs,
+                                                                        )
+                                                                    }}
+                                                                    className="input input-bordered w-full"
+                                                                />
+                                                            </td>
+                                                            <td>
+                                                                <button
+                                                                    onClick={() =>
+                                                                        removeDesiredJob(
+                                                                            index,
+                                                                        )
+                                                                    }
+                                                                    className="btn btn-outline btn-circle btn-error btn-sm">
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                            faXmark
+                                                                        }
+                                                                        className="fa-fw"
+                                                                    />
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ),
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {/* แสดงปุ่มเพิ่มตำแหน่งงานที่ต้องการเมื่อจำนวนตำแหน่งน้อยกว่า 4 */}
+                                    {desiredJobs.length < 4 && (
+                                        <button
+                                            onClick={addDesiredJob}
+                                            className="btn btn-neutral mt-4">
+                                            <FontAwesomeIcon
+                                                icon={faPlus}
+                                                className="fa-fw me-1"
+                                            />
+                                            เพิ่มตำแหน่งงานที่ต้องการ
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Step 5: Documents */}
+                        {step === 4 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <div className="form-control">
+                                        <label className="label cursor-pointer">
+                                            <span className="label-text">
+                                                เอกสารใบอนุญาต
+                                            </span>
+                                            <input
+                                                type="checkbox"
+                                                checked={hasWorkPermit}
+                                                onChange={e =>
+                                                    setHasWorkPermit(
+                                                        e.target.checked,
+                                                    )
+                                                }
+                                                className="checkbox checkbox-primary"
+                                            />
+                                        </label>
+                                    </div>
+
+                                    {hasWorkPermit && (
+                                        <>
+                                            <div className="form-control">
+                                                <label className="label">
+                                                    เลขบัตร work permit
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={workPermitNo}
+                                                    onChange={e =>
+                                                        setWorkPermitNo(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="input input-bordered"
+                                                />
+                                            </div>
+                                            <div className="form-control">
+                                                <label className="label">
+                                                    วันหมดอายุ work permit
+                                                </label>
+                                                <input
+                                                    type="date"
+                                                    value={workPermitExpiry}
+                                                    onChange={e =>
+                                                        setWorkPermitExpiry(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="input input-bordered"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            เลขบัตร Passport
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={passportNo}
+                                            onChange={e =>
+                                                setPassportNo(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            วันหมดอายุ Passport
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={passportExpiry}
+                                            onChange={e =>
+                                                setPassportExpiry(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            วันหมดอายุ visa
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={visaExpiry}
+                                            onChange={e =>
+                                                setVisaExpiry(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            ฉีดวัคซีนโควิด (จำนวนเข็ม)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            value={vaccinationNo}
+                                            onChange={e =>
+                                                setVaccinationNo(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            ทราบข่าวสารมาจาก
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={source}
+                                            onChange={e =>
+                                                setSource(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            หมายเหตุ
+                                        </label>
+                                        <textarea
+                                            value={note}
+                                            onChange={e =>
+                                                setNote(e.target.value)
+                                            }
+                                            className="textarea textarea-bordered"></textarea>
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            รหัสงานคู่
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={jobCode}
+                                            onChange={e =>
+                                                setJobCode(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Step 6: Photo Capture */}
+                        {step === 5 && (
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* ซ้าย: กล้องสำหรับ live feed */}
+                                    <div className="flex flex-col items-center w-full h-full">
+                                        <div className="w-full h-60 md:h-full">
+                                            <video
+                                                ref={videoRef}
+                                                className="w-full h-full object-cover border border-gray-300 rounded-lg"
+                                                autoPlay></video>
+                                        </div>
+                                        <canvas
+                                            id="canvas"
+                                            width="320"
+                                            height="240"
+                                            className="hidden"></canvas>
+                                    </div>
+
+                                    {/* ขวา: รูปที่ถ่ายได้ */}
+                                    <div className="flex flex-col items-center w-full h-full">
+                                        {capturedPhoto ? (
+                                            <img
+                                                src={capturedPhoto}
+                                                alt="Captured"
+                                                className="w-full h-full object-cover border border-gray-300 rounded-lg"
+                                            />
+                                        ) : (
+                                            <div className="flex justify-center items-center w-full h-full rounded-lg bg-gray-100 border border-gray-300">
+                                                <span className="text-gray-400 text-2xl font-semibold">
+                                                    กดปุ่มถ่ายรูป{' '}
+                                                    <FontAwesomeIcon
+                                                        icon={faCamera}
+                                                        className="fa-fw"
+                                                    />{' '}
+                                                    เพื่อจับภาพ
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <hr className="mt-3" />
+                        <div className="mt-6 flex justify-between">
+                            {step > 0 && (
+                                <button
+                                    onClick={handlePrevStep}
+                                    className="btn btn-outline btn-lg">
+                                    <FontAwesomeIcon
+                                        icon={faAngleLeft}
+                                        className="fa-fw "
                                     />
-                                </div>
-                            </div>
-                            <div className="divider">ความสามารถ</div>
-                            <div className="flex flex-wrap">
-                                <div className="w-full md:w-1/2 px-2 mb-1">
-                                    <div className="card bg-base-100 shadow-xl">
-                                        <figure className="bg-neutral-500 text-white font-bold p-2 text-lg justify-center">
-                                            การขับขี่
-                                        </figure>
-                                        <div className="card-body p-0">
-                                            <div className="flex">
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        จักรยาน
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-0"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-0"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                                <div className="divider divider-horizontal p-0 mx-1"></div>
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        มอเตอร์ไซต์
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-2"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-2"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                                <div className="divider divider-horizontal p-0 mx-1"></div>
-                                                <div className="form-control w-1/3 p-0">
-                                                    <h2 className="card-title justify-center">
-                                                        รถยนต์
-                                                    </h2>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-3"
-                                                            className="radio"
-                                                            checked
-                                                        />
-                                                        <span className="label-text">
-                                                            ได้
-                                                        </span>
-                                                    </label>
-                                                    <label className="label cursor-pointer px-3">
-                                                        <input
-                                                            type="radio"
-                                                            name="radio-3"
-                                                            className="radio"
-                                                        />
-                                                        <span className="label-text">
-                                                            ไม่ได้
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-full md:w-1/2 px-2 mb-1 flex">
-                                    <div className="form-control w-1/3 px-2 mb-1">
-                                        <div className="label">
-                                            <span className="label-text font-semibold">
-                                                การทำอาหารไทย
-                                            </span>
-                                        </div>
-                                        <select className="select select-bordered w-full">
-                                            <option disabled selected>
-                                                ทำอาหารไทย
-                                            </option>
-                                            <option>ได้</option>
-                                            <option>ไม่ได้</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-control w-1/3 px-2 mb-1">
-                                        <div className="label">
-                                            <span className="label-text font-semibold">
-                                                ระดับการทำอาหาร
-                                            </span>
-                                        </div>
-                                        <select className="select select-bordered w-full">
-                                            <option disabled selected>
-                                                ระดับการทำอาหาร
-                                            </option>
-                                            <option>ได้เบื้องต้น</option>
-                                            <option>ได้ตามสั่ง</option>
-                                            <option>ร้านอาหาร</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-control w-1/3 px-2 mb-1">
-                                        <div className="label">
-                                            <span className="label-text font-semibold">
-                                                ยกตัวอย่างอาหารที่ทำได้
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="ไข่เจียว ต้มจืด ผัดผัก ข้าวต้ม"
-                                            className="input input-bordered w-full"
+                                    ย้อนกลับ
+                                </button>
+                            )}
+                            {step > 4 && (
+                                <>
+                                    <button
+                                        onClick={capturePhoto}
+                                        className="btn btn-circle text-white btn-neutral btn-lg">
+                                        <FontAwesomeIcon
+                                            icon={faCamera}
+                                            className="fa-xl"
                                         />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-wrap">
-                                <div className="w-full md:w-1/4 px-1">
-                                    <div className="flex items-center">
-                                        <p className="text-sm font-semibold">
-                                            โรคประจำตัว
-                                        </p>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered"
-                                            placeholder="หากไม่มีใส่ขีด"
+                                    </button>
+                                    <button
+                                        onClick={handleFinalStep}
+                                        className="btn text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 btn-lg">
+                                        <FontAwesomeIcon
+                                            icon={faFloppyDisk}
+                                            className="fa-fw "
                                         />
-                                    </div>
-                                </div>
-                                <div className="w-full md:w-1/4 px-1">
-                                    <div className="flex items-center p-0">
-                                        <p className="text-sm font-semibold">
-                                            เคยป่วยหนัก?
-                                        </p>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered"
-                                            placeholder="หากไม่มีใส่ขีด"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="w-full md:w-1/4 px-1">
-                                    <div className="flex items-center p-0">
-                                        <p className="text-sm font-semibold">
-                                            สัตว์เลี้ยงตัวเล็ก
-                                        </p>
-                                        <select className="select select-bordered w-full">
-                                            <option disabled selected>
-                                                กรุณาเลือก
-                                            </option>
-                                            <option>กลัว</option>
-                                            <option>ไม่กลัว</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="w-full md:w-1/4 px-1">
-                                    <div className="flex items-center p-0">
-                                        <p className="text-sm font-semibold">
-                                            สัตว์เลี้ยงตัวใหญ่
-                                        </p>
-                                        <select className="select select-bordered w-full">
-                                            <option disabled selected>
-                                                กรุณาเลือก
-                                            </option>
-                                            <option>กลัว</option>
-                                            <option>ไม่กลัว</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                บันทึกข้อมูล
-                            </button>
-                        </form>
+                                        บันทึก
+                                    </button>
+                                </>
+                            )}
+                            {step < 5 && (
+                                <button
+                                    onClick={handleNextStep}
+                                    className="btn btn-outline btn-lg">
+                                    ถัดไป
+                                    <FontAwesomeIcon
+                                        icon={faAngleRight}
+                                        className="fa-fw "
+                                    />
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

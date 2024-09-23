@@ -197,13 +197,15 @@ const Navigation = ({ user, profile }) => {
                                     tabIndex={0}
                                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-2 w-40 p-2 shadow-lg">
                                     <li className="mb-1">
-                                        <a className="justify-start">
+                                        <Link
+                                            className="justify-start"
+                                            href="/profile/user">
                                             <FontAwesomeIcon
                                                 icon={faCircleUser}
                                                 className="fa-lg"
                                             />
                                             โปรไฟล์
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="mb-1">
                                         <a className="justify-start">

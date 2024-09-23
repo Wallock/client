@@ -1,11 +1,29 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer, faEnvelope, faEye } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { format } from 'date-fns'
 import { th } from 'date-fns/locale'
 import Label from '@/components/Label'
+import dynamic from 'next/dynamic'
+import 'plyr-react/plyr.css'
+
+const Plyr = dynamic(() => import('plyr-react'), { ssr: false }) // Load Plyr only on the client-side
+
+const mainVideoSrc = {
+    type: 'video',
+    title: 'Example Title',
+    poster: '/path/to/poster.jpg',
+    sources: [
+        {
+            src: '/ads/ads.mp4',
+            type: 'video/mp4',
+        },
+    ],
+}
+
+const options = {}
 
 export default function dashboard() {
     const [databeta, setDataBeta] = useState('ออฟไลน์')
@@ -15,7 +33,6 @@ export default function dashboard() {
     const [announcements, setAnnouncements] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedAnnouncement, setSelectedAnnouncement] = useState(null)
-
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 5
 
@@ -183,12 +200,17 @@ export default function dashboard() {
                         </div>
                     </div>
 
+                    <div className="relative size-full lg:size-1/2 overflow-hidden rounded-lg shadow-lg">
+                        <Plyr source={mainVideoSrc} options={options} />
+                    </div>
+
                     <div className="mockup-browser w-full shadow-lg border bg-base-300">
                         <div className="mockup-browser-toolbar">
                             <div className="input font-2 font-semibold">
                                 ข่าวสาร & อัพเดทล่าสุด
                             </div>
                         </div>
+
                         <div className="card bg-base-100 px-4 m-2">
                             <ul
                                 role="list"
