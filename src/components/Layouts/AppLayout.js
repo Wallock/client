@@ -48,19 +48,31 @@ const AppLayout = ({ children }) => {
     }, [router])
 
     return (
-        <div className="min-h-screen bg-gray-100 ">
+        <>
             <Head>
                 <title>JS-System v3</title>
             </Head>
-            <main>
-                <Navigation user={user} profile={profile} />
-                <div className="flex justify-between mx-auto px-0 mt-14">
-                    <MenuNav user={user} profile={profile} />
+            <div className="bg-gray-100 flex">
+                <MenuNav user={user} profile={profile} />
+                <div className="relative w-full flex flex-col h-screen overflow-y-hidden">
+                    <Navigation user={user} profile={profile} />
+                    <div className="w-full h-screen overflow-x-hidden border-t flex flex-col">
+                        <main className="w-full flex-grow p-6">{children}</main>
 
-                    <div className="w-5/6 ml-auto p-3">{children}</div>
+                        <footer className="w-full bg-white text-right p-4">
+                            Dev by{' '}
+                            <a
+                                target="_blank"
+                                href="https://www.wb.in.th"
+                                className="underline">
+                                Wallock
+                            </a>
+                            .
+                        </footer>
+                    </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </>
     )
 }
 

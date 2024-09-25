@@ -1,8 +1,6 @@
 import ApplicationLogo from '@/components/ApplicationLogo'
 import Dropdown from '@/components/Dropdown'
 import Link from 'next/link'
-import { ResponsiveNavButton } from '@/components/ResponsiveNavLink'
-import { DropdownButton } from '@/components/DropdownLink'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -12,11 +10,13 @@ import {
     faBullhorn,
     faCircleUser,
     faGear,
+    faNewspaper,
+    faUsers,
+    faUserPlus,
+    faFlaskVial,
 } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-
 const BroadcastAnnouncement = ({ message }) => {
     const [isHovered, setIsHovered] = useState(false)
     return (
@@ -66,6 +66,24 @@ const getBadgeProps = role => {
             return { color: 'gray', text: 'Unknown Role' }
     }
 }
+const MenuItem = ({ href, icon, label }) => {
+    const router = useRouter()
+    const isActive = router.pathname === href
+
+    return (
+        <Link href={href}>
+            <div
+                className={`flex items-center justify-start px-4 py-3 ${
+                    isActive
+                        ? 'bg-blue-900 text-white rounded-xl'
+                        : 'hover:bg-blue-700 text-gray-200 '
+                } transition-all duration-200`}>
+                <FontAwesomeIcon icon={icon} className="fa-lg me-3" />
+                <p className="text-lg font-semibold">{label}</p>
+            </div>
+        </Link>
+    )
+}
 
 const Navigation = ({ user, profile }) => {
     const router = useRouter()
@@ -79,15 +97,10 @@ const Navigation = ({ user, profile }) => {
         }
     }
 
-    let badgeProps = { color: 'gray', text: 'Loading...' }
-
-    if (profile?.role) {
-        badgeProps = getBadgeProps(profile.role)
-    }
-    const [open, setOpen] = useState(false)
+    const [settingsOpen, setSettingsOpen] = useState(false)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
     const [announcement, setAnnouncement] = useState(null)
-    const [error, setError] = useState(null)
-
     useEffect(() => {
         const fetchAnnouncements = async () => {
             const token = localStorage.getItem('accessToken')
@@ -157,168 +170,132 @@ const Navigation = ({ user, profile }) => {
     const currentTimestamp = new Date().getTime()
     return (
         <>
-            <nav className="bg-white border-b border-gray-100 fixed w-full top-0 z-10 shadow">
-                {/* Primary Navigation Menu */}
-                <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-14">
-                        <div className="flex">
-                            {/* Logo */}
-                            <div className="flex-shrink-0 flex items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-10 w-auto fill-current" />
-                                </Link>
-                            </div>
+            {/* Desktop Header */}
+            <header className="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+                <div className="w-1/2">
+                    {announcement && (
+                        <BroadcastAnnouncement message={announcement.content} />
+                    )}
+                </div>
+                <div className="relative w-1/2 flex justify-end">
+                    {/* ปุ่มโปรไฟล์ */}
+                    <button
+                        onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                        className="relative z-10 w-12 h-12 rounded-full overflow-hidden border-2 border-blue-400 hover:border-blue-300 focus:border-blue-300 focus:outline-none">
+                        <div className="mask rounded-full outline-dashed outline-1 outline-blue-500">
+                            <img src={profile?.avatar} alt="Profile Photo" />
                         </div>
+                    </button>
+                    {/* แสดงเมนูโปรไฟล์เฉพาะเมื่อ isProfileMenuOpen เป็น true */}
+                    {isProfileMenuOpen && (
+                        <div className="absolute w-36 bg-white rounded-lg shadow-lg font-semibold py-2 mt-16 z-50">
+                            <a
+                                className="block px-4 py-2 text-slate-800 hover:text-primary"
+                                href="/profile/user">
+                                <FontAwesomeIcon
+                                    icon={faCircleUser}
+                                    className="fa-lg me-2"
+                                />{' '}
+                                โปรไฟล์
+                            </a>
+                            <a
+                                href="#"
+                                className="block px-4 py-2 text-slate-800 hover:text-primary">
+                                <FontAwesomeIcon
+                                    icon={faGear}
+                                    className="fa-lg me-2"
+                                />{' '}
+                                ตั้งค่า
+                            </a>
+                            <a
+                                onClick={handleLogout}
+                                className="block px-4 py-2 text-red-600 hover:text-red-500">
+                                <FontAwesomeIcon
+                                    icon={faRightFromBracket}
+                                    className="fa-lg me-2"
+                                />{' '}
+                                Sign Out
+                            </a>
+                        </div>
+                    )}
+                </div>
+            </header>
 
-                        <div className="hidden sm:flex sm:items-center">
-                            {announcement && (
-                                <BroadcastAnnouncement
-                                    message={announcement.content}
-                                />
-                            )}
-                        </div>
-                        {/* Settings Dropdown */}
-                        <div className="hidden sm:flex sm:items-center sm:ml-6 ">
-                            <div className="dropdown dropdown-end">
-                                <div
-                                    tabIndex={0}
-                                    role="button"
-                                    className="btn btn-ghost btn-circle">
-                                    <div className="avatar">
-                                        <div className="w-9 mask rounded-full outline-dashed outline-1 outline-blue-500">
-                                            <img
-                                                src={profile?.avatar}
-                                                alt="Profile Photo"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <ul
-                                    tabIndex={0}
-                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-2 w-40 p-2 shadow-lg">
-                                    <li className="mb-1">
-                                        <Link
-                                            className="justify-start"
-                                            href="/profile/user">
-                                            <FontAwesomeIcon
-                                                icon={faCircleUser}
-                                                className="fa-lg"
-                                            />
-                                            โปรไฟล์
-                                        </Link>
-                                    </li>
-                                    <li className="mb-1">
-                                        <a className="justify-start">
-                                            <FontAwesomeIcon
-                                                icon={faGear}
-                                                className="fa-lg"
-                                            />
-                                            ตั้งค่า
-                                        </a>
-                                    </li>
-                                    <li className="mb-1">
-                                        <a
-                                            onClick={handleLogout}
-                                            className="text-error justify-start">
-                                            <FontAwesomeIcon
-                                                icon={faRightFromBracket}
-                                                className="fa-lg"
-                                            />{' '}
-                                            ออกจากระบบ
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        {/* Hamburger */}
-                        <div className="-mr-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() => setOpen(open => !open)}
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24">
-                                    {open ? (
-                                        <path
-                                            className="inline-flex"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    ) : (
-                                        <path
-                                            className="inline-flex"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4 6h16M4 12h16M4 18h16"
-                                        />
-                                    )}
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+            {/* Mobile Header */}
+            <header className="w-full bg-blue-700 py-3 px-6 sm:hidden">
+                <div className="flex items-center justify-between">
+                    <Link href="/">
+                        <ApplicationLogo className="block h-10 w-auto fill-current" />
+                    </Link>
+                    {/* ปุ่มเปิด/ปิดเมนู */}
+                    <button
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="text-white text-3xl focus:outline-none">
+                        <i className="fas fa-bars"></i>
+                    </button>
                 </div>
 
-                {/* Responsive Navigation Menu */}
-                {open && (
-                    <div className="block sm:hidden">
-                        {/* <div className="pt-2 pb-3 space-y-1">
-                         <ResponsiveNavLink
+                {/* แสดงเมนูเฉพาะเมื่อ isMenuOpen เป็น true */}
+                {isMenuOpen && (
+                    <nav className="text-white text-base font-semibold pt-3 ">
+                        <MenuItem
                             href="/dashboard"
-                            active={router.pathname === '/'}>
-                            หน้าหลัก
-                        </ResponsiveNavLink>
-                    </div> */}
-
-                        {/* Responsive Settings Options */}
-                        <div className="pt-4 pb-1 border-t border-gray-200">
-                            <div className="flex items-center px-4">
-                                <div className="flex-shrink-0">
-                                    <div className="avatar">
-                                        <div className="w-9 h-9 mask mask-squircle">
-                                            <img
-                                                src={profile?.avatar}
-                                                alt="Profile Photo"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="ml-3">
-                                    <div className="font-medium text-base text-gray-800">
-                                        {user?.name}
-                                        <div
-                                            className={`badge badge-${badgeProps.color} badge-outline mx-1 text-xs font-semibold`}>
-                                            {badgeProps.text}
-                                        </div>
-                                    </div>
-                                    <div className="font-medium text-sm text-gray-500">
-                                        {user?.email}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mt-3 space-y-1">
-                                {/* Authentication */}
-                                <ResponsiveNavButton onClick={handleLogout}>
-                                    <div className="flex items-center font-semibold rounded-box text-lg bg-red-600 text-white p-1 justify-center">
-                                        <FontAwesomeIcon
-                                            icon={faRightFromBracket}
-                                            className="mr-2 h-5 w-5"
-                                        />
-                                        ออกจากระบบ
-                                    </div>
-                                </ResponsiveNavButton>
-                            </div>
-                        </div>
-                    </div>
+                            icon={faNewspaper}
+                            label="ข่าวสาร"
+                        />
+                        {Number(profile?.type48) === 1 && (
+                            <MenuItem
+                                href="/48/worker"
+                                icon={faUsers}
+                                label="นาซ่า"
+                            />
+                        )}
+                        {Number(profile?.type82) === 1 && (
+                            <MenuItem
+                                href="/82/worker"
+                                icon={faUsers}
+                                label="ดีดีเมท"
+                            />
+                        )}
+                        {Number(profile?.typelaos) === 1 && (
+                            <MenuItem
+                                href="/laos/worker"
+                                icon={faUsers}
+                                label="ลาว"
+                            />
+                        )}
+                        {Number(profile?.typethai) === 1 && (
+                            <MenuItem
+                                href="/online/worker"
+                                icon={faUsers}
+                                label="ไทยออนไลน์"
+                            />
+                        )}
+                        <MenuItem
+                            href="/register/user"
+                            icon={faUserPlus}
+                            label="สมัครใหม่"
+                        />
+                        <MenuItem
+                            href="/test"
+                            icon={faFlaskVial}
+                            label="Function Test"
+                        />
+                        {Number(profile?.role) === 99 && (
+                            <>
+                                <MenuItem
+                                    href="/admincp"
+                                    onClick={() =>
+                                        setSettingsOpen(!settingsOpen)
+                                    }
+                                    icon={faGear}
+                                    label="ตั้งค่า"
+                                />
+                            </>
+                        )}
+                    </nav>
                 )}
-            </nav>
+            </header>
         </>
     )
 }

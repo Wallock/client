@@ -1,23 +1,29 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faUserGroup,
     faNewspaper,
     faGear,
     faUsers,
     faUserPlus,
     faFlaskVial,
+    faInbox,
 } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import ApplicationLogo from '@/components/ApplicationLogo'
 
 const MenuItem = ({ href, icon, label }) => {
     const router = useRouter()
     const isActive = router.pathname === href
 
     return (
-        <Link href={href} className={`px-4 ${isActive ? 'active' : ''}`}>
-            <div className="lg:inline-block hidden h-full">
+        <Link href={href}>
+            <div
+                className={`flex items-center justify-start mx-2 my-1 px-4 py-3 ${
+                    isActive
+                        ? 'bg-blue-900 text-white rounded-xl'
+                        : 'hover:bg-blue-700 text-gray-200 rounded-xl'
+                } transition-all duration-200`}>
                 <div className="flex items-center justify-center">
                     <FontAwesomeIcon icon={icon} className="mr-4 h-8 w-8" />
                     <p className="text-xl">{label}</p>
@@ -36,134 +42,66 @@ const MenuNav = ({ profile }) => {
     const [settingsOpen, setSettingsOpen] = useState(false)
 
     return (
-        <div className="w-1/6 h-screen fixed bg-white lg:p-3 p-0 lg:overflow-y-auto overflow-hidden lg:border-r-0 border-r">
-            <ul className="menu mb-3 m-0 p-0 text-gray-600">
-                <li className="py-1">
-                    <MenuItem
-                        href="/dashboard"
-                        icon={faNewspaper}
-                        label="ข่าวสาร"
-                    />
-                </li>
+        <aside className="relative bg-blue-600 h-screen w-64 hidden sm:block shadow-xl">
+            <div className="p-6">
+                {/* Logo */}
+                <div className="flex items-center justify-center">
+                    <Link href="/">
+                        <ApplicationLogo className="block h-10 w-auto fill-current" />
+                    </Link>
+                </div>
+                <Link
+                    href="/register/user"
+                    className="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-xl shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+                    <FontAwesomeIcon icon={faUserPlus} className="mr-3" />{' '}
+                    สมัครใหม่
+                </Link>
+            </div>
+            <nav className="text-white text-base font-semibold pt-3">
+                <MenuItem
+                    href="/dashboard"
+                    icon={faNewspaper}
+                    label="ข่าวสาร"
+                />
                 {Number(profile?.type48) === 1 && (
-                    <li className="py-1">
-                        <MenuItem
-                            href="/48/worker"
-                            icon={faUsers}
-                            label="นาซ่า"
-                        />
-                    </li>
+                    <MenuItem href="/48/worker" icon={faUsers} label="นาซ่า" />
                 )}
                 {Number(profile?.type82) === 1 && (
-                    <li className="py-1">
-                        <MenuItem
-                            href="/82/worker"
-                            icon={faUsers}
-                            label="ดีดีเมท"
-                        />
-                    </li>
+                    <MenuItem
+                        href="/82/worker"
+                        icon={faUsers}
+                        label="ดีดีเมท"
+                    />
                 )}
                 {Number(profile?.typelaos) === 1 && (
-                    <li className="py-1">
-                        <MenuItem
-                            href="/laos/worker"
-                            icon={faUsers}
-                            label="ลาว"
-                        />
-                    </li>
+                    <MenuItem href="/laos/worker" icon={faUsers} label="ลาว" />
                 )}
                 {Number(profile?.typethai) === 1 && (
-                    <li className="py-1">
-                        <MenuItem
-                            href="/online/worker"
-                            icon={faUsers}
-                            label="ไทยออนไลน์"
-                        />
-                    </li>
+                    <MenuItem
+                        href="/online/worker"
+                        icon={faUsers}
+                        label="ไทยออนไลน์"
+                    />
                 )}
-                <li className="py-1">
-                    <MenuItem
-                        href="/register/user"
-                        icon={faUserPlus}
-                        label="สมัครใหม่"
-                    />
-                </li>
-                <li className="py-1 text-red-500">
-                    <MenuItem
-                        href="/test"
-                        icon={faFlaskVial}
-                        label="Function Test"
-                    />
-                </li>
+                <MenuItem href="/test" icon={faFlaskVial} label="ทดสอบ" />
                 {Number(profile?.role) === 99 && (
-                    <li className="pb-1 lg:inline-block hidden">
-                        <div
-                            className={`lg:inline-block hidden w-full cursor-pointer ${
-                                settingsOpen ? 'open' : ''
-                            }`}
-                            onClick={() => setSettingsOpen(!settingsOpen)}>
-                            <div className="flex items-center justify-start">
-                                <FontAwesomeIcon
-                                    icon={faGear}
-                                    className="mr-4 h-8 w-8 text-blue-500"
-                                />
-                                <p className="text-xl">ตั้งค่า</p>
-                            </div>
-                            {settingsOpen && (
-                                <ul className="mt-2">
-                                    <li>
-                                        <Link href="/settings/users">
-                                            ผู้ใช้งาน
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/settings/system">
-                                            ตั้งค่าระบบ
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/settings/announcements">
-                                            ประกาศ
-                                        </Link>
-                                    </li>
-                                </ul>
-                            )}
-                        </div>
-                        <div
-                            className="lg:hidden inline-blocks px-4 "
-                            onClick={() => setSettingsOpen(!settingsOpen)}>
-                            <div
-                                className="tooltip tooltip-bottom"
-                                data-tip="ตั้งค่า">
-                                <FontAwesomeIcon
-                                    icon={faGear}
-                                    className="h-8 w-8 text-blue-600"
-                                />
-                            </div>
-                            {settingsOpen && (
-                                <ul className="mt-2">
-                                    <li>
-                                        <Link href="/settings/users">
-                                            ผู้ใช้งาน
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/settings/system">
-                                            ตั้งค่าระบบ
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/settings/announcements">
-                                            ประกาศ
-                                        </Link>
-                                    </li>
-                                </ul>
-                            )}
-                        </div>
-                    </li>
+                    <>
+                        <MenuItem
+                            href="/admincp"
+                            onClick={() => setSettingsOpen(!settingsOpen)}
+                            icon={faGear}
+                            label="ตั้งค่า"
+                        />
+                    </>
                 )}
-            </ul>
-        </div>
+            </nav>
+            <a
+                href="#"
+                className="absolute w-full bottom-0 bg-blue-700 text-white text-shadow-sm flex items-center text-lg font-semibold justify-center py-4">
+                <FontAwesomeIcon icon={faInbox} className="me-3" />
+                ติดต่อทีมซับพอต
+            </a>
+        </aside>
     )
 }
 

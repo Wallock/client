@@ -158,6 +158,10 @@ ul {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
 
+  .text-shadow-sm {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
   .text-shadow-lg {
     @apply text-4xl font-bold;
     text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);

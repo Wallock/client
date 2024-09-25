@@ -71,6 +71,10 @@ export default function RegistrationForm() {
     const [alcohol, setAlcohol] = useState('')
     const [motionSickness, setMotionSickness] = useState('')
 
+    const [worker_skill_food, setworker_skill_food] = useState('')
+    const [worker_skill_foodlevel, setworker_skill_foodlevel] = useState('')
+    const [worker_skill_fooddetail, setworker_skill_fooddetail] = useState('')
+
     // Step 4: Work History
     const [workHistory, setWorkHistory] = useState([
         { companyName: '', position: '', workDetails: '', duration: '' },
@@ -175,6 +179,44 @@ export default function RegistrationForm() {
         formData.append('ppcardexp', passportExpiry)
         formData.append('visacardexp', visaExpiry)
 
+        formData.append('worker_namelist', hasWorkPermit)
+
+        formData.append('worker_smalldog', fearSmallPets)
+        formData.append('worker_bigdog', fearBigPets)
+
+        formData.append('worker_duo', jobCode || '-')
+        formData.append('worker_sick', illness)
+        formData.append('worker_sick_detail', illnessDetails || '-')
+
+        formData.append('worker_verysick', seriousIllness)
+        formData.append('worker_verysick_detail', seriousIllnessDetails || '-')
+
+        formData.append('worker_landth_talk', thaiSpeaking)
+        formData.append('worker_landth_view', thaiReading)
+        formData.append('worker_landth_write', thaiWriting)
+
+        formData.append('worker_landen_talk', englishSpeaking)
+        formData.append('worker_landen_view', englishReading)
+        formData.append('worker_landen_write', englishWriting)
+
+        formData.append('worker_landother', otherLanguage)
+
+        formData.append('worker_drinksmork', alcohol)
+        formData.append('worker_boathunk', motionSickness)
+
+        formData.append('worker_skill1', bikeSkill)
+        formData.append('worker_skill2', motorcycleSkill)
+        formData.append('worker_skill3', carSkill)
+
+        formData.append('worker_skill_food', worker_skill_food)
+        formData.append('worker_skill_foodlevel', worker_skill_foodlevel)
+        formData.append(
+            'worker_skill_fooddetail',
+            worker_skill_fooddetail || '-',
+        )
+
+        formData.append('worker_baby', children)
+
         formData.append('covidanti', vaccinationNo) // ใช้ vaccinationNo เป็น covidanti
         formData.append('knownews', source) // แหล่งข่าว knownews
         formData.append('detailother', note) // ข้อมูลเพิ่มเติม
@@ -216,6 +258,24 @@ export default function RegistrationForm() {
 
             // ตรวจสอบว่า response สำเร็จหรือไม่
             if (!response.ok) {
+                // ลองดึงข้อมูล error message จาก API response
+                const errorData = await response.text()
+                console.log(errorData) // แสดงข้อผิดพลาดใน console
+                let errorMessage = 'Unknown error'
+
+                // ตรวจสอบว่ามี error message ที่ API ส่งกลับมาหรือไม่
+                if (errorData && errorData.errors) {
+                    // สร้างข้อความ error โดยการรวม field และ message
+                    errorMessage = Object.entries(errorData.errors)
+                        .map(
+                            ([field, message]) =>
+                                `${field}: ${message.join(', ')}`,
+                        )
+                        .join('\n')
+                }
+
+                // แสดงข้อผิดพลาดใน alert
+                alert(`Error: ${errorMessage}`)
                 throw new Error(`HTTP error! status: ${response.status}`)
             }
 
@@ -281,7 +341,7 @@ export default function RegistrationForm() {
     }
     const [errorFields, setErrorFields] = useState({})
     const provinceOptions = provinces.map(province => ({
-        value: province.name_th,
+        value: province.id,
         label: province.name_th,
     }))
     const validateStep = () => {
@@ -513,7 +573,7 @@ export default function RegistrationForm() {
                                         className="select select-bordered">
                                         <option disabled>กรุณาเลือก</option>
                                         <option value="1">ชาย</option>
-                                        <option value="0">หญิง</option>
+                                        <option value="2">หญิง</option>
                                     </select>
                                 </div>
                                 <div className="form-control">
@@ -667,10 +727,10 @@ export default function RegistrationForm() {
                                         className="select select-bordered">
                                         <option disabled>กรุณาเลือก</option>
                                         <option value="1">โสด</option>
-                                        <option value="2">มีแฟน</option>
-                                        <option value="3">แต่งงาน</option>
-                                        <option value="4">ม่าย</option>
-                                        <option value="5">แยกทาง</option>
+                                        <option value="5">มีแฟน</option>
+                                        <option value="2">แต่งงาน</option>
+                                        <option value="3">ม่าย</option>
+                                        <option value="4">แยกทาง</option>
                                     </select>
                                 </div>
                                 <div className="form-control">
@@ -719,7 +779,7 @@ export default function RegistrationForm() {
                                         {provinces.map((province, index) => (
                                             <option
                                                 key={index}
-                                                value={province.name_th}>
+                                                value={province.id}>
                                                 {province.name_th}
                                             </option>
                                         ))}
@@ -767,8 +827,8 @@ export default function RegistrationForm() {
                                             <input
                                                 type="radio"
                                                 name="canTravel"
-                                                value="ได้"
-                                                checked={canTravel === 'ได้'}
+                                                value="1"
+                                                checked={canTravel === '1'}
                                                 onChange={e =>
                                                     setCanTravel(e.target.value)
                                                 }
@@ -782,8 +842,8 @@ export default function RegistrationForm() {
                                             <input
                                                 type="radio"
                                                 name="canTravel"
-                                                value="ไม่ได้"
-                                                checked={canTravel === 'ไม่ได้'}
+                                                value="2"
+                                                checked={canTravel === '2'}
                                                 onChange={e =>
                                                     setCanTravel(e.target.value)
                                                 }
@@ -802,10 +862,8 @@ export default function RegistrationForm() {
                                             <input
                                                 type="radio"
                                                 name="workType"
-                                                value="อยู่ประจำ"
-                                                checked={
-                                                    workType === 'อยู่ประจำ'
-                                                }
+                                                value="1"
+                                                checked={workType === '1'}
                                                 onChange={e =>
                                                     setWorkType(e.target.value)
                                                 }
@@ -819,8 +877,8 @@ export default function RegistrationForm() {
                                             <input
                                                 type="radio"
                                                 name="workType"
-                                                value="ไป/กลับ"
-                                                checked={workType === 'ไป/กลับ'}
+                                                value="2"
+                                                checked={workType === '2'}
                                                 onChange={e =>
                                                     setWorkType(e.target.value)
                                                 }
@@ -854,10 +912,9 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="thaiSpeaking"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
-                                                            thaiSpeaking ===
-                                                            'ได้'
+                                                            thaiSpeaking === '1'
                                                         }
                                                         onChange={e =>
                                                             setThaiSpeaking(
@@ -874,11 +931,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="thaiSpeaking"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            thaiSpeaking ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setThaiSpeaking(
                                                                 e.target.value,
@@ -901,10 +954,9 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="thaiReading"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
-                                                            thaiReading ===
-                                                            'ได้'
+                                                            thaiReading === '1'
                                                         }
                                                         onChange={e =>
                                                             setThaiReading(
@@ -921,11 +973,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="thaiReading"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            thaiReading ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             thaiReading(
                                                                 e.target.value,
@@ -948,10 +996,9 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="thaiWriting"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
-                                                            thaiWriting ===
-                                                            'ได้'
+                                                            thaiWriting === '1'
                                                         }
                                                         onChange={e =>
                                                             setThaiWriting(
@@ -968,11 +1015,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="thaiWriting"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            thaiWriting ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setThaiWriting(
                                                                 e.target.value,
@@ -997,10 +1040,10 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="englishSpeaking"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
                                                             englishSpeaking ===
-                                                            'ได้'
+                                                            '1'
                                                         }
                                                         onChange={e =>
                                                             setEnglishSpeaking(
@@ -1017,11 +1060,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="englishSpeaking"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            englishSpeaking ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setEnglishSpeaking(
                                                                 e.target.value,
@@ -1044,10 +1083,10 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="englishReading"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
                                                             englishReading ===
-                                                            'ได้'
+                                                            '1'
                                                         }
                                                         onChange={e =>
                                                             setEnglishReading(
@@ -1064,11 +1103,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="englishReading"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            englishReading ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setEnglishReading(
                                                                 e.target.value,
@@ -1091,10 +1126,10 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="englishWriting"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
                                                             englishWriting ===
-                                                            'ได้'
+                                                            '1'
                                                         }
                                                         onChange={e =>
                                                             setEnglishWriting(
@@ -1111,11 +1146,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="englishWriting"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            englishWriting ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setEnglishWriting(
                                                                 e.target.value,
@@ -1149,6 +1180,103 @@ export default function RegistrationForm() {
                                     </div>
                                 </div>
 
+                                {/* การทำอาหาร */}
+                                <div className="card bg-base-100 border-2 border-gray-200 shadow-md p-4">
+                                    <h2 className="text-lg font-semibold mb-4">
+                                        ทักษะการทำอาหาร
+                                    </h2>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ทำอาหารไทย
+                                            </label>
+                                            <div className="flex space-x-4">
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="worker_skill_food"
+                                                        value="1"
+                                                        checked={
+                                                            worker_skill_food ===
+                                                            '1'
+                                                        }
+                                                        onChange={e =>
+                                                            setworker_skill_food(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ได้
+                                                    </span>
+                                                </label>
+                                                <label className="label cursor-pointer">
+                                                    <input
+                                                        type="radio"
+                                                        name="worker_skill_food"
+                                                        value="0"
+                                                        onChange={e =>
+                                                            setworker_skill_food(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="radio me-2"
+                                                    />
+                                                    <span className="label-text">
+                                                        ไม่ได้
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ระดับการทำอาหาร
+                                            </label>
+                                            <select
+                                                value={worker_skill_foodlevel}
+                                                onChange={e =>
+                                                    setworker_skill_foodlevel(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="select select-bordered">
+                                                <option disabled>
+                                                    กรุณาเลือก
+                                                </option>
+                                                <option value="0">
+                                                    ไม่ได้เลย
+                                                </option>
+                                                <option value="1">
+                                                    ได้เบื้องต้น
+                                                </option>
+                                                <option value="2">
+                                                    ได้ตามสั่ง
+                                                </option>
+                                                <option value="3">
+                                                    ร้านอาหาร
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div className="form-control">
+                                            <label className="label">
+                                                ระบุตัวอย่างอาหารที่ทำได้
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={worker_skill_fooddetail}
+                                                onChange={e =>
+                                                    setworker_skill_fooddetail(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                className="input input-bordered"
+                                                placeholder="โปรดระบุ"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
                                 {/* โซนขับขี่ */}
                                 <div className="card bg-base-100 border-2 border-gray-200 shadow-md p-4">
                                     <h2 className="text-lg font-semibold mb-4">
@@ -1164,9 +1292,9 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="bikeSkill"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
-                                                            bikeSkill === 'ได้'
+                                                            bikeSkill === '1'
                                                         }
                                                         onChange={e =>
                                                             setBikeSkill(
@@ -1183,11 +1311,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="bikeSkill"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            bikeSkill ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setBikeSkill(
                                                                 e.target.value,
@@ -1210,10 +1334,10 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="motorcycleSkill"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
                                                             motorcycleSkill ===
-                                                            'ได้'
+                                                            '1'
                                                         }
                                                         onChange={e =>
                                                             setMotorcycleSkill(
@@ -1230,11 +1354,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="motorcycleSkill"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            motorcycleSkill ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setMotorcycleSkill(
                                                                 e.target.value,
@@ -1257,9 +1377,9 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="carSkill"
-                                                        value="ได้"
+                                                        value="1"
                                                         checked={
-                                                            carSkill === 'ได้'
+                                                            carSkill === '1'
                                                         }
                                                         onChange={e =>
                                                             setCarSkill(
@@ -1276,11 +1396,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="carSkill"
-                                                        value="ไม่ได้"
-                                                        checked={
-                                                            carSkill ===
-                                                            'ไม่ได้'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setCarSkill(
                                                                 e.target.value,
@@ -1313,9 +1429,9 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="illness"
-                                                        value="มี"
+                                                        value="1"
                                                         checked={
-                                                            illness === 'มี'
+                                                            illness === '1'
                                                         }
                                                         onChange={e =>
                                                             setIllness(
@@ -1332,10 +1448,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="illness"
-                                                        value="ไม่มี"
-                                                        checked={
-                                                            illness === 'ไม่มี'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setIllness(
                                                                 e.target.value,
@@ -1349,7 +1462,7 @@ export default function RegistrationForm() {
                                                 </label>
                                             </div>
                                         </div>
-                                        {illness === 'มี' && (
+                                        {illness === '1' && (
                                             <div className="form-control col-span-2">
                                                 <label className="label">
                                                     ระบุโรคประจำตัว
@@ -1377,10 +1490,10 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="seriousIllness"
-                                                        value="เคย"
+                                                        value="1"
                                                         checked={
                                                             seriousIllness ===
-                                                            'เคย'
+                                                            '1'
                                                         }
                                                         onChange={e =>
                                                             setSeriousIllness(
@@ -1397,11 +1510,7 @@ export default function RegistrationForm() {
                                                     <input
                                                         type="radio"
                                                         name="seriousIllness"
-                                                        value="ไม่เคย"
-                                                        checked={
-                                                            seriousIllness ===
-                                                            'ไม่เคย'
-                                                        }
+                                                        value="0"
                                                         onChange={e =>
                                                             setSeriousIllness(
                                                                 e.target.value,
@@ -1415,7 +1524,7 @@ export default function RegistrationForm() {
                                                 </label>
                                             </div>
                                         </div>
-                                        {seriousIllness === 'เคย' && (
+                                        {seriousIllness === '1' && (
                                             <div className="form-control col-span-2">
                                                 <label className="label">
                                                     ระบุการป่วยหนัก
@@ -1451,10 +1560,8 @@ export default function RegistrationForm() {
                                                 <option disabled>
                                                     กรุณาเลือก
                                                 </option>
-                                                <option value="กลัว">
-                                                    กลัว
-                                                </option>
-                                                <option value="ไม่กลัว">
+                                                <option value="1">กลัว</option>
+                                                <option value="0">
                                                     ไม่กลัว
                                                 </option>
                                             </select>
@@ -1474,10 +1581,8 @@ export default function RegistrationForm() {
                                                 <option disabled>
                                                     กรุณาเลือก
                                                 </option>
-                                                <option value="กลัว">
-                                                    กลัว
-                                                </option>
-                                                <option value="ไม่กลัว">
+                                                <option value="1">กลัว</option>
+                                                <option value="0">
                                                     ไม่กลัว
                                                 </option>
                                             </select>
@@ -1497,13 +1602,13 @@ export default function RegistrationForm() {
                                                 <option disabled>
                                                     กรุณาเลือก
                                                 </option>
-                                                <option value="ไม่สนใจเลย">
+                                                <option value="0">
                                                     ไม่สนใจเลย
                                                 </option>
-                                                <option value="มีบางครั้ง">
+                                                <option value="2">
                                                     มีบางครั้ง
                                                 </option>
-                                                <option value="ขาดไม่ได้">
+                                                <option value="1">
                                                     ขาดไม่ได้
                                                 </option>
                                             </select>
@@ -1525,10 +1630,10 @@ export default function RegistrationForm() {
                                                 <option disabled>
                                                     กรุณาเลือก
                                                 </option>
-                                                <option value="ไม่เมา">
+                                                <option value="0">
                                                     ไม่เมา
                                                 </option>
-                                                <option value="เมา">เมา</option>
+                                                <option value="1">เมา</option>
                                             </select>
                                         </div>
                                     </div>

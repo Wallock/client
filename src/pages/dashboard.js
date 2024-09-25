@@ -14,7 +14,6 @@ const Plyr = dynamic(() => import('plyr-react'), { ssr: false }) // Load Plyr on
 const mainVideoSrc = {
     type: 'video',
     title: 'Example Title',
-    poster: '/path/to/poster.jpg',
     sources: [
         {
             src: '/ads/ads.mp4',
@@ -103,180 +102,164 @@ export default function dashboard() {
 
     return (
         <AppLayout>
-            <div className="w-full p-3">
-                <div className="flex items-center justify-center flex-wrap gap-4">
-                    <div className="stats stats-vertical lg:stats-horizontal w-full shadow-lg">
-                        <div className="stat">
-                            <div className="stat-figure text-blue-500">
-                                <FontAwesomeIcon
-                                    icon={faServer}
-                                    className="fa-2xl"
-                                />
-                            </div>
-                            <div className="stat-title text-sm">
-                                เซิฟเวอร์ NASA
-                            </div>
-                            <div className="stat-value text-success">
-                                {loading ? (
-                                    <div className="skeleton h-6 w-16"></div>
-                                ) : (
-                                    databeta
-                                )}
-                            </div>
-                            <div className="stat-desc">ทั้งหมด : 05 Record</div>
+            <div>
+                <div className="stats stats-vertical lg:stats-horizontal w-full shadow-lg">
+                    <div className="stat">
+                        <div className="stat-figure text-blue-500">
+                            <FontAwesomeIcon
+                                icon={faServer}
+                                className="fa-2xl"
+                            />
                         </div>
-
-                        <div className="stat">
-                            <div className="stat-figure text-blue-500">
-                                <FontAwesomeIcon
-                                    icon={faServer}
-                                    className="fa-2xl"
-                                />
-                            </div>
-                            <div className="stat-title text-sm">
-                                เซิฟเวอร์ DDMaid
-                            </div>
-                            <div className="stat-value text-success">
-                                {loading ? (
-                                    <div className="skeleton h-6 w-16"></div>
-                                ) : (
-                                    datadd
-                                )}
-                            </div>
-                            <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                        <div className="stat-title text-sm">เซิฟเวอร์ NASA</div>
+                        <div className="stat-value text-success">
+                            {loading ? (
+                                <div className="skeleton h-6 w-16"></div>
+                            ) : (
+                                databeta
+                            )}
                         </div>
+                        <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                    </div>
 
-                        <div className="stat">
-                            <div className="stat-figure text-blue-500">
-                                <FontAwesomeIcon
-                                    icon={faServer}
-                                    className="fa-2xl"
-                                />
-                            </div>
-                            <div className="stat-title text-sm">
-                                เซิฟเวอร์ Laos
-                            </div>
-                            <div className="stat-value text-success">
-                                {loading ? (
-                                    <div className="skeleton h-6 w-16"></div>
-                                ) : (
-                                    datalaos
-                                )}
-                            </div>
-                            <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                    <div className="stat">
+                        <div className="stat-figure text-blue-500">
+                            <FontAwesomeIcon
+                                icon={faServer}
+                                className="fa-2xl"
+                            />
                         </div>
+                        <div className="stat-title text-sm">
+                            เซิฟเวอร์ DDMaid
+                        </div>
+                        <div className="stat-value text-success">
+                            {loading ? (
+                                <div className="skeleton h-6 w-16"></div>
+                            ) : (
+                                datadd
+                            )}
+                        </div>
+                        <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                    </div>
 
-                        <div className="stat">
-                            <div className="stat-figure text-blue-500">
-                                <FontAwesomeIcon
-                                    icon={faServer}
-                                    className="fa-2xl"
-                                />
-                            </div>
-                            <div className="stat-title text-sm">
-                                เซิฟเวอร์ ThaiOnline
-                            </div>
-                            <div className="stat-value text-success">
-                                {loading ? (
-                                    <div className="skeleton h-6 w-16"></div>
-                                ) : (
-                                    datathai
-                                )}
-                            </div>
-                            <div className="stat-desc">ทั้งหมด : 50 Record</div>
+                    <div className="stat">
+                        <div className="stat-figure text-blue-500">
+                            <FontAwesomeIcon
+                                icon={faServer}
+                                className="fa-2xl"
+                            />
+                        </div>
+                        <div className="stat-title text-sm">เซิฟเวอร์ Laos</div>
+                        <div className="stat-value text-success">
+                            {loading ? (
+                                <div className="skeleton h-6 w-16"></div>
+                            ) : (
+                                datalaos
+                            )}
+                        </div>
+                        <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                    </div>
+
+                    <div className="stat">
+                        <div className="stat-figure text-blue-500">
+                            <FontAwesomeIcon
+                                icon={faServer}
+                                className="fa-2xl"
+                            />
+                        </div>
+                        <div className="stat-title text-sm">
+                            เซิฟเวอร์ ThaiOnline
+                        </div>
+                        <div className="stat-value text-success">
+                            {loading ? (
+                                <div className="skeleton h-6 w-16"></div>
+                            ) : (
+                                datathai
+                            )}
+                        </div>
+                        <div className="stat-desc">ทั้งหมด : 50 Record</div>
+                    </div>
+                </div>
+
+                <div className="hero text-gray-300">
+                    <div className="hero-content my-3">
+                        <div className="text-center p-3">
+                            <h1 className="text-5xl font-bold font-2 m-0">
+                                Welcome Back
+                            </h1>
+                            <p className="font-1 font-semibold">
+                                ระบบจัดการพนักงานและองค์กรภายใน
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mockup-browser w-full shadow-lg border bg-base-300">
+                    <div className="mockup-browser-toolbar">
+                        <div className="input font-2 font-semibold">
+                            ข่าวสาร & อัพเดทล่าสุด
                         </div>
                     </div>
 
-                    <div className="hero text-gray-300">
-                        <div className="hero-content my-3">
-                            <div className="text-center p-3">
-                                <h1 className="text-3xl font-bold font-2 m-0">
-                                    Welcome Back
-                                </h1>
-                                <p className="font-1 font-semibold">
-                                    ระบบจัดการพนักงานและองค์กรภายใน
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="relative size-full lg:size-1/2 overflow-hidden rounded-lg shadow-lg">
-                        <Plyr source={mainVideoSrc} options={options} />
-                    </div>
-
-                    <div className="mockup-browser w-full shadow-lg border bg-base-300">
-                        <div className="mockup-browser-toolbar">
-                            <div className="input font-2 font-semibold">
-                                ข่าวสาร & อัพเดทล่าสุด
-                            </div>
-                        </div>
-
-                        <div className="card bg-base-100 px-4 m-2">
-                            <ul
-                                role="list"
-                                className="divide-y divide-gray-100">
-                                {loading
-                                    ? Array.from({ length: itemsPerPage }).map(
-                                          (_, index) => (
-                                              <li
-                                                  key={index}
-                                                  className="flex justify-between items-center gap-x-6 py-2">
-                                                  <div className="skeleton h-4 w-full"></div>
-                                              </li>
-                                          ),
-                                      )
-                                    : currentItems.map(announcement => (
+                    <div className="card bg-base-100 px-4 m-2">
+                        <ul role="list" className="divide-y divide-gray-100">
+                            {loading
+                                ? Array.from({ length: itemsPerPage }).map(
+                                      (_, index) => (
                                           <li
-                                              key={announcement.id}
-                                              className="flex justify-between items-center gap-x-6 py-2"
-                                              onClick={() =>
-                                                  setSelectedAnnouncement(
-                                                      announcement,
-                                                  )
-                                              }>
-                                              <p className="font-semibold">
-                                                  <FontAwesomeIcon
-                                                      icon={faEnvelope}
-                                                      className="me-2"
-                                                  />
-                                                  {announcement.title}
-                                                  <Label className="text-xs">
-                                                      อัพเดทเมื่อ :
-                                                      {formatDate(
-                                                          announcement.created_at,
-                                                      )}
-                                                  </Label>
-                                              </p>
-                                              <div className="btn text-sm text-gray-600">
-                                                  <FontAwesomeIcon
-                                                      icon={faEye}
-                                                  />
-                                              </div>
+                                              key={index}
+                                              className="flex justify-between items-center gap-x-6 py-2">
+                                              <div className="skeleton h-4 w-full"></div>
                                           </li>
-                                      ))}
-                            </ul>
+                                      ),
+                                  )
+                                : currentItems.map(announcement => (
+                                      <li
+                                          key={announcement.id}
+                                          className="flex justify-between items-center gap-x-6 py-2"
+                                          onClick={() =>
+                                              setSelectedAnnouncement(
+                                                  announcement,
+                                              )
+                                          }>
+                                          <p className="font-semibold">
+                                              <FontAwesomeIcon
+                                                  icon={faEnvelope}
+                                                  className="me-2"
+                                              />
+                                              {announcement.title}
+                                              <Label className="text-xs">
+                                                  อัพเดทเมื่อ :
+                                                  {formatDate(
+                                                      announcement.created_at,
+                                                  )}
+                                              </Label>
+                                          </p>
+                                          <div className="btn text-sm text-gray-600">
+                                              <FontAwesomeIcon icon={faEye} />
+                                          </div>
+                                      </li>
+                                  ))}
+                        </ul>
 
-                            <div className="flex justify-center my-2">
-                                {Array.from(
-                                    { length: totalPages },
-                                    (_, index) => (
-                                        <button
-                                            key={index + 1}
-                                            className={`btn btn-sm mx-1 ${
-                                                currentPage === index + 1
-                                                    ? 'btn-active'
-                                                    : ''
-                                            }`}
-                                            onClick={() => paginate(index + 1)}>
-                                            {index + 1}
-                                        </button>
-                                    ),
-                                )}
-                            </div>
+                        <div className="flex justify-center my-2">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <button
+                                    key={index + 1}
+                                    className={`btn btn-sm mx-1 ${
+                                        currentPage === index + 1
+                                            ? 'btn-active'
+                                            : ''
+                                    }`}
+                                    onClick={() => paginate(index + 1)}>
+                                    {index + 1}
+                                </button>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
+
             {selectedAnnouncement && (
                 <div className="modal modal-open">
                     <div className="modal-box">
