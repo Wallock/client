@@ -102,7 +102,7 @@ export default function dashboard() {
 
     return (
         <AppLayout>
-            <div>
+            <div className="w-full p-5">
                 <div className="stats stats-vertical lg:stats-horizontal w-full shadow-lg">
                     <div className="stat">
                         <div className="stat-figure text-blue-500">

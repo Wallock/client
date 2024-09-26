@@ -57,18 +57,7 @@ const AppLayout = ({ children }) => {
                 <div className="relative w-full flex flex-col h-screen overflow-y-hidden">
                     <Navigation user={user} profile={profile} />
                     <div className="w-full h-screen overflow-x-hidden border-t flex flex-col">
-                        <main className="w-full flex-grow p-6">{children}</main>
-
-                        <footer className="w-full bg-white text-right p-4">
-                            Dev by{' '}
-                            <a
-                                target="_blank"
-                                href="https://www.wb.in.th"
-                                className="underline">
-                                Wallock
-                            </a>
-                            .
-                        </footer>
+                        <main className="w-full flex-grow">{children}</main>
                     </div>
                 </div>
             </div>

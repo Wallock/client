@@ -1,5 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-
+import daisyui from 'daisyui'
 module.exports = {
     content: ['./src/**/*.js'],
     darkMode: 'media',
@@ -27,5 +27,6 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('daisyui'), // Combine plugins here
+        daisyui,
     ],
 }

@@ -265,32 +265,35 @@ export default function Home() {
 
     return (
         <AppLayout>
-            <SearchFilter
-                searchWorkerId={searchWorkerId}
-                handleSearchWorkerId={handleSearchWorkerId}
-                handleResetSearch={handleResetSearch}
-                setSearchWorkerId={setSearchWorkerId}
-                showOnlyTypeT={showOnlyTypeT}
-                showOnlyTypeC={showOnlyTypeC}
-                showOnlyTypeM={showOnlyTypeM}
-                showOnlyTypeL={showOnlyTypeL}
-                setShowOnlyTypeT={setShowOnlyTypeT}
-                setShowOnlyTypeC={setShowOnlyTypeC}
-                setShowOnlyTypeM={setShowOnlyTypeM}
-                setShowOnlyTypeL={setShowOnlyTypeL}
-                showOvernightt={showOvernightt}
-                showOvernightf={showOvernightf}
-                setShowOnlyOvernightt={setShowOnlyOvernightt}
-                setShowOnlyOvernightf={setShowOnlyOvernightf}
-                selectedStatus={selectedStatus}
-                setSelectedStatus={setSelectedStatus}
-                selectedJob={selectedJob}
-                setSelectedJob={setSelectedJob}
-                selectedZone={selectedZone}
-                setSelectedZone={setSelectedZone}
-                selectedOutside={selectedOutside}
-                setSelectedOutside={setSelectedOutside}
-            />
+            <div className="w-full">
+                <SearchFilter
+                    systemName={getname}
+                    searchWorkerId={searchWorkerId}
+                    handleSearchWorkerId={handleSearchWorkerId}
+                    handleResetSearch={handleResetSearch}
+                    setSearchWorkerId={setSearchWorkerId}
+                    showOnlyTypeT={showOnlyTypeT}
+                    showOnlyTypeC={showOnlyTypeC}
+                    showOnlyTypeM={showOnlyTypeM}
+                    showOnlyTypeL={showOnlyTypeL}
+                    setShowOnlyTypeT={setShowOnlyTypeT}
+                    setShowOnlyTypeC={setShowOnlyTypeC}
+                    setShowOnlyTypeM={setShowOnlyTypeM}
+                    setShowOnlyTypeL={setShowOnlyTypeL}
+                    showOvernightt={showOvernightt}
+                    showOvernightf={showOvernightf}
+                    setShowOnlyOvernightt={setShowOnlyOvernightt}
+                    setShowOnlyOvernightf={setShowOnlyOvernightf}
+                    selectedStatus={selectedStatus}
+                    setSelectedStatus={setSelectedStatus}
+                    selectedJob={selectedJob}
+                    setSelectedJob={setSelectedJob}
+                    selectedZone={selectedZone}
+                    setSelectedZone={setSelectedZone}
+                    selectedOutside={selectedOutside}
+                    setSelectedOutside={setSelectedOutside}
+                />
+            </div>
             {loading ? (
                 <div className="w-full p-3">
                     <div className="flex items-center justify-center flex-wrap gap-4">
@@ -307,22 +310,26 @@ export default function Home() {
                     </div>
                 </div>
             ) : (
-                <div className="w-full p-3">
-                    <div className="flex items-center justify-center flex-wrap gap-4">
-                        {filteredData.map(item => (
-                            <WorkerCard
-                                key={item.id}
-                                item={item}
-                                imageLoading={imageLoading}
-                                setImageLoading={setImageLoading}
-                                handleFreeButtonClick={handleFreeButtonClick}
-                                getBackgroundClass={getBackgroundClass}
-                                getFlagUrl={getFlagUrl}
-                                getfapi={f_url}
-                            />
-                        ))}
+                <>
+                    <div className="w-full my-3 p-3">
+                        <div className="flex items-center justify-center flex-wrap gap-4">
+                            {filteredData.map(item => (
+                                <WorkerCard
+                                    key={item.id}
+                                    item={item}
+                                    imageLoading={imageLoading}
+                                    setImageLoading={setImageLoading}
+                                    handleFreeButtonClick={
+                                        handleFreeButtonClick
+                                    }
+                                    getBackgroundClass={getBackgroundClass}
+                                    getFlagUrl={getFlagUrl}
+                                    getfapi={f_url}
+                                />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </>
             )}
             <Pagination
                 currentPage={currentPage}
