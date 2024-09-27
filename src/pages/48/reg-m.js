@@ -469,7 +469,7 @@ export default function RegistrationForm() {
                         </li>
                     </ul>
                 </div>
-                <div className="card bg-base-100 text-neutral shadow-xl">
+                <div className="card m-5 bg-base-100 text-neutral shadow-xl">
                     <div className="card-body">
                         <ToastContainer />
                         <div className="form-control my-0">

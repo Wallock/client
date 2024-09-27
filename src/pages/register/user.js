@@ -6,7 +6,7 @@ import Link from 'next/link'
 export default function user() {
     return (
         <AppLayout>
-            <div className="w-full">
+            <div className="w-full p-5">
                 <div
                     className="hero rounded-lg"
                     style={{

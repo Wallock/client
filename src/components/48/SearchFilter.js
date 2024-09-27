@@ -46,13 +46,15 @@ const SearchFilter = ({
                     {/* ไม่ใช้ collapse-class แต่ใช้การควบคุมด้วย state */}
                     <div className="relative mx-5">
                         {/* รูปทรงสี่เหลี่ยม ตัดสีฟ้า และแบบเฉียง */}
-                        <div className="absolute inset-0 bg-blue-600 transform -skew-x-12"></div>
+                        <div className="absolute inset-0 bg-blue-600 transform -skew-x-12">
+                            {' '}
+                        </div>
                         <div className="relative z-10 text-xl font-bold text-center text-white text-shadow-sm px-4 py-2">
                             <FontAwesomeIcon
                                 icon={faServer}
                                 className="fa-fw me-2"
                             />
-                            ระบบของ {systemName}
+                            {systemName}
                         </div>
                     </div>
                     <div className="bg-gray-100 border-2 rounded-box mx-5 p-2 shadow-md">

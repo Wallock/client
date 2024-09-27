@@ -1,9 +1,9 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useEffect, useState } from 'react'
-import SearchFilter from '@/components/laos/SearchFilter'
-import Pagination from '@/components/laos/Pagination'
-import WorkerCard from '@/components/laos/WorkerCard'
-import WorkerDetailsDrawer from '@/components/laos/WorkerDetailsDrawer'
+import SearchFilter from '@/components/48/SearchFilter'
+import Pagination from '@/components/48/Pagination'
+import WorkerCard from '@/components/48/WorkerCard'
+import WorkerDetailsDrawer from '@/components/48/WorkerDetailsDrawer'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useProfile } from '@/lib/ProfileContext'
@@ -32,6 +32,7 @@ export default function Home() {
     const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://laos.wb.in.th`
+    const getname = `laos`
 
     useEffect(() => {
         const checkUserStatus = () => {
@@ -254,6 +255,7 @@ export default function Home() {
     return (
         <AppLayout>
             <SearchFilter
+                systemName={getname}
                 searchWorkerId={searchWorkerId}
                 handleSearchWorkerId={handleSearchWorkerId}
                 handleResetSearch={handleResetSearch}
@@ -325,6 +327,7 @@ export default function Home() {
                 onClose={() => setDrawerOpen(false)}
                 workerId={selectedWorkerId}
                 getfapi={f_url}
+                getname={getname}
                 gettoken={token}
             />
         </AppLayout>

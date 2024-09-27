@@ -116,9 +116,52 @@ export default function Page() {
 
     const fetchLogData = async () => {
         try {
-            const logApiUrl = `${f_url}/api/logs_a?token=${token}&id=9M-01706`
+            // เรียกข้อมูล logs_a ก่อน
+            const logApiUrl = `${f_url}/api/logs_a?token=${token}&id=${router.query.id}`
             const logResponse = await axios.get(logApiUrl)
-            setLogData(logResponse.data)
+
+            // ดึง logData ทั้งหมดมา
+            const logs = logResponse.data
+
+            // ทำการสร้าง Promise.all เพื่อเรียก API /api/archives_info สำหรับแต่ละ logs_tmpsyid
+            const logDataWithInfo = await Promise.all(
+                logs.map(async log => {
+                    const archiveApiUrl = `${f_url}/api/archives_info?token=${token}&id=${log.logs_tmpsyid}`
+                    try {
+                        const archiveResponse = await axios.get(archiveApiUrl)
+
+                        // สมมติว่าผลลัพธ์เป็น array จึงใช้ index 0 ในการเข้าถึง sy_master_fullname
+                        const archiveInfo = archiveResponse.data[0] || {}
+
+                        return {
+                            ...log,
+                            sy_master_nickname:
+                                archiveInfo.sy_master_nickname || 'Unknown',
+                            sy_position: archiveInfo.sy_position || 'Unknown',
+                            sy_startdate: archiveInfo.sy_startdate || 'Unknown',
+                            sy_date: archiveInfo.sy_date || 'Unknown',
+                            sy_master_address:
+                                archiveInfo.sy_master_address || 'Unknown',
+                        }
+                    } catch (error) {
+                        console.error(
+                            `Failed to fetch archive info for tmpsyid ${log.logs_tmpsyid}`,
+                            error,
+                        )
+                        return {
+                            ...log,
+                            sy_master_nickname: 'Unknown', // แสดง Unknown เมื่อ API มีปัญหา
+                            sy_position: 'Unknown',
+                            sy_startdate: 'Unknown',
+                            sy_date: 'Unknown',
+                            sy_master_address: 'Unknown',
+                        }
+                    }
+                }),
+            )
+
+            // อัพเดต logData ด้วยข้อมูล sy_master_fullname ที่ดึงมาได้
+            setLogData(logDataWithInfo)
         } catch (error) {
             console.error('Failed to fetch log data', error)
         }
@@ -226,7 +269,7 @@ export default function Page() {
     return (
         <AppLayout>
             {loading ? (
-                <div className="w-full p-3">
+                <div className="w-full p-5">
                     <div className="flex items-center justify-center flex-wrap gap-4">
                         {[...Array(30)].map((_, index) => (
                             <div
@@ -241,11 +284,11 @@ export default function Page() {
                     </div>
                 </div>
             ) : (
-                <div className="bg-gray-100 p-0">
+                <div className="bg-gray-100 p-5">
                     {/* Header Section with Background Image */}
                     <div className="rounded-box bg-white shadow-lg mb-5 border">
                         <div className="rounded-box bg-white h-20 w-full relative sm:h-62">
-                            <div className="rounded-t-box absolute inset-0 w-full bg-gradient-to-bl from-slate-50 to-zinc-300">
+                            <div className="rounded-t-box absolute inset-0 w-full bg-gradient-to-bl from-blue-600 to-blue-400">
                                 {' '}
                             </div>
 
@@ -264,7 +307,7 @@ export default function Page() {
                                 })()}
                             </div>
 
-                            <h1 className="title-font m-0 font-extrabold text-center text-2xl drop-shadow flex justify-center items-center sm:text-5xl text-slate-900 opacity-30 pt-9 sm:pt-2 px-2 h-20">
+                            <h1 className="title-font m-0 font-extrabold text-center text-2xl drop-shadow flex justify-center items-center sm:text-5xl text-white opacity-30 pt-9 sm:pt-2 px-2 h-20">
                                 {data?.worker_id}
                             </h1>
                             {/* Profile Image */}
@@ -955,9 +998,9 @@ export default function Page() {
                                             </div>
                                             <div className="timeline-end timeline-box">
                                                 <p className="underline p-0">
-                                                    {log.logs_tmpsyid}
+                                                    {log.sy_position}
                                                 </p>
-                                                {log.logs_tmpsyid}
+                                                {log.sy_master_address}
                                             </div>
                                             <hr />
                                         </li>
