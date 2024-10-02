@@ -45,6 +45,10 @@ export function ProfileProvider({ children }) {
                     type82: data.type82,
                     typethai: data.typethai,
                     typelaos: data.typelaos,
+                    uid48: data.uid48,
+                    uid82: data.uid82,
+                    uidthai: data.uidthai,
+                    uidlaos: data.uidlaos,
                 })
             } catch (error) {
                 router.push('/login')

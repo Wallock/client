@@ -101,6 +101,7 @@ const Navigation = ({ user, profile }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
     const [announcement, setAnnouncement] = useState(null)
+    const [error, setError] = useState(null)
     useEffect(() => {
         const fetchAnnouncements = async () => {
             const token = localStorage.getItem('accessToken')

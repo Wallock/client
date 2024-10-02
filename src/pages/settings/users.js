@@ -10,9 +10,11 @@ import {
     faUserEdit,
     faKey,
     faUserLock,
+    faEyeSlash,
     faUserCircle,
     faTimesCircle,
     faUserShield,
+    faEye,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -29,6 +31,8 @@ export default function Users() {
     const [searchQuery, setSearchQuery] = useState('')
     const [lastUserCount, setLastUserCount] = useState(0)
     const itemsPerPage = 10 // Limit to 20 items per page
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
     useEffect(() => {
         fetchUsers()
@@ -85,7 +89,7 @@ export default function Users() {
             setUsers(response.data.data)
             setTotalPages(Math.ceil(response.data.total / itemsPerPage)) // Calculate total pages
         } catch (error) {
-            console.error('Error fetching users:', error)
+            //console.error('Error :', error)
         } finally {
             setLoading(false)
         }
@@ -112,7 +116,7 @@ export default function Users() {
                 fetchUsers() // ดึงข้อมูลใหม่
             }
         } catch (error) {
-            console.error('Error checking for updates:', error)
+            //console.error('Error checking for updates:', error)
         }
     }
 
@@ -126,6 +130,14 @@ export default function Users() {
         setModalData(data)
         setIsEditMode(!!data.id) // If data has an id, we are in edit mode
         setIsEditModalOpen(true)
+    }
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword)
     }
 
     const handleOpenPasswordModal = (data = {}) => {
@@ -170,6 +182,10 @@ export default function Users() {
                     type82: modalData.type82,
                     typethai: modalData.typethai,
                     typelaos: modalData.typelaos,
+                    uid48: modalData.uid48,
+                    uid82: modalData.uid82,
+                    uidthai: modalData.uidthai,
+                    uidlaos: modalData.uidlaos,
                 },
                 { headers },
             )
@@ -184,7 +200,7 @@ export default function Users() {
             fetchUsers() // Refresh the data
             handleCloseEditModal()
         } catch (error) {
-            console.error('Error saving user:', error)
+            //console.error('Error checking for updates:', error)
             toast.error('Failed to update user. Please try again.', {
                 position: 'top-right',
                 autoClose: 5000,
@@ -202,6 +218,17 @@ export default function Users() {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
         }
+        if (modalData.newPassword !== modalData.confirmPassword) {
+            toast.error('Passwords do not match!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+            return
+        }
         try {
             await axios.put(
                 `https://server.wb.in.th/api/users/${modalData.id}/reset-password`,
@@ -218,7 +245,7 @@ export default function Users() {
             })
             handleClosePasswordModal()
         } catch (error) {
-            console.error('Error resetting password:', error)
+            //console.error('Error checking for updates:', error)
             toast.error('Failed to reset password. Please try again.', {
                 position: 'top-right',
                 autoClose: 5000,
@@ -261,10 +288,10 @@ export default function Users() {
                 {loading ? (
                     <div className="w-full p-3">
                         <div className="flex items-center justify-center flex-wrap gap-4">
-                            <div className="skeleton h-32 w-full"></div>
-                            <div className="skeleton h-4 w-28"></div>
-                            <div className="skeleton h-4 w-full"></div>
-                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-32 w-full"> </div>
+                            <div className="skeleton h-4 w-28"> </div>
+                            <div className="skeleton h-4 w-full"> </div>
+                            <div className="skeleton h-4 w-full"> </div>
                         </div>
                     </div>
                 ) : (
@@ -427,7 +454,7 @@ export default function Users() {
                                 ชื่อผู้ใช้
                                 <input
                                     type="text"
-                                    className="grow"
+                                    className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
                                     placeholder="name"
                                     value={modalData.name || ''}
                                     onChange={e =>
@@ -492,6 +519,26 @@ export default function Users() {
                                     }
                                 />
                             </label>
+                            {modalData.type48 ? (
+                                <label className="input input-sm input-bordered flex items-center gap-2">
+                                    UID - 48
+                                    <input
+                                        type="number"
+                                        className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                        value={modalData.uid48 || ''}
+                                        onChange={e =>
+                                            setModalData({
+                                                ...modalData,
+                                                uid48: e.target.value,
+                                            })
+                                        }
+                                    />
+                                </label>
+                            ) : (
+                                <>
+                                    <hr />
+                                </>
+                            )}
                         </div>
                         <div className="mb-4 form-control">
                             <label className="cursor-pointer label">
@@ -510,6 +557,26 @@ export default function Users() {
                                     }
                                 />
                             </label>
+                            {modalData.type82 ? (
+                                <label className="input input-sm input-bordered flex items-center gap-2">
+                                    UID - 82
+                                    <input
+                                        type="number"
+                                        className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                        value={modalData.uid82 || ''}
+                                        onChange={e =>
+                                            setModalData({
+                                                ...modalData,
+                                                uid82: e.target.value,
+                                            })
+                                        }
+                                    />
+                                </label>
+                            ) : (
+                                <>
+                                    <hr />
+                                </>
+                            )}
                         </div>
                         <div className="mb-4 form-control">
                             <label className="cursor-pointer label">
@@ -528,6 +595,26 @@ export default function Users() {
                                     }
                                 />
                             </label>
+                            {modalData.typethai ? (
+                                <label className="input input-sm input-bordered flex items-center gap-2">
+                                    UID - Thai
+                                    <input
+                                        type="number"
+                                        className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                        value={modalData.uidthai || ''}
+                                        onChange={e =>
+                                            setModalData({
+                                                ...modalData,
+                                                uidthai: e.target.value,
+                                            })
+                                        }
+                                    />
+                                </label>
+                            ) : (
+                                <>
+                                    <hr />
+                                </>
+                            )}
                         </div>
                         <div className="mb-4 form-control">
                             <label className="cursor-pointer label">
@@ -544,6 +631,26 @@ export default function Users() {
                                     }
                                 />
                             </label>
+                            {modalData.typelaos ? (
+                                <label className="input input-sm input-bordered flex items-center gap-2">
+                                    UID - Laos
+                                    <input
+                                        type="number"
+                                        className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                        value={modalData.uidlaos || ''}
+                                        onChange={e =>
+                                            setModalData({
+                                                ...modalData,
+                                                uidlaos: e.target.value,
+                                            })
+                                        }
+                                    />
+                                </label>
+                            ) : (
+                                <>
+                                    <hr />
+                                </>
+                            )}
                         </div>
                         <div className="modal-action">
                             <button
@@ -573,9 +680,9 @@ export default function Users() {
                             <label className="input input-bordered flex items-center gap-2">
                                 Password
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder="Enter new password"
-                                    className="grow"
+                                    className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
                                     value={modalData.newPassword || ''}
                                     onChange={e =>
                                         setModalData({
@@ -584,6 +691,47 @@ export default function Users() {
                                         })
                                     }
                                 />
+                                <button
+                                    type="button"
+                                    className="ml-2"
+                                    onClick={togglePasswordVisibility}>
+                                    {showPassword ? (
+                                        <FontAwesomeIcon icon={faEyeSlash} />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faEye} />
+                                    )}
+                                </button>
+                            </label>
+                        </div>
+                        <div className="mb-4">
+                            <label className="input input-bordered flex items-center gap-2">
+                                Confirm Password
+                                <input
+                                    type={
+                                        showConfirmPassword
+                                            ? 'text'
+                                            : 'password'
+                                    }
+                                    placeholder="Confirm new password"
+                                    className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                    value={modalData.confirmPassword || ''}
+                                    onChange={e =>
+                                        setModalData({
+                                            ...modalData,
+                                            confirmPassword: e.target.value,
+                                        })
+                                    }
+                                />
+                                <button
+                                    type="button"
+                                    className="ml-2"
+                                    onClick={toggleConfirmPasswordVisibility}>
+                                    {showConfirmPassword ? (
+                                        <FontAwesomeIcon icon={faEyeSlash} />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faEye} />
+                                    )}
+                                </button>
                             </label>
                         </div>
                         <div className="modal-action">

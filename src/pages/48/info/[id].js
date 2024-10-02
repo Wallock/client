@@ -59,14 +59,13 @@ export default function Page() {
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
     const getname = `48`
-
+    const empId = profile?.uid48
     useEffect(() => {
         const checkUserStatus = () => {
             // Check the user's type48 status from the profile prop
             const userType48 = profile?.type48
-
             if (userType48 !== 1) {
-                console.error('Error Profile Type48 Token', profile?.type48)
+                //console.error('Error Profile Type48 Token', profile?.type48)
                 router.push('/dashboard')
             }
         }
@@ -95,6 +94,7 @@ export default function Page() {
                 setLoading(false)
             }
         } catch (error) {
+            //console.error('Error checking for updates:', error)
             if (showLoading) {
                 setLoading(false)
             }
@@ -109,7 +109,7 @@ export default function Page() {
                 const empResponse = await axios.get(empApiUrl)
                 setEmpData(empResponse.data[0]) // สมมติว่าข้อมูลพนักงานเป็น item แรก
             } catch (error) {
-                console.error('Failed to fetch employee data', error)
+                //console.error('Error checking for updates:', error)
             }
         }
     }
@@ -144,10 +144,7 @@ export default function Page() {
                                 archiveInfo.sy_master_address || 'Unknown',
                         }
                     } catch (error) {
-                        console.error(
-                            `Failed to fetch archive info for tmpsyid ${log.logs_tmpsyid}`,
-                            error,
-                        )
+                        //console.error('Error checking for updates:', error)
                         return {
                             ...log,
                             sy_master_nickname: 'Unknown', // แสดง Unknown เมื่อ API มีปัญหา
@@ -163,7 +160,231 @@ export default function Page() {
             // อัพเดต logData ด้วยข้อมูล sy_master_fullname ที่ดึงมาได้
             setLogData(logDataWithInfo)
         } catch (error) {
-            console.error('Failed to fetch log data', error)
+            //console.error('Error checking for updates:', error)
+        }
+    }
+
+    const renderButtons = worker_status => {
+        switch (worker_status) {
+            case 'wait':
+                return (
+                    <>
+                        <button
+                            className="btn btn-warning"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon
+                                icon={faUserLock}
+                                className="fa-lg"
+                            />{' '}
+                            จอง
+                        </button>
+                        <button
+                            className="btn btn-outline btn-primary"
+                            onClick={() => handleOpenModal('changepp')}>
+                            <FontAwesomeIcon
+                                icon={faRightLeft}
+                                className="fa-lg"
+                            />{' '}
+                            เปลี่ยน
+                        </button>
+                        <button
+                            className="btn btn-outline btn-primary"
+                            onClick={() => handleOpenModal('retry')}>
+                            <FontAwesomeIcon
+                                icon={faUserGroup}
+                                className="fa-lg"
+                            />{' '}
+                            เคลม
+                        </button>
+                        <button
+                            className="btn btn-neutral"
+                            onClick={() => handleOpenModal('export')}>
+                            <FontAwesomeIcon
+                                icon={faCircleXmark}
+                                className="fa-lg"
+                            />{' '}
+                            ไม่รับงาน
+                        </button>
+                    </>
+                )
+            case 'save':
+                return (
+                    <>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
+                            ว่าง
+                        </button>
+                        <button
+                            className="btn btn-outline btn-primary"
+                            onClick={() => handleOpenModal('changepp')}>
+                            <FontAwesomeIcon
+                                icon={faRightLeft}
+                                className="fa-lg"
+                            />{' '}
+                            เปลี่ยน
+                        </button>
+                        <button
+                            className="btn btn-outline btn-primary"
+                            onClick={() => handleOpenModal('retry')}>
+                            <FontAwesomeIcon
+                                icon={faUserGroup}
+                                className="fa-lg"
+                            />{' '}
+                            เคลม
+                        </button>
+                        <button
+                            className="btn btn-info"
+                            onClick={() => handleOpenModal('incomplete')}>
+                            <FontAwesomeIcon
+                                icon={faPhoneVolume}
+                                className="fa-lg"
+                            />{' '}
+                            สัมภาษณ์แล้วรอ นจ.
+                        </button>
+                    </>
+                )
+            case 'incomplete':
+                return (
+                    <>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
+                            ว่าง
+                        </button>
+                        <button
+                            className="btn btn-info"
+                            onClick={() => handleOpenModal('woker')}>
+                            <FontAwesomeIcon
+                                icon={faCircleCheck}
+                                className="fa-lg"
+                            />{' '}
+                            ได้งานแล้ว
+                        </button>
+                    </>
+                )
+            case 'worker':
+                return (
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => handleOpenModal('wait')}>
+                        <FontAwesomeIcon icon={faUser} className="fa-lg" /> ว่าง
+                    </button>
+                )
+            case 'retry':
+                return (
+                    <>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
+                            ว่าง
+                        </button>
+                        <button
+                            className="btn btn-success"
+                            onClick={() => handleOpenModal('woker')}>
+                            <FontAwesomeIcon
+                                icon={faCircleCheck}
+                                className="fa-lg"
+                            />{' '}
+                            ได้งานแล้ว
+                        </button>
+                    </>
+                )
+            case 'changepp':
+                return (
+                    <>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
+                            ว่าง
+                        </button>
+                        <button
+                            className="btn btn-success"
+                            onClick={() => handleOpenModal('bfprocess')}>
+                            <FontAwesomeIcon
+                                icon={faCircleCheck}
+                                className="fa-lg"
+                            />{' '}
+                            ได้งานแล้ว
+                        </button>
+                    </>
+                )
+            case 'bfprocess':
+                return (
+                    <>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
+                            ว่าง
+                        </button>
+                        <button
+                            className="btn btn-info"
+                            onClick={() => handleOpenModal('woker')}>
+                            <FontAwesomeIcon
+                                icon={faFileCirclePlus}
+                                className="fa-lg"
+                            />{' '}
+                            รอทำ สย. ส่งตัวคนงาน
+                        </button>
+                    </>
+                )
+            case 'export':
+                return (
+                    <button
+                        className="btn btn-error"
+                        onClick={() => handleOpenModal('wait')}>
+                        <FontAwesomeIcon
+                            icon={faPersonWalkingArrowLoopLeft}
+                            className="fa-lg"
+                        />{' '}
+                        รับงานใหม่
+                    </button>
+                )
+            default:
+                return null
+        }
+    }
+    const updateWorkerStatus = async (newStatus, statusDetail, empId) => {
+        try {
+            if (!router.query.id) {
+                throw new Error('Missing worker ID.')
+            }
+            console.log('Sending Data:', {
+                newStatus,
+                statusDetail,
+                empId,
+            })
+
+            // เรียกใช้ API ที่นี่เพื่ออัพเดทสถานะ worker
+            const response = await fetch(`${f_url}/api/updatestatus`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    save_status: newStatus,
+                    save_detail: statusDetail,
+                    save_empid: empId,
+                    save_wk: router.query.id,
+                }),
+            })
+
+            const data = await response.json()
+            if (!response.ok) {
+                // ตรวจสอบกรณีที่ไม่สำเร็จ
+                throw new Error(`Error: ${data.message || 'Unknown error'}`)
+            }
+
+            console.log('Update successful:', data)
+            // ทำสิ่งที่ต้องการเมื่อการอัพเดทสำเร็จ
+        } catch (error) {
+            console.error('Error updating worker status:', error.message)
+            alert(`Error: ${error.message}`)
         }
     }
 
@@ -201,49 +422,49 @@ export default function Page() {
             case 'wait':
                 return {
                     styles:
-                        'bg-gradient-to-r from-slate-900 to-slate-700 text-white',
+                        'bg-gradient-to-t from-slate-900 to-slate-700 text-white ',
                     text: 'ว่างงาน',
                 }
             case 'save':
                 return {
                     styles:
-                        'bg-gradient-to-r from-amber-200 to-yellow-500 text-slate-900',
+                        'bg-gradient-to-t from-amber-200 to-yellow-500 text-slate-900',
                     text: 'จอง',
                 }
             case 'incomplete':
                 return {
                     styles:
-                        'bg-gradient-to-r from-indigo-500 to-blue-500 text-white',
+                        'bg-gradient-to-t from-indigo-500 to-blue-500 text-white',
                     text: 'รอทำสัญญา',
                 }
             case 'woker':
                 return {
                     styles:
-                        'bg-gradient-to-r from-emerald-400 to-cyan-400 text-emerald-700',
+                        'bg-gradient-to-r from-emerald-400 to-cyan-400 text-white',
                     text: 'ได้งานแล้ว',
                 }
             case 'retry':
                 return {
                     styles:
-                        'bg-gradient-to-r from-violet-500 to-purple-500 text-white',
+                        'bg-gradient-to-t from-violet-500 to-purple-500 text-white',
                     text: 'เคลม',
                 }
             case 'changepp':
                 return {
                     styles:
-                        'bg-gradient-to-r from-slate-300 to-slate-500 text-black',
+                        'bg-gradient-to-t from-slate-300 to-slate-500 text-black',
                     text: 'เปลี่ยน',
                 }
             case 'bfprocess':
                 return {
                     styles:
-                        'bg-gradient-to-r from-blue-200 to-cyan-200 text-slate-700',
+                        'bg-gradient-to-t from-blue-200 to-cyan-200 text-slate-700',
                     text: 'สพ.แล้ว',
                 }
             case 'export':
                 return {
                     styles:
-                        'bg-gradient-to-r from-red-500 to-orange-500 text-slate-800',
+                        'bg-gradient-to-t from-red-500 to-orange-500 text-slate-800',
                     text: 'ห้ามส่งงาน',
                 }
             default:
@@ -254,12 +475,30 @@ export default function Page() {
         }
     }
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isModalOpen2, setIsModalOpen2] = useState(false)
     const [selectedImage, setSelectedImage] = useState(null)
     const datapacks = data?.datapacks || []
+    const [newStatus, setNewStatus] = useState('')
+    const [statusDetail, setStatusDetail] = useState('')
 
     const handleImageClick = imageUrl => {
         setSelectedImage(imageUrl)
         setIsModalOpen(true)
+    }
+
+    const handleOpenModal = status => {
+        setNewStatus(status) // เก็บสถานะที่กดปุ่ม
+        setIsModalOpen2(true) // เปิด Modal
+    }
+
+    const handleCloseModal = () => {
+        setIsModalOpen2(false)
+        setStatusDetail('') // เคลียร์ข้อมูล statusDetail
+    }
+
+    const handleSubmitStatus = () => {
+        updateWorkerStatus(newStatus, statusDetail, empId)
+        handleCloseModal()
     }
 
     const closeModal = () => {
@@ -407,170 +646,40 @@ export default function Page() {
 
                                 <div className="py-3 text-right">
                                     <div className="flex flex-wrap justify-center gap-1">
-                                        {data?.worker_status === 'wait' && (
-                                            <>
-                                                <button className="btn btn-warning">
-                                                    <FontAwesomeIcon
-                                                        icon={faUserLock}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    จอง
-                                                </button>
-                                                <button className="btn btn-outline btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faRightLeft}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    เปลี่ยน
-                                                </button>
-                                                <button className="btn btn-outline btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUserGroup}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    เคลม
-                                                </button>
-                                                <button className="btn btn-neutral">
-                                                    <FontAwesomeIcon
-                                                        icon={faCircleXmark}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ไม่รับงาน
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {data?.worker_status === 'save' && (
-                                            <>
-                                                <button className="btn btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUser}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ว่าง
-                                                </button>
-                                                <button className="btn btn-outline btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faRightLeft}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    เปลี่ยน
-                                                </button>
-                                                <button className="btn btn-outline btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUserGroup}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    เคลม
-                                                </button>
-                                                <button className="btn btn-info">
-                                                    <FontAwesomeIcon
-                                                        icon={faPhoneVolume}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    สัมภาษณ์แล้วรอ นจ.
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {data?.worker_status ===
-                                            'incomplete' && (
-                                            <>
-                                                <button className="btn btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUser}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ว่าง
-                                                </button>
-                                                <button className="btn btn-info">
-                                                    <FontAwesomeIcon
-                                                        icon={faCircleCheck}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ได้งานแล้ว
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {data?.worker_status === 'woker' && (
-                                            <button className="btn btn-primary">
-                                                <FontAwesomeIcon
-                                                    icon={faUser}
-                                                    className="fa-lg"
-                                                />{' '}
-                                                ว่าง
-                                            </button>
-                                        )}
-
-                                        {data?.worker_status === 'retry' && (
-                                            <>
-                                                <button className="btn btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUser}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ว่าง
-                                                </button>
-                                                <button className="btn btn-success">
-                                                    <FontAwesomeIcon
-                                                        icon={faCircleCheck}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ได้งานแล้ว
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {data?.worker_status === 'changepp' && (
-                                            <>
-                                                <button className="btn btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUser}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ว่าง
-                                                </button>
-                                                <button className="btn btn-success">
-                                                    <FontAwesomeIcon
-                                                        icon={faCircleCheck}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ได้งานแล้ว
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {data?.worker_status ===
-                                            'bfprocess' && (
-                                            <>
-                                                <button className="btn btn-primary">
-                                                    <FontAwesomeIcon
-                                                        icon={faUser}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    ว่าง
-                                                </button>
-                                                <button className="btn btn-info">
-                                                    <FontAwesomeIcon
-                                                        icon={faFileCirclePlus}
-                                                        className="fa-lg"
-                                                    />{' '}
-                                                    รอทำ สย. ส่งตัวคนงาน
-                                                </button>
-                                            </>
-                                        )}
-
-                                        {data?.worker_status === 'export' && (
-                                            <button className="btn btn-error">
-                                                <FontAwesomeIcon
-                                                    icon={
-                                                        faPersonWalkingArrowLoopLeft
-                                                    }
-                                                    className="fa-lg"
-                                                />{' '}
-                                                รับงานใหม่
-                                            </button>
+                                        {renderButtons(data?.worker_status)}
+                                        {isModalOpen2 && (
+                                            <div className="modal modal-open">
+                                                <div className="modal-box">
+                                                    <h2 className="text-lg font-bold mb-4">
+                                                        กรอกข้อมูลเพิ่มเติม
+                                                    </h2>
+                                                    <textarea
+                                                        className="textarea textarea-bordered w-full"
+                                                        placeholder="รายละเอียดสถานะ"
+                                                        value={statusDetail}
+                                                        onChange={e =>
+                                                            setStatusDetail(
+                                                                e.target.value,
+                                                            )
+                                                        }></textarea>
+                                                    <div className="modal-action">
+                                                        <button
+                                                            className="btn btn-primary"
+                                                            onClick={
+                                                                handleSubmitStatus
+                                                            }>
+                                                            บันทึก
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-ghost"
+                                                            onClick={
+                                                                handleCloseModal
+                                                            }>
+                                                            ยกเลิก
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
@@ -985,26 +1094,38 @@ export default function Page() {
                                     ประวัติรับงานจากบริษัท
                                 </h2>
                                 <ul className="timeline timeline-vertical">
-                                    {logData.map((log, index) => (
-                                        <li key={index}>
-                                            <div className="timeline-start">
-                                                {log.logs_tmpsyid}
-                                            </div>
-                                            <div className="timeline-middle">
+                                    {logData.length === 0 ? (
+                                        <>
+                                            <div role="alert" className="alert">
                                                 <FontAwesomeIcon
-                                                    icon={faCircleCheck}
+                                                    icon={faCircleInfo}
                                                     className="fa-fw"
                                                 />
+                                                <span>ยังไม่มีข้อมูล</span>
                                             </div>
-                                            <div className="timeline-end timeline-box">
-                                                <p className="underline p-0">
-                                                    {log.sy_position}
-                                                </p>
-                                                {log.sy_master_address}
-                                            </div>
-                                            <hr />
-                                        </li>
-                                    ))}
+                                        </>
+                                    ) : (
+                                        logData.map((log, index) => (
+                                            <li key={index}>
+                                                <div className="timeline-start">
+                                                    {log.logs_tmpsyid}
+                                                </div>
+                                                <div className="timeline-middle">
+                                                    <FontAwesomeIcon
+                                                        icon={faCircleCheck}
+                                                        className="fa-fw"
+                                                    />
+                                                </div>
+                                                <div className="timeline-end timeline-box">
+                                                    <p className="underline p-0">
+                                                        {log.sy_position}
+                                                    </p>
+                                                    {log.sy_master_address}
+                                                </div>
+                                                <hr />
+                                            </li>
+                                        ))
+                                    )}
                                 </ul>
                             </div>
                         </div>
