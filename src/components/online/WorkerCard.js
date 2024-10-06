@@ -98,7 +98,9 @@ const WorkerCard = ({
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
-                            }}></span>
+                            }}>
+                            {' '}
+                        </span>
                     )}
                     <img
                         src={`${getfapi}/${item.worker_image}`}

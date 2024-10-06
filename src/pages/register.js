@@ -26,15 +26,15 @@ const Register = () => {
 
             if (error) {
                 // จัดการข้อผิดพลาดที่เกิดขึ้นในกรณีที่ลงทะเบียนไม่สำเร็จ
-                console.error('Registration error:', error.message)
+                //console.error('Registration error:', error.message)
                 // อาจต้องเพิ่มการจัดการข้อผิดพลาดเพิ่มเติมตามความต้องการ
             } else {
                 // ลงทะเบียนสำเร็จ ทำงานตามที่คุณต้องการ เช่น นำผู้ใช้ไปยังหน้าล็อกอิน
-                console.log('Registration successful:', user)
+                //console.log('Registration successful:', user)
                 // ทำตามที่คุณต้องการหลังจากลงทะเบียนสำเร็จ
             }
         } catch (error) {
-            console.error('An error occurred during registration:', error)
+            //console.error('An error occurred during registration:', error)
             // จัดการข้อผิดพลาดที่เกิดขึ้นในกรณีที่เกิดข้อผิดพลาดในการเรียกใช้ฟังก์ชัน
         }
     }

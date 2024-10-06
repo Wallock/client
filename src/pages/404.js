@@ -41,26 +41,26 @@ const NotFoundPage = () => (
             </div>
 
             <ul className="circles">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
             </ul>
         </main>
     </div>

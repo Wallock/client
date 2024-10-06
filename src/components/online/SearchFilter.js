@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTasks } from '@fortawesome/free-solid-svg-icons'
+import {
+    faTasks,
+    faXmark,
+    faCircleXmark,
+    faUsersRectangle,
+    faServer,
+} from '@fortawesome/free-solid-svg-icons'
 
 const SearchFilter = ({
     searchWorkerId,
     handleSearchWorkerId,
     handleResetSearch,
     setSearchWorkerId,
-
+    systemName,
     showOnlyTypeT,
     showOnlyTypeC,
     showOnlyTypeM,
@@ -32,571 +38,35 @@ const SearchFilter = ({
     selectedOutside,
     setSelectedOutside,
 }) => {
+    const [isPopupOpen, setIsPopupOpen] = useState(false)
     return (
-        <div className="w-full flex items-center justify-center">
-            <div className="navbar rounded-box bg-white my-2  ">
-                <div className="navbar navbar-start w-full lg:w-auto hidden lg:flex">
-                    <div className="collapse collapse-arrow bg-base-200">
-                        <input type="checkbox" />
-                        <div className="collapse-title text-xl font-medium">
-                            <FontAwesomeIcon icon={faTasks} className="mr-2" />{' '}
+        <div className="flex items-center justify-center">
+            <div className="navbar bg-white shadow-md px-3">
+                <div className="navbar navbar-start hidden lg:flex">
+                    {/* ไม่ใช้ collapse-class แต่ใช้การควบคุมด้วย state */}
+                    <div className="relative mx-5">
+                        {/* รูปทรงสี่เหลี่ยม ตัดสีฟ้า และแบบเฉียง */}
+                        <div className="absolute inset-0 bg-blue-600 transform -skew-x-12">
+                            {' '}
+                        </div>
+                        <div className="relative z-10 text-xl font-bold text-center text-white text-shadow-sm px-4 py-2">
+                            <FontAwesomeIcon
+                                icon={faServer}
+                                className="fa-fw me-2"
+                            />
+                            {systemName}
+                        </div>
+                    </div>
+                    <div className="bg-gray-100 border-2 rounded-box mx-5 p-2 shadow-md">
+                        <div
+                            className="text-lg font-semibold cursor-pointer "
+                            onClick={() => setIsPopupOpen(true)}>
+                            <FontAwesomeIcon icon={faTasks} className="me-2" />{' '}
                             ตั้งค่าการแสดงผล
                         </div>
-                        <div className="collapse-content">
-                            <ul className="bg-white menu menu-horizontal rounded-box mb-3 mr-3">
-                                <li className="menu-title">โซนประเทศ</li>
-                                <li>
-                                    <label className="form-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            checked={showOnlyTypeT}
-                                            onChange={() =>
-                                                setShowOnlyTypeT(!showOnlyTypeT)
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        ไทย
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="form-checkbox mr-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={showOnlyTypeC}
-                                            onChange={() =>
-                                                setShowOnlyTypeC(!showOnlyTypeC)
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        กัมพูชา
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="form-checkbox mr-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={showOnlyTypeM}
-                                            onChange={() =>
-                                                setShowOnlyTypeM(!showOnlyTypeM)
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        พม่า
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="form-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            checked={showOnlyTypeL}
-                                            onChange={() =>
-                                                setShowOnlyTypeL(!showOnlyTypeL)
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        ลาว
-                                    </label>
-                                </li>
-                            </ul>
-                            <ul className="bg-white menu menu-horizontal rounded-box mb-3 mr-3">
-                                <li className="menu-title">รูปแบบงาน</li>
-                                <li>
-                                    <label className="form-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            checked={showOvernightt}
-                                            onChange={() =>
-                                                setShowOnlyOvernightt(
-                                                    !showOvernightt,
-                                                )
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        ไป-กลับ
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="form-checkbox mr-2">
-                                        <input
-                                            type="checkbox"
-                                            checked={showOvernightf}
-                                            onChange={() =>
-                                                setShowOnlyOvernightf(
-                                                    !showOvernightf,
-                                                )
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        อยู่ประจำ
-                                    </label>
-                                </li>
-                            </ul>
-                            <ul className="bg-white menu menu-horizontal rounded-box mb-3">
-                                <li className="menu-title">พื้นที่</li>
-                                <li>
-                                    <label className="form-checkbox">
-                                        <input
-                                            type="radio"
-                                            name="OutsideGroup"
-                                            checked={selectedOutside === null}
-                                            onChange={() =>
-                                                setSelectedOutside(null)
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        ได้ทั้งหมด
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="form-checkbox">
-                                        <input
-                                            type="radio"
-                                            name="OutsideGroup"
-                                            checked={selectedOutside === '2'}
-                                            onChange={() =>
-                                                setSelectedOutside('2')
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        ในพื้นที่อาศัย
-                                    </label>
-                                </li>
-                                <li>
-                                    <label className="form-checkbox mr-2">
-                                        <input
-                                            type="radio"
-                                            name="OutsideGroup"
-                                            checked={selectedOutside === '1'}
-                                            onChange={() =>
-                                                setSelectedOutside('1')
-                                            }
-                                        />
-                                        <i className="form-icon"></i>
-                                        ออกต่างจังหวัดได้
-                                    </label>
-                                </li>
-                            </ul>
-                            <div className="grid grid-cols-3 gap-3">
-                                <ul className="bg-white menu menu-horizontal rounded-box">
-                                    <li className="menu-title w-full">สถานะ</li>
-                                    <li>
-                                        <label className="form-checkbox text-blue-500">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus === null
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus(null)
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ทั้งหมด
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus === 'wait'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus('wait')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ว่างงาน
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox mr-2">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus === 'save'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus('save')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ติดจอง
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox mr-2">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus ===
-                                                    'changepp'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus(
-                                                        'changepp',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            เปลี่ยน
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus === 'retry'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus('retry')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            เคลม
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus ===
-                                                    'incomplete'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus(
-                                                        'incomplete',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            รอทำสัญญา
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus ===
-                                                    'bfprocess'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus(
-                                                        'bfprocess',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            สพ.แล้ว
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus === 'woker'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus('woker')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ได้งานแล้ว
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox text-red-500">
-                                            <input
-                                                type="radio"
-                                                name="statusGroup"
-                                                checked={
-                                                    selectedStatus === 'export'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedStatus('export')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ไม่ส่งงาน
-                                        </label>
-                                    </li>
-                                </ul>
-
-                                <ul className="bg-white menu menu-horizontal rounded-box">
-                                    <li className="menu-title w-full">
-                                        ประเภทงาน
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox text-blue-500">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={selectedJob === null}
-                                                onChange={() =>
-                                                    setSelectedJob(null)
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ทั้งหมด
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob ===
-                                                    'แม่บ้านทั่วไป'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob(
-                                                        'แม่บ้านทั่วไป',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            แม่บ้านทั่วไป
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox mr-2">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob ===
-                                                    'พี่เลี้ยงน้อง'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob(
-                                                        'พี่เลี้ยงน้อง',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            พี่เลี้ยงเด็ก
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox mr-2">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob ===
-                                                    'ดูแลผู้สูงอายุ'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob(
-                                                        'ดูแลผู้สูงอายุ',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            คนดูแลผู้สูงอายุ
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob ===
-                                                    'แม่บ้านพี่เลี้ยงน้อง'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob(
-                                                        'แม่บ้านพี่เลี้ยงน้อง',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            แม่บ้าน+พี่เลี้ยงเด็ก
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob ===
-                                                    'แม่บ้านดูแลผู้สูงอายุ'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob(
-                                                        'แม่บ้านดูแลผู้สูงอายุ',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            แม่บ้าน+คนดูแลผู้สูงอายุ
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob === 'กรรมกร'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob('กรรมกร')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            กรรมกร
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="JobGroup"
-                                                checked={
-                                                    selectedJob ===
-                                                    'พ่อบ้านทั่วไป'
-                                                }
-                                                onChange={() =>
-                                                    setSelectedJob(
-                                                        'พ่อบ้านทั่วไป',
-                                                    )
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            พ่อบ้าน
-                                        </label>
-                                    </li>
-                                </ul>
-
-                                <ul className="bg-white menu menu-horizontal rounded-box">
-                                    <li className="menu-title w-full">
-                                        ภูมิภาค
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox text-blue-500">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === null}
-                                                onChange={() =>
-                                                    setSelectedZone(null)
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ทุกภาค
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === '1'}
-                                                onChange={() =>
-                                                    setSelectedZone('1')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ภาคเหนือ
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox mr-2">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === '2'}
-                                                onChange={() =>
-                                                    setSelectedZone('2')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ภาคอีสาน
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox mr-2">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === '3'}
-                                                onChange={() =>
-                                                    setSelectedZone('3')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ภาคกลาง
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === '4'}
-                                                onChange={() =>
-                                                    setSelectedZone('4')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ภาคตะวันออก
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === '5'}
-                                                onChange={() =>
-                                                    setSelectedZone('5')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ภาคตะวันตก
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <label className="form-checkbox">
-                                            <input
-                                                type="radio"
-                                                name="ZoneGroup"
-                                                checked={selectedZone === '6'}
-                                                onChange={() =>
-                                                    setSelectedZone('6')
-                                                }
-                                            />
-                                            <i className="form-icon"></i>
-                                            ภาคใต้
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <div className="navbar navbar-brand w-64 text-center hidden lg:flex">
-                    <div className="badge badge-outline w-full py-5 font-bold text-gray-600">
-                        ระบบ ไทย
-                    </div>
-                </div>
-                <div className="navbar navbar-end w-auto lg:w-full">
+                <div className="navbar navbar-end lg:w-full">
                     <div className="join">
                         <input
                             type="text"
@@ -620,6 +90,740 @@ const SearchFilter = ({
                     </div>
                 </div>
             </div>
+            {/* Popup Modal */}
+            {isPopupOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 w-11/12 lg:w-1/2">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-2xl font-semibold font-3 drop-shadow">
+                                <FontAwesomeIcon
+                                    icon={faTasks}
+                                    className="me-2"
+                                />{' '}
+                                ตั้งค่าการแสดงผล
+                            </h2>
+                            <button
+                                className="text-slat-800"
+                                onClick={() => setIsPopupOpen(false)}>
+                                <FontAwesomeIcon
+                                    icon={faCircleXmark}
+                                    className="fa-2xl"
+                                />
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                            {/* โซนประเทศ */}
+                            <ul className="bg-gray-100 menu menu-sm rounded-box mb-1">
+                                <li className="menu-title">โซนประเทศ</li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={showOnlyTypeT}
+                                                className="checkbox me-3"
+                                                onChange={() =>
+                                                    setShowOnlyTypeT(
+                                                        !showOnlyTypeT,
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ไทย
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={showOnlyTypeC}
+                                                className="checkbox me-3"
+                                                onChange={() =>
+                                                    setShowOnlyTypeC(
+                                                        !showOnlyTypeC,
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                กัมพูชา
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={showOnlyTypeM}
+                                                className="checkbox me-3"
+                                                onChange={() =>
+                                                    setShowOnlyTypeM(
+                                                        !showOnlyTypeM,
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                พม่า
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={showOnlyTypeL}
+                                                className="checkbox me-3"
+                                                onChange={() =>
+                                                    setShowOnlyTypeL(
+                                                        !showOnlyTypeL,
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ลาว
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            {/* สถานะ */}
+                            <ul className="bg-gray-100 menu menu-sm menu-horizontal rounded-box mb-1">
+                                <li className="menu-title w-full">สถานะ</li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus === null
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus(null)
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ทั้งหมด
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus === 'wait'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus('wait')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ว่างงาน
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus === 'save'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus('save')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ติดจอง
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus ===
+                                                    'changepp'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus(
+                                                        'changepp',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                เปลี่ยน
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus === 'retry'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus('retry')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                เคลม
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus ===
+                                                    'incomplete'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus(
+                                                        'incomplete',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                รอทำสัญญา
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus ===
+                                                    'bfprocess'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus(
+                                                        'bfprocess',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                สพ.แล้ว
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus === 'woker'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus('woker')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ได้งานแล้ว
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="statusGroup"
+                                                checked={
+                                                    selectedStatus === 'export'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedStatus('export')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ไม่ส่งงาน
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            {/* รูปแบบงาน */}
+                            <ul className="bg-gray-100 menu menu-horizontal rounded-box mb-1">
+                                <li className="menu-title">รูปแบบงาน</li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={showOvernightt}
+                                                className="checkbox me-3"
+                                                onChange={() =>
+                                                    setShowOnlyOvernightt(
+                                                        !showOvernightt,
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ไป-กลับ
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={showOvernightf}
+                                                className="checkbox me-3"
+                                                onChange={() =>
+                                                    setShowOnlyOvernightf(
+                                                        !showOvernightf,
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                อยู่ประจำ
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            {/* พื้นที่ */}
+                            <ul className="bg-gray-100 menu menu-horizontal rounded-box mb-1">
+                                <li className="menu-title">พื้นที่</li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="OutsideGroup"
+                                                checked={
+                                                    selectedOutside === null
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedOutside(null)
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ทั้งหมด
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="OutsideGroup"
+                                                checked={
+                                                    selectedOutside === '2'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedOutside('2')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                กรุงเทพ
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="OutsideGroup"
+                                                checked={
+                                                    selectedOutside === '1'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedOutside('1')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ต่างจังหวัดได้
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            {/* ประเภทงาน */}
+                            <ul className="bg-gray-100 menu menu-horizontal rounded-box mb-3">
+                                <li className="menu-title w-full">ประเภทงาน</li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={selectedJob === null}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(null)
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ทั้งหมด
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob ===
+                                                    'แม่บ้านทั่วไป'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(
+                                                        'แม่บ้านทั่วไป',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                แม่บ้านทั่วไป
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob ===
+                                                    'พี่เลี้ยงน้อง'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(
+                                                        'พี่เลี้ยงน้อง',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                พี่เลี้ยงเด็ก
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob ===
+                                                    'ดูแลผู้สูงอายุ'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(
+                                                        'ดูแลผู้สูงอายุ',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                คนดูแลผู้สูงอายุ
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob ===
+                                                    'แม่บ้านพี่เลี้ยงน้อง'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(
+                                                        'แม่บ้านพี่เลี้ยงน้อง',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                แม่บ้าน+พี่เลี้ยงเด็ก
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob ===
+                                                    'แม่บ้านดูแลผู้สูงอายุ'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(
+                                                        'แม่บ้านดูแลผู้สูงอายุ',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                แม่บ้าน+คนดูแลผู้สูงอายุ
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob === 'กรรมกร'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob('กรรมกร')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                กรรมกร
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="JobGroup"
+                                                checked={
+                                                    selectedJob ===
+                                                    'พ่อบ้านทั่วไป'
+                                                }
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedJob(
+                                                        'พ่อบ้านทั่วไป',
+                                                    )
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                พ่อบ้าน
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            {/* ภูมิภาค */}
+                            <ul className="bg-gray-100 menu menu-horizontal rounded-box mb-3">
+                                <li className="menu-title w-full">ภูมิภาค</li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === null}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone(null)
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ทุกภาค
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === '1'}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone('1')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ภาคเหนือ
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === '2'}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone('2')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ภาคอีสาน
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === '3'}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone('3')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ภาคกลาง
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === '4'}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone('4')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ภาคตะวันออก
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === '5'}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone('5')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ภาคตะวันตก
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="form-control p-0 px-2">
+                                        <label className="label cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                name="ZoneGroup"
+                                                checked={selectedZone === '6'}
+                                                className="radio me-3"
+                                                onChange={() =>
+                                                    setSelectedZone('6')
+                                                }
+                                            />
+                                            <span className="label-text">
+                                                ภาคใต้
+                                            </span>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* ปุ่มปิด popup */}
+                        <div className="mt-6 flex justify-end">
+                            <button
+                                className="btn border-3 text-lg border-blue-900 bg-blue-600 text-white hover:bg-blue-800 w-full shadow-lg"
+                                onClick={() => setIsPopupOpen(false)}>
+                                <FontAwesomeIcon
+                                    icon={faXmark}
+                                    className="fa-fw"
+                                />
+                                ปิดหน้าต่าง
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

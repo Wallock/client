@@ -89,7 +89,7 @@ export default function Home() {
             setLoading(false)
             setResetSearch(false)
         } catch (error) {
-            console.error('Error fetching data:', error)
+            //console.error('Error fetching data:', error)
             setLoading(false)
         } finally {
             setResetSearch(false) // Move this line to the finally block to ensure it's always reset
@@ -288,10 +288,10 @@ export default function Home() {
                             <div
                                 key={index}
                                 className="flex flex-col gap-4 w-full lg:w-48 mx-1">
-                                <div className="skeleton h-32 w-full"></div>
-                                <div className="skeleton h-4 w-28"></div>
-                                <div className="skeleton h-4 w-full"></div>
-                                <div className="skeleton h-4 w-full"></div>
+                                <div className="skeleton h-32 w-full"> </div>
+                                <div className="skeleton h-4 w-28"> </div>
+                                <div className="skeleton h-4 w-full"> </div>
+                                <div className="skeleton h-4 w-full"> </div>
                             </div>
                         ))}
                     </div>

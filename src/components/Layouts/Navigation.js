@@ -92,7 +92,7 @@ const Navigation = ({ user, profile }) => {
             localStorage.removeItem('accessToken')
             router.push('/login')
         } catch (error) {
-            console.error('Error logging out:', error)
+            //console.error('Error logging out:', error)
             toast.error('Failed to log out. Please try again.')
         }
     }
@@ -232,7 +232,7 @@ const Navigation = ({ user, profile }) => {
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         className="text-white text-3xl focus:outline-none">
-                        <i className="fas fa-bars"></i>
+                        <i className="fas fa-bars"> </i>
                     </button>
                 </div>
 

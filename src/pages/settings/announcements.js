@@ -44,7 +44,7 @@ export default function Announcements() {
             setAnnouncements(response.data.data)
             setTotalPages(Math.ceil(response.data.total / itemsPerPage)) // Calculate total pages
         } catch (error) {
-            console.error('Error fetching announcements:', error)
+            //console.error('Error fetching announcements:', error)
         } finally {
             setLoading(false)
         }
@@ -100,7 +100,7 @@ export default function Announcements() {
             fetchAnnouncements() // Refresh the data
             handleCloseModal()
         } catch (error) {
-            console.error('Error saving announcement:', error)
+            //console.error('Error saving announcement:', error)
             toast.error('Failed to save announcement. Please try again.', {
                 position: 'top-right',
                 autoClose: 5000,
@@ -138,7 +138,7 @@ export default function Announcements() {
                     draggable: true,
                 })
             } catch (error) {
-                console.error('Error deleting announcement:', error)
+                //console.error('Error deleting announcement:', error)
                 toast.error(
                     'Failed to remove announcement. Please try again.',
                     {
@@ -179,10 +179,10 @@ export default function Announcements() {
                 {loading ? (
                     <div className="w-full p-3">
                         <div className="flex items-center justify-center flex-wrap gap-4">
-                            <div className="skeleton h-32 w-full"></div>
-                            <div className="skeleton h-4 w-28"></div>
-                            <div className="skeleton h-4 w-full"></div>
-                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-32 w-full"> </div>
+                            <div className="skeleton h-4 w-28"> </div>
+                            <div className="skeleton h-4 w-full"> </div>
+                            <div className="skeleton h-4 w-full"> </div>
                         </div>
                     </div>
                 ) : (

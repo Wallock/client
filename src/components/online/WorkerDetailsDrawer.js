@@ -61,7 +61,7 @@ const WorkerDetailsDrawer = ({
                 setWorkerData(firstWorker)
                 setLoading(false)
             } catch (error) {
-                console.error('Error fetching worker data:', error)
+                //console.error('Error fetching worker data:', error)
                 setLoading(false)
             }
         }
@@ -94,10 +94,10 @@ const WorkerDetailsDrawer = ({
                 {loading ? (
                     <div className="w-full p-3">
                         <div className="flex items-center justify-center flex-wrap gap-4">
-                            <div className="skeleton h-32 w-full"></div>
-                            <div className="skeleton h-4 w-32"></div>
-                            <div className="skeleton h-4 w-full"></div>
-                            <div className="skeleton h-4 w-full"></div>
+                            <div className="skeleton h-32 w-full"> </div>
+                            <div className="skeleton h-4 w-32"> </div>
+                            <div className="skeleton h-4 w-full"> </div>
+                            <div className="skeleton h-4 w-full"> </div>
                         </div>
                     </div>
                 ) : (
@@ -120,7 +120,9 @@ const WorkerDetailsDrawer = ({
                                                 left: '50%',
                                                 transform:
                                                     'translate(-50%, -50%)',
-                                            }}></span>
+                                            }}>
+                                            {' '}
+                                        </span>
                                     )}
                                     <img
                                         src={`${getfapi}/${workerData.worker_image}`}
@@ -221,7 +223,9 @@ const WorkerDetailsDrawer = ({
                         ) : workerData === null ? (
                             <p>Error fetching data. Please try again later.</p>
                         ) : (
-                            <span className="loading loading-ring loading-lg"></span>
+                            <span className="loading loading-ring loading-lg">
+                                {' '}
+                            </span>
                         )}
                     </>
                 )}

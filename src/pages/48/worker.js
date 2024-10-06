@@ -92,7 +92,7 @@ export default function Home() {
             setLoading(false)
             setResetSearch(false)
         } catch (error) {
-            console.error('Error fetching data:', error)
+            //console.error('Error fetching data:', error)
             setLoading(false)
         } finally {
             setResetSearch(false) // Move this line to the finally block to ensure it's always reset
@@ -154,11 +154,11 @@ export default function Home() {
     ])
 
     useEffect(() => {
-        console.log('Drawer Open State Updated:', drawerOpen)
+        //console.log('Drawer Open State Updated:', drawerOpen)
     }, [drawerOpen])
 
     useEffect(() => {
-        console.log('Selected Worker ID Updated:', selectedWorkerId)
+        //console.log('Selected Worker ID Updated:', selectedWorkerId)
     }, [selectedWorkerId])
 
     useEffect(() => {
@@ -207,10 +207,10 @@ export default function Home() {
     }
 
     const handleFreeButtonClick = workerId => {
-        console.log('Worker ID:', workerId) // Log the worker ID
+        //console.log('Worker ID:', workerId) // Log the worker ID
         setSelectedWorkerId(workerId)
         setDrawerOpen(true)
-        console.log('Drawer Open:', drawerOpen) // Log the drawer state
+        //console.log('Drawer Open:', drawerOpen) // Log the drawer state
     }
     const getBackgroundClass = workpositionId => {
         switch (workpositionId) {
@@ -301,10 +301,10 @@ export default function Home() {
                             <div
                                 key={index}
                                 className="flex flex-col gap-4 w-full lg:w-48 mx-1">
-                                <div className="skeleton h-32 w-full"></div>
-                                <div className="skeleton h-4 w-28"></div>
-                                <div className="skeleton h-4 w-full"></div>
-                                <div className="skeleton h-4 w-full"></div>
+                                <div className="skeleton h-32 w-full"> </div>
+                                <div className="skeleton h-4 w-28"> </div>
+                                <div className="skeleton h-4 w-full"> </div>
+                                <div className="skeleton h-4 w-full"> </div>
                             </div>
                         ))}
                     </div>

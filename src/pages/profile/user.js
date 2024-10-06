@@ -32,7 +32,7 @@ export default function Profile() {
             setUserData(response.data) // Save user data
             setLoading(false) // Set loading to false when data is fetched
         } catch (error) {
-            console.error('Error fetching user data:', error)
+            //console.error('Error fetching user data:', error)
             setLoading(false)
         }
     }

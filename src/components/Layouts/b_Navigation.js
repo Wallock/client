@@ -74,7 +74,7 @@ const Navigation = ({ user, profile }) => {
             localStorage.removeItem('accessToken')
             router.push('/login')
         } catch (error) {
-            console.error('Error logging out:', error)
+            //console.error('Error logging out:', error)
             toast.error('Failed to log out. Please try again.')
         }
     }
