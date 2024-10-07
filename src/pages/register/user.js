@@ -7,26 +7,28 @@ export default function user() {
     return (
         <AppLayout>
             <div className="w-full p-5">
-                <div
-                    className="hero rounded-lg"
-                    style={{
-                        backgroundImage: 'url(/images/bg.webp)',
-                    }}>
+                <div className="hero rounded-lg bg-gradient-to-b from-blue-600 to-violet-600">
                     <div className="hero-overlay bg-opacity-60 rounded-lg">
                         {' '}
                     </div>
                     <div className="hero-content text-center text-neutral-content">
-                        <div className="max-w-md">
-                            <h1 className="mb-5 text-5xl font-bold drop-shadow-xl">
+                        <div className="max-w-md my-3">
+                            <h1 className="mb-0 text-5xl font-bold drop-shadow-xl">
                                 สมัครคนงานใหม่
                             </h1>
-                            <p className="mb-5 drop-shadow-md">
+                            <p className="drop-shadow-md">
                                 ระบบสมัครงานออนไลน์ สำหรับจัดการคนงาน
                             </p>
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center justify-center flex-wrap">
+                <div role="alert" className="alert alert-error my-3">
+                    <p className="text-white font-semibold">
+                        ขนาดนี้ยังไม่อนุญาตให้เปิดใช้งานรับสมัครคนงานผ่านระบบได้ขนาดนี้
+                        กรุณาใช้งานระบบเก่าไปก่อน.
+                    </p>
+                </div>
+                <div className="flex items-center justify-center flex-wrap m-5">
                     <div className="w-full lg:w-1/2">
                         <div className="card lg:card-side bg-base-100 text-neutral shadow-xl m-3">
                             <figure className="px-5">

@@ -12,14 +12,14 @@ import {
     faFileExcel,
     faChildren,
     faUserGroup,
-    faCircle,
+    faClipboardList,
     faCircleXmark,
     faUser,
     faBicycle,
     faMotorcycle,
     faSmoking,
     faCar,
-    faComment,
+    faVideo,
     faPhoneVolume,
     faCircleCheck,
     faPersonWalkingArrowLoopLeft,
@@ -41,12 +41,13 @@ import {
     faBars,
     faBusinessTime,
     faHouseUser,
-    faBullhorn,
+    faIdCard,
     faFlagCheckered,
-    faStarOfLife,
+    faCamera,
     faClockRotateLeft,
     faPaw,
     faHeartbeat,
+    faPrint,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Page() {
@@ -519,24 +520,72 @@ export default function Page() {
                 </div>
             ) : (
                 <div className="bg-gray-200">
-                    {/* Header Section with Background Image */}
-                    <div className="ribbon ribbon-top-left z-40">
-                        {(() => {
-                            const { styles, icon, text } = getStatusData(
-                                data?.worker_status,
-                            )
-                            return (
-                                <span className={`font-bold ${styles}`}>
-                                    {text}
-                                </span>
-                            )
-                        })()}
-                    </div>
-
                     <div className="w-auto bg-white shadow-lg rounded-b-lg mx-5">
                         {/* Cover Photo */}
-                        <div className="relative h-52 bg-gradient-to-b from-blue-600 to-violet-600">
-                            ใบสมัคร / อัพโหลดรูป
+                        <div
+                            className={`relative h-48 ${(() => {
+                                const { styles } = getStatusData(
+                                    data?.worker_status,
+                                )
+                                return styles
+                            })()}`}>
+                            {/* Header Section with Background Image */}
+                            <div className="ribbon ribbon-top-left z-40">
+                                {(() => {
+                                    const {
+                                        styles,
+                                        icon,
+                                        text,
+                                    } = getStatusData(data?.worker_status)
+                                    return (
+                                        <span
+                                            className={`font-bold bg-gray-600 text-white subpixel-antialiased`}>
+                                            {text}
+                                        </span>
+                                    )
+                                })()}
+                            </div>
+                            <div className="flex items-center justify-around w-full h-full">
+                                <div className="m-2">
+                                    <h1 className="font-bold text-6xl subpixel-antialiased opacity-50">
+                                        {data?.worker_id}
+                                    </h1>
+                                </div>
+                                <div className="m-2">
+                                    <button
+                                        className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
+                                        data-tip="ปริ๊นใบสมัคร">
+                                        <FontAwesomeIcon
+                                            icon={faPrint}
+                                            className="fa-2x"
+                                        />
+                                    </button>
+                                    <button
+                                        className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
+                                        data-tip="อัพโหลดรูป">
+                                        <FontAwesomeIcon
+                                            icon={faCamera}
+                                            className="fa-2x"
+                                        />
+                                    </button>
+                                    <button
+                                        className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
+                                        data-tip="อัพโหลดคลิป">
+                                        <FontAwesomeIcon
+                                            icon={faVideo}
+                                            className="fa-2x"
+                                        />
+                                    </button>
+                                    <button
+                                        className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
+                                        data-tip="การ์ด">
+                                        <FontAwesomeIcon
+                                            icon={faIdCard}
+                                            className="fa-2x"
+                                        />
+                                    </button>
+                                </div>
+                            </div>
                             {/* Positioning Profile Image correctly */}
                             <div className="absolute bottom-[-15px] left-1/2 transform -translate-x-1/2">
                                 <div className="bg-white flex items-center justify-center rounded-full p-1">
@@ -603,7 +652,7 @@ export default function Page() {
                                     {data?.worker_nickname})
                                 </h1>
                                 <p className="text-gray-500">
-                                    {data?.worker_id} ·{' '}
+                                    {' '}
                                     {data?.worker_nationality} ·{' '}
                                     {data?.worker_race}
                                 </p>
@@ -682,11 +731,14 @@ export default function Page() {
                         {/* Navigation Tabs */}
                         <div className="flex justify-center mt-6 border-t">
                             <div className="flex space-x-6">
-                                <button className="font-semibold text-blue-600 border-b-4 border-blue-600 py-3">
-                                    ประวัติรายการ
+                                <button className="font-semibold text-blue-600 border-b-2 border-blue-600 py-3">
+                                    ข้อมูลประวัติ
                                 </button>
                                 <button className="text-gray-600 py-3">
-                                    ประวัติสัญญา
+                                    การทำรายการ
+                                </button>
+                                <button className="text-gray-600 py-3">
+                                    การทำสัญญา
                                 </button>
                                 <button className="text-gray-600 py-3">
                                     การชำระเงิน
@@ -1030,7 +1082,9 @@ export default function Page() {
                                                             data?.workexp_position1
                                                         }
                                                     </p>
-                                                    {data?.workexp_detail1}
+                                                    <p className="text-sm">
+                                                        {data?.workexp_detail1}
+                                                    </p>
                                                 </div>
                                                 <hr />
                                             </li>
@@ -1054,7 +1108,9 @@ export default function Page() {
                                                             data?.workexp_position2
                                                         }
                                                     </p>
-                                                    {data?.workexp_detail2}
+                                                    <p className="text-sm">
+                                                        {data?.workexp_detail2}
+                                                    </p>
                                                 </div>
                                                 <hr />
                                             </li>
@@ -1078,7 +1134,9 @@ export default function Page() {
                                                             data?.workexp_position3
                                                         }
                                                     </p>
-                                                    {data?.workexp_detail3}
+                                                    <p className="text-sm">
+                                                        {data?.workexp_detail3}
+                                                    </p>
                                                 </div>
                                                 <hr />
                                             </li>
@@ -1102,7 +1160,9 @@ export default function Page() {
                                                             data?.workexp_position4
                                                         }
                                                     </p>
-                                                    {data?.workexp_detail4}
+                                                    <p className="text-sm">
+                                                        {data?.workexp_detail4}
+                                                    </p>
                                                 </div>
                                                 <hr />
                                             </li>
@@ -1146,7 +1206,11 @@ export default function Page() {
                                                         <p className="underline p-0">
                                                             {log.sy_position}
                                                         </p>
-                                                        {log.sy_master_address}
+                                                        <p className="text-sm">
+                                                            {
+                                                                log.sy_master_address
+                                                            }
+                                                        </p>
                                                     </div>
                                                     <hr />
                                                 </li>
@@ -1359,7 +1423,7 @@ export default function Page() {
                                                 </div>
                                                 <div>
                                                     <div className="badge badge-outline">
-                                                        เงินเดือน ฿
+                                                        {' '}
                                                         {Number(
                                                             data?.workposition_salary1,
                                                         )?.toLocaleString()}
@@ -1386,7 +1450,7 @@ export default function Page() {
                                                 </div>
                                                 <div>
                                                     <div className="badge badge-outline">
-                                                        เงินเดือน ฿
+                                                        {' '}
                                                         {Number(
                                                             data?.workposition_salary2,
                                                         )?.toLocaleString()}
@@ -1413,7 +1477,7 @@ export default function Page() {
                                                 </div>
                                                 <div>
                                                     <div className="badge badge-outline">
-                                                        เงินเดือน ฿
+                                                        {' '}
                                                         {Number(
                                                             data?.workposition_salary3,
                                                         )?.toLocaleString()}
@@ -1440,7 +1504,7 @@ export default function Page() {
                                                 </div>
                                                 <div>
                                                     <div className="badge badge-outline">
-                                                        เงินเดือน ฿
+                                                        {' '}
                                                         {Number(
                                                             data?.workposition_salary4,
                                                         )?.toLocaleString()}
