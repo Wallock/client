@@ -59,7 +59,7 @@ export default function Profile() {
                     </div>
                 </div>
             ) : (
-                <div className="bg-gray-100 ">
+                <div className="bg-gray-100 p-5">
                     {/* Cover Photo */}
                     <div className="relative h-64 bg-blue-600 rounded-3xl">
                         <img

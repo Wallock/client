@@ -21,7 +21,7 @@ const BroadcastAnnouncement = ({ message }) => {
     const [isHovered, setIsHovered] = useState(false)
     return (
         <div className="bg-gray-200 text-black m-auto p-1 font-semibold rounded-xl shadow-md">
-            <div className="px-2 inline-flex ">
+            <div className="px-2 inline-flex">
                 <div className="text-bold text-md text-red-500">
                     <FontAwesomeIcon
                         icon={faBullhorn}
@@ -36,14 +36,15 @@ const BroadcastAnnouncement = ({ message }) => {
                             isHovered ? 'animate-marquee-stopped' : ''
                         }`}
                         onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}>
-                        {message}
-                    </div>
+                        onMouseLeave={() => setIsHovered(false)}
+                        dangerouslySetInnerHTML={{ __html: message }}
+                    />
                 </div>
             </div>
         </div>
     )
 }
+
 const getBadgeProps = role => {
     const numericRole = Number(role) // Convert role to a number
 
@@ -191,7 +192,7 @@ const Navigation = ({ user, profile }) => {
                     {isProfileMenuOpen && (
                         <div className="absolute w-36 bg-white rounded-lg shadow-lg font-semibold py-2 mt-16 z-50">
                             <a
-                                className="block px-4 py-2 text-slate-800 hover:text-primary"
+                                className="block px-4 py-2 text-slate-800 hover:text-blue-800"
                                 href="/profile/user">
                                 <FontAwesomeIcon
                                     icon={faCircleUser}
@@ -201,7 +202,7 @@ const Navigation = ({ user, profile }) => {
                             </a>
                             <a
                                 href="#"
-                                className="block px-4 py-2 text-slate-800 hover:text-primary">
+                                className="block px-4 py-2 text-slate-800 hover:text-blue-800">
                                 <FontAwesomeIcon
                                     icon={faGear}
                                     className="fa-lg me-2"
@@ -210,7 +211,7 @@ const Navigation = ({ user, profile }) => {
                             </a>
                             <a
                                 onClick={handleLogout}
-                                className="block px-4 py-2 text-red-600 hover:text-red-500">
+                                className="block px-4 py-2 text-red-600 hover:text-red-800">
                                 <FontAwesomeIcon
                                     icon={faRightFromBracket}
                                     className="fa-lg me-2"

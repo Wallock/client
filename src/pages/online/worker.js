@@ -32,7 +32,7 @@ export default function Home() {
     const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://thai.wb.in.th`
-    const getname = `thai`
+    const getname = `online`
 
     useEffect(() => {
         const checkUserStatus = () => {

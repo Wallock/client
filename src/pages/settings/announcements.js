@@ -1,6 +1,7 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import MyEditor from '@/components/MyEditor'
 import { useRouter } from 'next/router'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -20,6 +21,20 @@ export default function Announcements() {
     const [totalPages, setTotalPages] = useState(1)
     const itemsPerPage = 20 // Limit to 20 items per page
 
+    const maxLength = 99
+    const charCount = modalData.content?.length || 0
+
+    const handleChange = e => {
+        const newValue = e.target.value
+
+        // อัปเดตค่าเฉพาะเมื่อไม่เกิน maxLength
+        if (newValue.length <= maxLength) {
+            setModalData({
+                ...modalData,
+                content: newValue,
+            })
+        }
+    }
     useEffect(() => {
         fetchAnnouncements()
     }, [currentPage])
@@ -293,16 +308,16 @@ export default function Announcements() {
                             <label className="block text-sm font-semibold">
                                 เนื้อหา
                             </label>
-                            <textarea
-                                className="textarea textarea-bordered w-full"
-                                value={modalData.content || ''}
-                                onChange={e =>
-                                    setModalData({
-                                        ...modalData,
-                                        content: e.target.value,
-                                    })
-                                }
-                            />
+                            <div>
+                                <textarea
+                                    className="textarea textarea-bordered w-full"
+                                    value={modalData.content || ''}
+                                    onChange={handleChange}
+                                />
+                                <div className="text-right text-sm">
+                                    {charCount}/{maxLength}
+                                </div>
+                            </div>
                         </div>
                         <div className="mb-4">
                             <label className="block text-sm font-semibold">
