@@ -105,7 +105,9 @@ export default function RegistrationForm() {
                 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json',
             )
             .then(response => setProvinces(response.data))
-            .catch(error => console.error('Error:', error))
+            .catch
+            //error => console.error('Error:', error))
+            ()
     }, [])
 
     const handleNextStep = () => {
@@ -129,7 +131,7 @@ export default function RegistrationForm() {
                         video.play()
                     })
                     .catch(error => {
-                        console.error('Error accessing camera: ', error)
+                        //console.error('Error accessing camera: ', error)
                         alert(
                             'ไม่สามารถเข้าถึงกล้องได้ โปรดตรวจสอบการตั้งค่าและอนุญาตให้เข้าถึงกล้อง',
                         )
@@ -243,7 +245,7 @@ export default function RegistrationForm() {
         })
 
         for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`)
+            //console.log(`${key}: ${value}`)
         }
 
         try {
@@ -260,7 +262,7 @@ export default function RegistrationForm() {
             if (!response.ok) {
                 // ลองดึงข้อมูล error message จาก API response
                 const errorData = await response.text()
-                console.log(errorData) // แสดงข้อผิดพลาดใน console
+                //console.log(errorData) // แสดงข้อผิดพลาดใน console
                 let errorMessage = 'Unknown error'
 
                 // ตรวจสอบว่ามี error message ที่ API ส่งกลับมาหรือไม่
@@ -280,10 +282,10 @@ export default function RegistrationForm() {
             }
 
             const result = await response.json() // ถ้า API ส่งข้อมูลกลับมาในรูปแบบ JSON
-            console.log('Success:', result)
+            //console.log('Success:', result)
             alert('Worker added successfully')
         } catch (error) {
-            console.error('Error:', error)
+            //console.error('Error:', error)
             alert(`Error: ${error.message}`)
         }
     }
@@ -1665,7 +1667,7 @@ export default function RegistrationForm() {
                                                     <th>ตำแหน่ง</th>
                                                     <th>ลักษณะงาน</th>
                                                     <th>ระยะเวลา (ปี)</th>
-                                                    <th></th>
+                                                    <th> </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -1812,7 +1814,7 @@ export default function RegistrationForm() {
                                                     <th>#</th>
                                                     <th>ตำแหน่งที่ต้องการ</th>
                                                     <th>เงินเดือนที่ต้องการ</th>
-                                                    <th></th>
+                                                    <th> </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -2064,7 +2066,9 @@ export default function RegistrationForm() {
                                             onChange={e =>
                                                 setNote(e.target.value)
                                             }
-                                            className="textarea textarea-bordered"></textarea>
+                                            className="textarea textarea-bordered">
+                                            {' '}
+                                        </textarea>
                                     </div>
 
                                     <div className="form-control">
@@ -2094,13 +2098,17 @@ export default function RegistrationForm() {
                                             <video
                                                 ref={videoRef}
                                                 className="w-full h-full object-cover border border-gray-300 rounded-lg"
-                                                autoPlay></video>
+                                                autoPlay>
+                                                {' '}
+                                            </video>
                                         </div>
                                         <canvas
                                             id="canvas"
                                             width="320"
                                             height="240"
-                                            className="hidden"></canvas>
+                                            className="hidden">
+                                            {' '}
+                                        </canvas>
                                     </div>
 
                                     {/* ขวา: รูปที่ถ่ายได้ */}
