@@ -21,7 +21,7 @@ export default function Announcements() {
     const [totalPages, setTotalPages] = useState(1)
     const itemsPerPage = 20 // Limit to 20 items per page
 
-    const maxLength = 99
+    const maxLength = 80
     const charCount = modalData.content?.length || 0
 
     const handleChange = e => {

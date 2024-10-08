@@ -8,12 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUserLock,
     faRightLeft,
+    faCheckCircle,
     faSyringe,
+    faTrashAlt,
     faFileExcel,
     faChildren,
     faUserGroup,
-    faClipboardList,
+    faTimes,
     faCircleXmark,
+    faGripLinesVertical,
     faUser,
     faBicycle,
     faMotorcycle,
@@ -49,18 +52,25 @@ import {
     faHeartbeat,
     faPrint,
 } from '@fortawesome/free-solid-svg-icons'
-
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 export default function Page() {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
     const [empData, setEmpData] = useState(null)
     const [logData, setLogData] = useState([]) // New state for log data
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
     const getname = `48`
     const empId = profile?.uid48
+    const [isWorkLogModalOpen, setIsWorkLogModalOpen] = useState(false)
+    const [isContractLogModalOpen, setIsContractLogModalOpen] = useState(false)
+    const [workLogs, setWorkLogs] = useState([])
+    const [isPaymentLogModalOpen, setIsPaymentLogModalOpen] = useState(false)
+    const [paymentLogs, setPaymentLogs] = useState([])
     useEffect(() => {
         const checkUserStatus = () => {
             // Check the user's type48 status from the profile prop
@@ -78,6 +88,16 @@ export default function Page() {
         }, 10000)
         return () => clearInterval(intervalId)
     }, [])
+
+    const [isCardModalOpen, setIsCardModalOpen] = useState(false)
+
+    const handleOpenCardModal = () => {
+        setIsCardModalOpen(true)
+    }
+
+    const handleCloseCardModal = () => {
+        setIsCardModalOpen(false)
+    }
 
     const fetchData = async (showLoading = true) => {
         try {
@@ -101,6 +121,40 @@ export default function Page() {
             }
         }
     }
+
+    const fetchWorkLogData = async () => {
+        try {
+            const workLogApiUrl = `${f_url}/api/logs_w?token=${token}&id=${data.worker_id}`
+            const workLogResponse = await axios.get(workLogApiUrl)
+            setWorkLogs(workLogResponse.data)
+        } catch (error) {
+            //console.error('Error fetching work logs:', error)
+            toast.error(`Error:. ${error}`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+        }
+    }
+
+    // Function to handle "การทำรายการ" button click
+    const handleWorkLogClick = () => {
+        fetchWorkLogData()
+        setIsWorkLogModalOpen(true)
+    }
+
+    // Function to handle "การทำสัญญา" button click
+    const handleContractLogClick = () => {
+        fetchLogData() // This already fetches logs data
+        setIsContractLogModalOpen(true)
+    }
+
+    // Function to close the modals
+    const handleCloseWorkLogModal = () => setIsWorkLogModalOpen(false)
+    const handleCloseContractLogModal = () => setIsContractLogModalOpen(false)
 
     const fetchEmpData = async () => {
         // ตรวจสอบว่า emp_id มีค่าก่อนทำการดึงข้อมูล
@@ -338,7 +392,7 @@ export default function Page() {
                 return (
                     <button
                         className="btn btn-error font-semibold py-1 px-4 rounded-full"
-                        onClick={() => handleOpenModal('wait')}>
+                        onClick={() => handleOpenModal('newupdate')}>
                         <FontAwesomeIcon
                             icon={faPersonWalkingArrowLoopLeft}
                             className="fa-lg"
@@ -380,8 +434,46 @@ export default function Page() {
             // ทำสิ่งที่ต้องการเมื่อการอัพเดทสำเร็จ
         } catch (error) {
             //console.error('Error updating worker status:', error.message)
-            alert(`Error: ${error.message}`)
+            toast.error(`Error:. ${error.message}`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
         }
+    }
+
+    const handleDeleteClick = () => {
+        setIsDeleteModalOpen(true)
+    }
+
+    // Function to close the delete modal
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false)
+    }
+
+    const handleOpenPaymentLogModal = async () => {
+        try {
+            const paymentApiUrl = `${f_url}/api/i_taxs?token=${token}&id=${data?.worker_id}`
+            const paymentResponse = await axios.get(paymentApiUrl)
+            setPaymentLogs(paymentResponse.data)
+            setIsPaymentLogModalOpen(true)
+        } catch (error) {
+            toast.error('Error fetching payment logs', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+        }
+    }
+
+    const handleClosePaymentLogModal = () => {
+        setIsPaymentLogModalOpen(false)
     }
 
     useEffect(() => {
@@ -482,6 +574,72 @@ export default function Page() {
         setIsModalOpen(true)
     }
 
+    const handleDeleteWorker = async () => {
+        try {
+            if (!data?.worker_id || !empId) {
+                throw new Error('Missing worker ID or employee ID.')
+            }
+
+            const response = await fetch(`${f_url}/api/d_worker`, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    wid: data.worker_id,
+                    emp_id: empId,
+                }),
+            })
+
+            const result = await response.json()
+            if (!response.ok) {
+                throw new Error(result.message || 'Unknown error')
+            }
+            toast.success('Worker deleted successfully!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+            setIsDeleteModalOpen(false)
+            router.push('/dashboard') // Redirect to the dashboard or any desired page after deletion
+        } catch (error) {
+            toast.error(`Error:. ${error.message}`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+        }
+    }
+
+    const handlePrintApplication = async () => {
+        try {
+            if (!data?.worker_id) {
+                throw new Error('Missing worker ID.')
+            }
+
+            // Construct the URL for downloading the DOCX file
+            const docxApiUrl = `${f_url}/api/i_pdf?token=${token}&id=${data.worker_id}`
+
+            // Set the window location to the API URL to start the download
+            window.location.href = docxApiUrl
+        } catch (error) {
+            toast.error(`Error: ${error.message}`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+        }
+    }
+
     const handleOpenModal = status => {
         setNewStatus(status) // เก็บสถานะที่กดปุ่ม
         setIsModalOpen2(true) // เปิด Modal
@@ -503,6 +661,7 @@ export default function Page() {
     }
     return (
         <AppLayout>
+            <ToastContainer />
             {loading ? (
                 <div className="w-full p-5">
                     <div className="flex items-center justify-center flex-wrap gap-4">
@@ -554,7 +713,8 @@ export default function Page() {
                                 <div className="m-2">
                                     <button
                                         className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
-                                        data-tip="ปริ๊นใบสมัคร">
+                                        data-tip="ปริ๊นใบสมัคร"
+                                        onClick={handlePrintApplication}>
                                         <FontAwesomeIcon
                                             icon={faPrint}
                                             className="fa-2x"
@@ -578,7 +738,8 @@ export default function Page() {
                                     </button>
                                     <button
                                         className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
-                                        data-tip="การ์ด">
+                                        data-tip="การ์ด"
+                                        onClick={handleOpenCardModal}>
                                         <FontAwesomeIcon
                                             icon={faIdCard}
                                             className="fa-2x"
@@ -586,6 +747,401 @@ export default function Page() {
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Card Profile Image correctly */}
+                            {isCardModalOpen && (
+                                <div className="modal modal-open ">
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300">
+                                        {' '}
+                                    </div>
+                                    <div className="modal-box max-w-6xl bg-gradient-to-br from-violet-500 via-purple-600 to-indigo-700 text-white">
+                                        <div className="flex justify-between items-center">
+                                            <h2 className="text-2xl font-semibold text-white text-shadow-sm">
+                                                <FontAwesomeIcon
+                                                    icon={faGripLinesVertical}
+                                                    className="fa-fw me-1"
+                                                />
+                                                บัตรประจำตัวคนงาน
+                                            </h2>
+                                            <button
+                                                className="text-white text-2xl"
+                                                onClick={handleCloseCardModal}>
+                                                <FontAwesomeIcon
+                                                    icon={faTimes}
+                                                    className="fa-lg"
+                                                />
+                                            </button>
+                                        </div>
+
+                                        <div className="grid grid-cols-3 gap-4 mt-4">
+                                            {/* Profile Image */}
+                                            <div className="col-span-1 bg-white text-black rounded-lg shadow-lg relative">
+                                                <img
+                                                    src={`${f_url}/${datapacks[0].values}`}
+                                                    alt="Worker"
+                                                    className="w-full h-full object-cover rounded-lg"
+                                                />
+                                                <div className="absolute inset-0 flex flex-col justify-between p-4 ">
+                                                    <div>
+                                                        <h3 className="text-4xl font-bold text-white text-center text-shadow-lg">
+                                                            รหัส:{' '}
+                                                            {data.worker_id}
+                                                        </h3>
+                                                        <p className="text-green-600 w-1/2 font-semibold bg-white bg-opacity-70 flex justify-center rounded-full p-1 mt-1 text-center mx-auto">
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faCheckCircle
+                                                                }
+                                                                className="fa-lg me-1"
+                                                            />
+                                                            ตรวจโควิดแล้ว
+                                                        </p>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <h3 className="text-2xl font-bold text-white text-shadow-sm">
+                                                            แอดไลน์สอบถาม
+                                                        </h3>
+                                                        <p className="text-green-600 text-2xl font-bold bg-black bg-opacity-55 shadow-lg rounded-full px-2">
+                                                            @maid2013
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Profile Section */}
+                                            <div className="col-span-2 bg-white text-black rounded-lg p-4 shadow-lg">
+                                                <h3 className="text-xl font-bold mb-2 badge badge-lg">
+                                                    ข้อมูลส่วนตัว
+                                                </h3>
+                                                <div className="grid grid-cols-3 gap-4 bg-gray-100 p-2 rounded-lg">
+                                                    <div>
+                                                        <p>
+                                                            ชื่อเล่น:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_nickname
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            สัญชาติ:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_nationality
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            น้ำหนัก:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_weight
+                                                                }{' '}
+                                                                kg
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p>
+                                                            อายุ:{' '}
+                                                            <span className="font-semibold">
+                                                                {new Date().getFullYear() -
+                                                                    new Date(
+                                                                        data.worker_birthday,
+                                                                    ).getFullYear()}{' '}
+                                                                ปี
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            ศาสนา:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_religion
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            ส่วนสูง:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_height
+                                                                }{' '}
+                                                                cm
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p>
+                                                            ในไทยมา:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_inthai
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            ที่อยู่:{' '}
+                                                            <span className="font-semibold">
+                                                                {
+                                                                    data.worker_address
+                                                                }
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                                    <div>
+                                                        <h3 className="text-xl font-bold mb-2 badge badge-lg">
+                                                            ทักษะภาษา
+                                                        </h3>
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            <div className="bg-gray-100 rounded-lg p-2">
+                                                                <h4 className="font-bold">
+                                                                    ภาษาไทย
+                                                                </h4>
+                                                                <p>
+                                                                    พูด:{' '}
+                                                                    <span
+                                                                        className={
+                                                                            data.worker_landth_talk ===
+                                                                            '1'
+                                                                                ? 'text-green-600'
+                                                                                : 'text-red-600'
+                                                                        }>
+                                                                        {data.worker_landth_talk ===
+                                                                        '1'
+                                                                            ? 'ได้'
+                                                                            : 'ไม่ได้'}
+                                                                    </span>
+                                                                </p>
+                                                                <p>
+                                                                    อ่าน:{' '}
+                                                                    <span
+                                                                        className={
+                                                                            data.worker_landth_view ===
+                                                                            '1'
+                                                                                ? 'text-green-600'
+                                                                                : 'text-red-600'
+                                                                        }>
+                                                                        {data.worker_landth_view ===
+                                                                        '1'
+                                                                            ? 'ได้'
+                                                                            : 'ไม่ได้'}
+                                                                    </span>
+                                                                </p>
+                                                                <p>
+                                                                    เขียน:{' '}
+                                                                    <span
+                                                                        className={
+                                                                            data.worker_landth_write ===
+                                                                            '1'
+                                                                                ? 'text-green-600'
+                                                                                : 'text-red-600'
+                                                                        }>
+                                                                        {data.worker_landth_write ===
+                                                                        '1'
+                                                                            ? 'ได้'
+                                                                            : 'ไม่ได้'}
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-gray-100 rounded-lg p-2">
+                                                                <h4 className="font-bold">
+                                                                    ภาษาอังกฤษ
+                                                                </h4>
+                                                                <p>
+                                                                    พูด:{' '}
+                                                                    <span
+                                                                        className={
+                                                                            data.worker_landen_talk ===
+                                                                            '1'
+                                                                                ? 'text-green-600'
+                                                                                : 'text-red-600'
+                                                                        }>
+                                                                        {data.worker_landen_talk ===
+                                                                        '1'
+                                                                            ? 'ได้'
+                                                                            : 'ไม่ได้'}
+                                                                    </span>
+                                                                </p>
+                                                                <p>
+                                                                    อ่าน:{' '}
+                                                                    <span
+                                                                        className={
+                                                                            data.worker_landen_view ===
+                                                                            '1'
+                                                                                ? 'text-green-600'
+                                                                                : 'text-red-600'
+                                                                        }>
+                                                                        {data.worker_landen_view ===
+                                                                        '1'
+                                                                            ? 'ได้'
+                                                                            : 'ไม่ได้'}
+                                                                    </span>
+                                                                </p>
+                                                                <p>
+                                                                    เขียน:{' '}
+                                                                    <span
+                                                                        className={
+                                                                            data.worker_landen_write ===
+                                                                            '1'
+                                                                                ? 'text-green-600'
+                                                                                : 'text-red-600'
+                                                                        }>
+                                                                        {data.worker_landen_write ===
+                                                                        '1'
+                                                                            ? 'ได้'
+                                                                            : 'ไม่ได้'}
+                                                                    </span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <h3 className="text-xl font-bold mb-2 badge badge-lg">
+                                                            ความสามารถ/บุคลิกภาพ
+                                                        </h3>
+                                                        <div className="grid grid-cols-2 gap-2 bg-gray-100 rounded-lg p-2">
+                                                            <p>
+                                                                อาหารไทย:{' '}
+                                                                <span className="font-semibold">
+                                                                    {data.worker_skill_foodlevel ===
+                                                                    '1'
+                                                                        ? 'ได้เบื้องต้น'
+                                                                        : data.worker_skill_foodlevel ===
+                                                                          '2'
+                                                                        ? 'ได้ตามสั่ง'
+                                                                        : 'ไม่ได้'}
+                                                                </span>
+                                                            </p>
+                                                            <p>
+                                                                ขี่จักรยาน:{' '}
+                                                                <span
+                                                                    className={
+                                                                        data.worker_skill1 ===
+                                                                        '1'
+                                                                            ? 'text-green-600'
+                                                                            : 'text-red-600'
+                                                                    }>
+                                                                    {data.worker_skill1 ===
+                                                                    '1'
+                                                                        ? 'ได้'
+                                                                        : 'ไม่ได้'}
+                                                                </span>
+                                                            </p>
+                                                            <p>
+                                                                ขี่จักรยานยนต์:{' '}
+                                                                <span
+                                                                    className={
+                                                                        data.worker_skill2 ===
+                                                                        '1'
+                                                                            ? 'text-green-600'
+                                                                            : 'text-red-600'
+                                                                    }>
+                                                                    {data.worker_skill2 ===
+                                                                    '1'
+                                                                        ? 'ได้'
+                                                                        : 'ไม่ได้'}
+                                                                </span>
+                                                            </p>
+                                                            <p>
+                                                                ขับรถยนต์:{' '}
+                                                                <span
+                                                                    className={
+                                                                        data.worker_skill3 ===
+                                                                        '1'
+                                                                            ? 'text-green-600'
+                                                                            : 'text-red-600'
+                                                                    }>
+                                                                    {data.worker_skill3 ===
+                                                                    '1'
+                                                                        ? 'ได้'
+                                                                        : 'ไม่ได้'}
+                                                                </span>
+                                                            </p>
+                                                            <p>
+                                                                เมารถ/เรือ:{' '}
+                                                                <span className="font-semibold">
+                                                                    {data.worker_boathunk ===
+                                                                    '1'
+                                                                        ? 'มีปัญหา'
+                                                                        : 'ไม่เมา'}
+                                                                </span>
+                                                            </p>
+                                                            <p>
+                                                                หมา/แมว:{' '}
+                                                                <span className="font-semibold">
+                                                                    {data.worker_smalldog ===
+                                                                        '1' &&
+                                                                    data.worker_bigdog ===
+                                                                        '1'
+                                                                        ? 'ไม่กลัว'
+                                                                        : 'กลัว'}
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <h3 className="text-xl font-bold mt-4 mb-2 badge badge-lg">
+                                                    ประวัติการทำงาน
+                                                </h3>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {data.workexp_name1 && (
+                                                        <div className="p-2 bg-gray-100 rounded-lg shadow-sm">
+                                                            <p className="font-bold">
+                                                                {
+                                                                    data.workexp_position1
+                                                                }
+                                                            </p>
+                                                            <p>
+                                                                {
+                                                                    data.workexp_name1
+                                                                }{' '}
+                                                                -{' '}
+                                                                {
+                                                                    data.workexp_time1
+                                                                }
+                                                            </p>
+                                                            <p className="text-sm">
+                                                                {
+                                                                    data.workexp_detail1
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                    {data.workexp_name2 && (
+                                                        <div className="p-2 bg-gray-100 rounded-lg shadow-sm">
+                                                            <p className="font-bold">
+                                                                {
+                                                                    data.workexp_position2
+                                                                }
+                                                            </p>
+                                                            <p>
+                                                                {
+                                                                    data.workexp_name2
+                                                                }{' '}
+                                                                -{' '}
+                                                                {
+                                                                    data.workexp_time2
+                                                                }
+                                                            </p>
+                                                            <p className="text-sm">
+                                                                {
+                                                                    data.workexp_detail2
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Positioning Profile Image correctly */}
                             <div className="absolute bottom-[-15px] left-1/2 transform -translate-x-1/2">
                                 <div className="bg-white flex items-center justify-center rounded-full p-1">
@@ -734,24 +1290,296 @@ export default function Page() {
                                 <button className="font-semibold text-blue-600 border-b-2 border-blue-600 py-3">
                                     ข้อมูลประวัติ
                                 </button>
-                                <button className="text-gray-600 py-3">
+                                <button
+                                    className="text-gray-600 py-3"
+                                    onClick={handleWorkLogClick}>
                                     การทำรายการ
                                 </button>
-                                <button className="text-gray-600 py-3">
+                                <button
+                                    className="text-gray-600 py-3"
+                                    onClick={handleContractLogClick}>
                                     การทำสัญญา
                                 </button>
-                                <button className="text-gray-600 py-3">
+                                <button
+                                    className="text-gray-600 py-3"
+                                    onClick={handleOpenPaymentLogModal}>
                                     การชำระเงิน
                                 </button>
-                                <button className="text-gray-600 py-3">
+                                <button
+                                    className="text-gray-400 py-3"
+                                    disabled="disabled">
                                     ตั้งค่าคนงาน
                                 </button>
-                                <button className="text-red-600 py-3">
+                                <button
+                                    className="text-red-600 py-3"
+                                    onClick={handleDeleteClick}>
                                     ลบคนงาน
                                 </button>
                             </div>
                         </div>
                     </div>
+
+                    {/* Payment Log Modal */}
+                    {isPaymentLogModalOpen && (
+                        <div className="modal modal-open">
+                            <div className="modal-box max-w-4xl w-full">
+                                <h2 className="text-lg font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faGripLinesVertical}
+                                        className="fa-fw me-1"
+                                    />
+                                    การชำระเงิน
+                                </h2>
+                                {paymentLogs.length === 0 ? (
+                                    <p>ยังไม่มีข้อมูลการชำระเงิน</p>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="table-auto w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th className="px-4 py-2">
+                                                        ผู้ใช้
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        หมายเหตุ
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        วันที่
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        จำนวนเงิน (บาท)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {paymentLogs.map(
+                                                    (log, index) => (
+                                                        <tr
+                                                            key={index}
+                                                            className="hover:bg-gray-100">
+                                                            <td className="border px-4 py-2">
+                                                                {log.tax_uid}
+                                                            </td>
+                                                            <td className="border px-4 py-2">
+                                                                {log.tax_comment ||
+                                                                    'ไม่มีหมายเหตุ'}
+                                                            </td>
+                                                            <td className="border px-4 py-2">
+                                                                {new Date(
+                                                                    log.tax_date,
+                                                                ).toLocaleString()}
+                                                            </td>
+                                                            <td className="border px-4 py-2 text-right">
+                                                                {log.tax_value.toLocaleString()}{' '}
+                                                                บาท
+                                                            </td>
+                                                        </tr>
+                                                    ),
+                                                )}
+                                                {/* Total Row */}
+                                                <tr className="font-bold">
+                                                    <td
+                                                        colSpan="3"
+                                                        className="border px-4 py-2 text-right">
+                                                        ยอดรวมทั้งหมด
+                                                        (ที่ยังไม่ได้ชำระ)
+                                                    </td>
+                                                    <td className="border px-4 py-2 text-right">
+                                                        {paymentLogs
+                                                            .reduce(
+                                                                (total, log) =>
+                                                                    total +
+                                                                    log.tax_value,
+                                                                0,
+                                                            )
+                                                            .toLocaleString()}{' '}
+                                                        บาท
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                                <div className="modal-action">
+                                    <button
+                                        className="btn"
+                                        onClick={handleClosePaymentLogModal}>
+                                        ปิด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Work Log Modal */}
+                    {isWorkLogModalOpen && (
+                        <div className="modal modal-open">
+                            <div className="modal-box max-w-4xl w-full">
+                                <h2 className="text-lg font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faGripLinesVertical}
+                                        className="fa-fw me-1"
+                                    />
+                                    การทำรายการ
+                                </h2>
+                                {workLogs.length === 0 ? (
+                                    <p>ยังไม่มีข้อมูลการทำรายการ</p>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th className="px-4 py-2">
+                                                        ผู้ใช้
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        สถานะ
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        วันที่
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        หมายเหตุ
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {workLogs.map((log, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className="hover:bg-gray-100">
+                                                        <td className="border px-4 py-2">
+                                                            {log.logs_tmpuid}
+                                                        </td>
+                                                        <td className="border px-4 py-2">
+                                                            {
+                                                                getStatusData(
+                                                                    log.logs_status,
+                                                                ).text
+                                                            }
+                                                        </td>
+                                                        <td className="border px-4 py-2">
+                                                            {new Date(
+                                                                log.created_at,
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td className="border px-4 py-2">
+                                                            {log.logs_comment ||
+                                                                'ไม่มีความคิดเห็น'}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                                <div className="modal-action">
+                                    <button
+                                        className="btn"
+                                        onClick={handleCloseWorkLogModal}>
+                                        ปิด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Contract Log Modal */}
+                    {isContractLogModalOpen && (
+                        <div className="modal modal-open">
+                            <div className="modal-box max-w-4xl w-full">
+                                <h2 className="text-lg font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faGripLinesVertical}
+                                        className="fa-fw me-1"
+                                    />
+                                    การทำสัญญา
+                                </h2>
+                                {logData.length === 0 ? (
+                                    <p>ยังไม่มีข้อมูลการทำสัญญา</p>
+                                ) : (
+                                    <div className="overflow-x-auto">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th className="px-4 py-2">
+                                                        ผู้ใช้
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        สถานะ
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        วันที่
+                                                    </th>
+                                                    <th className="px-4 py-2">
+                                                        ความคิดเห็น
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {logData.map((log, index) => (
+                                                    <tr
+                                                        key={index}
+                                                        className="hover:bg-gray-100">
+                                                        <td className="border px-4 py-2">
+                                                            {log.logs_tmpuid}
+                                                        </td>
+                                                        <td className="border px-4 py-2">
+                                                            {log.logs_status}
+                                                        </td>
+                                                        <td className="border px-4 py-2">
+                                                            {new Date(
+                                                                log.created_at,
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td className="border px-4 py-2">
+                                                            {log.logs_comment ||
+                                                                'ไม่มีความคิดเห็น'}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                                <div className="modal-action">
+                                    <button
+                                        className="btn"
+                                        onClick={handleCloseContractLogModal}>
+                                        ปิด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Delete Confirmation Modal */}
+                    {isDeleteModalOpen && (
+                        <div className="modal modal-open">
+                            <div className="modal-box">
+                                <h2 className="text-lg font-bold mb-4">
+                                    <FontAwesomeIcon
+                                        icon={faTrashAlt}
+                                        className="fa-fw me-1 text-error"
+                                    />
+                                    ยืนยันการลบ
+                                </h2>
+                                <p>คุณต้องการลบคนงานนี้หรือไม่?</p>
+                                <div className="modal-action">
+                                    <button
+                                        className="btn btn-error text-white"
+                                        onClick={handleDeleteWorker}>
+                                        ยืนยัน
+                                    </button>
+                                    <button
+                                        className="btn btn-ghost"
+                                        onClick={handleCloseDeleteModal}>
+                                        ยกเลิก
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="flex flex-wrap px-5 py-3">
                         <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
