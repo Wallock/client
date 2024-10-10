@@ -89,6 +89,17 @@ export default function Profile() {
                         <p className="text-gray-600">{userData?.phone}</p>
                     </div>
 
+                    <div className="w-full max-w-2xl my-5 mx-auto">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="card bg-base-100 p-3 shadow-xl">
+                                คนงานของฉัน
+                            </div>
+                            <div className="card bg-base-100 p-3 shadow-xl">
+                                ทำรายการไปแล้ว
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Timeline / Posts Section */}
                     <div className="w-full max-w-2xl mx-auto">
                         <div className="card bg-base-100 p-3 shadow-xl">

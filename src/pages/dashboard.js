@@ -185,7 +185,7 @@ export default function dashboard() {
                     <div className="hero-content my-3">
                         <div className="text-center p-3">
                             <h1 className="text-5xl font-bold font-2 m-0">
-                                Welcome Back
+                                ยินดีต้อนรับ
                             </h1>
                             <p className="font-1 font-semibold">
                                 ระบบจัดการพนักงานและองค์กรภายใน
@@ -194,69 +194,90 @@ export default function dashboard() {
                     </div>
                 </div>
 
-                <div className="mockup-browser w-full shadow-lg border bg-base-300">
-                    <div className="mockup-browser-toolbar">
-                        <div className="input font-2 font-semibold">
-                            ข่าวสาร & อัพเดทล่าสุด
+                <div className="w-full my-5 mx-auto">
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="mockup-browser shadow-lg border bg-base-300 mx-5">
+                            <div className="mockup-browser-toolbar">
+                                <div className="input font-2 font-semibold">
+                                    ข่าวสาร & อัพเดทล่าสุด
+                                </div>
+                            </div>
+
+                            <div className="card bg-base-100 px-4 m-2">
+                                <ul
+                                    role="list"
+                                    className="divide-y divide-gray-100">
+                                    {loading
+                                        ? Array.from({
+                                              length: itemsPerPage,
+                                          }).map((_, index) => (
+                                              <li
+                                                  key={index}
+                                                  className="flex justify-between items-center gap-x-6 py-2">
+                                                  <div className="skeleton h-4 w-full">
+                                                      {' '}
+                                                  </div>
+                                              </li>
+                                          ))
+                                        : currentItems.map(announcement => (
+                                              <li
+                                                  key={announcement.id}
+                                                  className="flex justify-between items-center gap-x-6 py-2"
+                                                  onClick={() =>
+                                                      setSelectedAnnouncement(
+                                                          announcement,
+                                                      )
+                                                  }>
+                                                  <p className="font-semibold">
+                                                      <FontAwesomeIcon
+                                                          icon={faEnvelope}
+                                                          className="me-2"
+                                                      />
+                                                      {announcement.title}
+                                                      <Label className="text-xs">
+                                                          อัพเดทเมื่อ :
+                                                          {formatDate(
+                                                              announcement.created_at,
+                                                          )}
+                                                      </Label>
+                                                  </p>
+                                                  <div className="btn text-sm text-gray-600">
+                                                      <FontAwesomeIcon
+                                                          icon={faEye}
+                                                      />
+                                                  </div>
+                                              </li>
+                                          ))}
+                                </ul>
+
+                                <div className="flex justify-center my-2">
+                                    {Array.from(
+                                        { length: totalPages },
+                                        (_, index) => (
+                                            <button
+                                                key={index + 1}
+                                                className={`btn btn-sm mx-1 ${
+                                                    currentPage === index + 1
+                                                        ? 'btn-active'
+                                                        : ''
+                                                }`}
+                                                onClick={() =>
+                                                    paginate(index + 1)
+                                                }>
+                                                {index + 1}
+                                            </button>
+                                        ),
+                                    )}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="card bg-base-100 px-4 m-2">
-                        <ul role="list" className="divide-y divide-gray-100">
-                            {loading
-                                ? Array.from({ length: itemsPerPage }).map(
-                                      (_, index) => (
-                                          <li
-                                              key={index}
-                                              className="flex justify-between items-center gap-x-6 py-2">
-                                              <div className="skeleton h-4 w-full">
-                                                  {' '}
-                                              </div>
-                                          </li>
-                                      ),
-                                  )
-                                : currentItems.map(announcement => (
-                                      <li
-                                          key={announcement.id}
-                                          className="flex justify-between items-center gap-x-6 py-2"
-                                          onClick={() =>
-                                              setSelectedAnnouncement(
-                                                  announcement,
-                                              )
-                                          }>
-                                          <p className="font-semibold">
-                                              <FontAwesomeIcon
-                                                  icon={faEnvelope}
-                                                  className="me-2"
-                                              />
-                                              {announcement.title}
-                                              <Label className="text-xs">
-                                                  อัพเดทเมื่อ :
-                                                  {formatDate(
-                                                      announcement.created_at,
-                                                  )}
-                                              </Label>
-                                          </p>
-                                          <div className="btn text-sm text-gray-600">
-                                              <FontAwesomeIcon icon={faEye} />
-                                          </div>
-                                      </li>
-                                  ))}
-                        </ul>
-
-                        <div className="flex justify-center my-2">
-                            {Array.from({ length: totalPages }, (_, index) => (
-                                <button
-                                    key={index + 1}
-                                    className={`btn btn-sm mx-1 ${
-                                        currentPage === index + 1
-                                            ? 'btn-active'
-                                            : ''
-                                    }`}
-                                    onClick={() => paginate(index + 1)}>
-                                    {index + 1}
-                                </button>
-                            ))}
+                        <div className="mockup-code mx-5 text-center shadow-lg">
+                            <pre className="text-lg font-semibold">
+                                <code>ประกาศวันหยุด</code>
+                            </pre>
+                            <pre className="text-gray-500 text-sm mt-5">
+                                <code>ยังไม่มีกำหนดการ!</code>
+                            </pre>
                         </div>
                     </div>
                 </div>

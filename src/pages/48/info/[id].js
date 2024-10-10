@@ -1305,16 +1305,18 @@ export default function Page() {
                                     onClick={handleOpenPaymentLogModal}>
                                     การชำระเงิน
                                 </button>
-                                <button
-                                    className="text-gray-400 py-3"
-                                    disabled="disabled">
-                                    ตั้งค่าคนงาน
-                                </button>
-                                <button
-                                    className="text-red-600 py-3"
-                                    onClick={handleDeleteClick}>
-                                    ลบคนงาน
-                                </button>
+                                {profile?.role != 2 && (
+                                    <button className="text-gray-600 py-3">
+                                        ตั้งค่าคนงาน
+                                    </button>
+                                )}
+                                {profile?.role >= 3 && (
+                                    <button
+                                        className="text-red-600 py-3"
+                                        onClick={handleDeleteClick}>
+                                        ลบคนงาน
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>

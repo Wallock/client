@@ -11,17 +11,17 @@ export default function test() {
                     <div className="hero-content my-3">
                         <div className="text-center p-3">
                             <h1 className="text-5xl font-bold font-2 m-0">
-                                Test Functions
+                                Comming Soon!
                             </h1>
                             <p className="font-1 font-semibold">
-                                ทดสอบระบบใหม่ ก่อนใคร
+                                อยู่ในช่วงทดสอบ ยังไม่เปิดใช้งานขนาดนี้
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <div className="text-center pb-5 w-full overflow-hidden">
-                    test
+                    โปรดติดตามข่าวสารอัพเดทเร็วๆนี้
                 </div>
             </div>
         </AppLayout>
