@@ -1564,7 +1564,13 @@ export default function Page() {
                                     />
                                     ยืนยันการลบ
                                 </h2>
-                                <p>คุณต้องการลบคนงานนี้หรือไม่?</p>
+                                <p className="font-semibold">
+                                    คุณต้องการลบคนงานนี้หรือไม่?
+                                </p>
+                                <p className="text-red-500 text-sm">
+                                    **โปรดระวัง
+                                    หากลบข้อมูลคนงานแล้วจะไม่สามารถกู้คืนใดๆได้อีก
+                                </p>
                                 <div className="modal-action">
                                     <button
                                         className="btn btn-error text-white"
