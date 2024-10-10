@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import Link from 'next/link'
 
 const WorkerDetailsDrawer = ({
     isOpen,
@@ -9,6 +10,7 @@ const WorkerDetailsDrawer = ({
     workerId,
     getfapi,
     gettoken,
+    getname,
 }) => {
     const [workerData, setWorkerData] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -203,11 +205,15 @@ const WorkerDetailsDrawer = ({
                                 </div>
                                 <div className="join p-2 m-2">
                                     <button className="btn btn-lg btn-neutral join-item shadow-lg w-1/2">
-                                        <FontAwesomeIcon
-                                            icon={faCircleInfo}
-                                            className="mr-1"
-                                        />
-                                        ข้อมูล
+                                        <Link
+                                            href={`/${getname}/info/${workerData.worker_id}`}
+                                            className="btn-text">
+                                            <FontAwesomeIcon
+                                                icon={faCircleInfo}
+                                                className="mr-1"
+                                            />
+                                            ข้อมูล
+                                        </Link>
                                     </button>
                                     <button
                                         onClick={onClose}
