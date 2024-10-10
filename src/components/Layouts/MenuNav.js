@@ -83,7 +83,7 @@ const MenuNav = ({ profile }) => {
                         label="ไทยออนไลน์"
                     />
                 )}
-                <MenuItem href="/test" icon={faFlaskVial} label="ทดสอบ" />
+                <MenuItem href="/test" icon={faFlaskVial} label="สัญญาจ้าง" />
                 {Number(profile?.role) === 99 && (
                     <>
                         <MenuItem

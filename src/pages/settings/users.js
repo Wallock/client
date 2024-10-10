@@ -427,16 +427,16 @@ export default function Users() {
                                 onClick={handlePrevPage}
                                 disabled={currentPage === 1}
                                 className="btn btn-outline btn-sm disabled:btn-disabled">
-                                Previous
+                                ย้อนกลับ
                             </button>
                             <span>
-                                Page {currentPage} of {totalPages}
+                                หน้า {currentPage} จาก {totalPages}
                             </span>
                             <button
                                 onClick={handleNextPage}
                                 disabled={currentPage === totalPages}
                                 className="btn btn-outline btn-sm disabled:btn-disabled">
-                                Next
+                                ถัดไป
                             </button>
                         </div>
                     </div>

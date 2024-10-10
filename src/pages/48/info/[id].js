@@ -777,7 +777,7 @@ export default function Page() {
                                             {/* Profile Image */}
                                             <div className="col-span-1 bg-white text-black rounded-lg shadow-lg relative">
                                                 <img
-                                                    src={`${f_url}/${datapacks[0].values}`}
+                                                    src={`${f_url}/${datapacks[0]?.values}`}
                                                     alt="Worker"
                                                     className="w-full h-full object-cover rounded-lg"
                                                 />
