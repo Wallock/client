@@ -8,6 +8,10 @@
     font-family: 'Anuphan', sans-serif;
 }
 
+.title-blue{
+    color: #0066ff;
+}
+
 .font-2 {
     font-family: 'Prompt', sans-serif;
 }
@@ -123,6 +127,30 @@ body {
 
 button {
     font-family: 'Prompt', sans-serif;
+}
+
+.button-js-outline{
+    border-color: #0066ff;
+    color: #0066ff;
+    background-color: transparent;
+}
+
+.button-js-outline:hover{
+    border-color: #0066ff;
+    color: #fff;
+    background-color: #0066ff;
+}
+
+.button-js{
+    color: #ffffff;
+    border-color: #0066ff;
+    background-color: #0066ff;
+}
+
+.button-js:hover{
+    color: #ffffff;
+    border-color: #0066ff;
+    background-color: #0066ff;
 }
 
 input {

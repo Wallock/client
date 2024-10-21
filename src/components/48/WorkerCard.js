@@ -1,5 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
 import {
     faCircleCheck,
     faCirclePause,
@@ -118,7 +119,9 @@ const WorkerCard = ({
                                 {' '}
                             </span>
                         )}
-                        <img
+                        <Image
+                            width={500}
+                            height={500}
                             src={
                                 item.worker_image
                                     ? `${getfapi}/${item.worker_image}`
@@ -153,7 +156,9 @@ const WorkerCard = ({
                                 background: 'rgba(0, 0, 0, 0)',
                                 padding: '3px',
                             }}>
-                            <img
+                            <Image
+                                width={35}
+                                height={35}
                                 src={getFlagUrl(item.worker_type)}
                                 alt={`Flag for ${item.worker_type}`}
                                 style={{
