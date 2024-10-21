@@ -84,7 +84,7 @@ export default function UpdateProfile() {
             {loading ? (
                 <Loading />
             ) : (
-                <div className="bg-gray-100 p-5">
+                <div className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-white p-5">
                     <h1 className="text-3xl font-bold text-center mb-8">
                         แก้ไขโปรไฟล์
                     </h1>
@@ -93,7 +93,7 @@ export default function UpdateProfile() {
                     <form onSubmit={updateProfile}>
                         <div className="w-full max-w-2xl my-5 mx-auto">
                             <div className="grid grid-cols-1 gap-4">
-                                <div className="card bg-base-100 p-3 shadow-xl">
+                                <div className="card bg-base-100 dark:glass text-gray-900 p-3 shadow-xl">
                                     <label className="input input-bordered flex items-center my-2 gap-2">
                                         Name
                                         <input

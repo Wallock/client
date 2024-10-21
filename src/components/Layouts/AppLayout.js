@@ -67,7 +67,7 @@ const AppLayout = ({ children }) => {
                     <Navigation user={user} profile={profile} />
                     <div className="w-full h-screen overflow-x-hidden border-t dark:border-gray-700 flex flex-col">
                         <main className="w-full flex-grow">{children}</main>
-                        <footer className="footer bg-base-200 dark:bg-gray-600 text-base-content dark:text-white border-base-300 dark:border-gray-800 border-t px-10 py-4">
+                        <footer className="footer bg-base-200 dark:glass text-base-content dark:text-white border-base-300 dark:border-gray-800 border-t px-10 py-4">
                             <aside className="grid-flow-col items-center">
                                 <FontAwesomeIcon
                                     icon={faCloud}

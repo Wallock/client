@@ -200,7 +200,7 @@ const Navigation = ({ user, profile }) => {
     return (
         <>
             {/* Desktop Header */}
-            <header className="w-full items-center bg-white dark:bg-gray-600 py-2 px-6 hidden sm:flex">
+            <header className="w-full items-center bg-white dark:text-white dark:glass py-2 px-6 hidden sm:flex">
                 <div className="w-1/2">
                     {announcement && (
                         <BroadcastAnnouncement message={announcement.content} />

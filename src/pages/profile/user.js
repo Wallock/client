@@ -47,7 +47,7 @@ export default function Profile() {
             {loading ? (
                 <Loading />
             ) : (
-                <div className="bg-gray-100 p-5">
+                <div className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white p-5">
                     {/* Cover Photo */}
                     <div className="mt-28 relative h-8 bg-gradient-to-tl from-blue-500 via-indigo-600 to-purple-700 rounded-3xl">
                         {/* Profile Photo */}
@@ -76,10 +76,10 @@ export default function Profile() {
 
                     <div className="w-full max-w-2xl my-5 mx-auto">
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="card bg-base-100 p-3 shadow-xl">
+                            <div className="card bg-base-100 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
                                 คนงานของฉัน
                             </div>
-                            <div className="card bg-base-100 p-3 shadow-xl">
+                            <div className="card bg-base-100 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
                                 ทำรายการไปแล้ว
                             </div>
                         </div>
@@ -87,7 +87,7 @@ export default function Profile() {
 
                     {/* Timeline / Posts Section */}
                     <div className="w-full max-w-2xl mx-auto">
-                        <div className="card bg-base-100 p-3 shadow-xl">
+                        <div className="card bg-base-100 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
                             <p className="text-lg">
                                 Username : {userData?.username}
                             </p>
