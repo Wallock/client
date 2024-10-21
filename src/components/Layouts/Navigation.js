@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-    faUser,
+    faMoon,
     faRightFromBracket,
-    faEllipsisVertical,
+    faSun,
     faBullhorn,
     faCircleUser,
     faGear,
@@ -103,6 +103,33 @@ const Navigation = ({ user, profile }) => {
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
     const [announcement, setAnnouncement] = useState(null)
     const [error, setError] = useState(null)
+    const [darkMode, setDarkMode] = useState(false)
+
+    useEffect(() => {
+        // Check for saved theme preference on mount
+        if (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            setDarkMode(true)
+            document.documentElement.classList.add('dark')
+        } else {
+            setDarkMode(false)
+            document.documentElement.classList.remove('dark')
+        }
+    }, [])
+
+    const toggleTheme = () => {
+        setDarkMode(!darkMode)
+        if (!darkMode) {
+            document.documentElement.classList.add('dark')
+            localStorage.setItem('theme', 'dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+            localStorage.setItem('theme', 'light')
+        }
+    }
     useEffect(() => {
         const fetchAnnouncements = async () => {
             const token = localStorage.getItem('accessToken')
@@ -173,13 +200,32 @@ const Navigation = ({ user, profile }) => {
     return (
         <>
             {/* Desktop Header */}
-            <header className="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+            <header className="w-full items-center bg-white dark:bg-gray-600 py-2 px-6 hidden sm:flex">
                 <div className="w-1/2">
                     {announcement && (
                         <BroadcastAnnouncement message={announcement.content} />
                     )}
                 </div>
                 <div className="relative w-1/2 flex justify-end">
+                    <label className="swap swap-rotate text-gray-800 dark:text-white mx-6">
+                        {/* this hidden checkbox controls the state */}
+                        <input
+                            type="checkbox"
+                            className="hidden"
+                            checked={darkMode}
+                            onChange={toggleTheme} // Trigger the toggleTheme function on change
+                        />
+                        <FontAwesomeIcon
+                            icon={faSun}
+                            className="swap-on fa-xl fill-current"
+                        />
+
+                        {/* moon icon */}
+                        <FontAwesomeIcon
+                            icon={faMoon}
+                            className="swap-off fa-xl fill-current"
+                        />
+                    </label>
                     {/* ปุ่มโปรไฟล์ */}
                     <button
                         onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}

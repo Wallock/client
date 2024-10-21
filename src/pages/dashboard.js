@@ -103,7 +103,7 @@ export default function dashboard() {
     return (
         <AppLayout>
             <div className="w-full p-5">
-                <div className="stats stats-vertical lg:stats-horizontal w-full shadow-lg">
+                <div className="stats stats-vertical lg:stats-horizontal w-full shadow-lg bg-white dark:bg-gray-800 dark:text-white">
                     <div className="stat">
                         <div className="stat-figure text-blue-500">
                             <FontAwesomeIcon
@@ -111,7 +111,9 @@ export default function dashboard() {
                                 className="fa-2xl"
                             />
                         </div>
-                        <div className="stat-title text-sm">เซิฟเวอร์ NASA</div>
+                        <div className="stat-title text-sm dark:text-white">
+                            เซิฟเวอร์ NASA
+                        </div>
                         <div className="stat-value text-success">
                             {loading ? (
                                 <div className="skeleton h-6 w-16"> </div>
@@ -119,7 +121,9 @@ export default function dashboard() {
                                 databeta
                             )}
                         </div>
-                        <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                        <div className="stat-desc dark:text-white">
+                            ทั้งหมด : 05 Record
+                        </div>
                     </div>
 
                     <div className="stat">
@@ -129,7 +133,7 @@ export default function dashboard() {
                                 className="fa-2xl"
                             />
                         </div>
-                        <div className="stat-title text-sm">
+                        <div className="stat-title text-sm dark:text-white">
                             เซิฟเวอร์ DDMaid
                         </div>
                         <div className="stat-value text-success">
@@ -139,7 +143,9 @@ export default function dashboard() {
                                 datadd
                             )}
                         </div>
-                        <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                        <div className="stat-desc dark:text-white">
+                            ทั้งหมด : 05 Record
+                        </div>
                     </div>
 
                     <div className="stat">
@@ -149,7 +155,9 @@ export default function dashboard() {
                                 className="fa-2xl"
                             />
                         </div>
-                        <div className="stat-title text-sm">เซิฟเวอร์ Laos</div>
+                        <div className="stat-title text-sm dark:text-white">
+                            เซิฟเวอร์ Laos
+                        </div>
                         <div className="stat-value text-success">
                             {loading ? (
                                 <div className="skeleton h-6 w-16"> </div>
@@ -157,7 +165,9 @@ export default function dashboard() {
                                 datalaos
                             )}
                         </div>
-                        <div className="stat-desc">ทั้งหมด : 05 Record</div>
+                        <div className="stat-desc dark:text-white">
+                            ทั้งหมด : 05 Record
+                        </div>
                     </div>
 
                     <div className="stat">
@@ -167,7 +177,7 @@ export default function dashboard() {
                                 className="fa-2xl"
                             />
                         </div>
-                        <div className="stat-title text-sm">
+                        <div className="stat-title text-sm dark:text-white">
                             เซิฟเวอร์ ThaiOnline
                         </div>
                         <div className="stat-value text-success">
@@ -177,11 +187,13 @@ export default function dashboard() {
                                 datathai
                             )}
                         </div>
-                        <div className="stat-desc">ทั้งหมด : 50 Record</div>
+                        <div className="stat-desc dark:text-white">
+                            ทั้งหมด : 50 Record
+                        </div>
                     </div>
                 </div>
 
-                <div className="hero text-gray-300">
+                <div className="hero text-gray-300 dark:text-white">
                     <div className="hero-content my-3">
                         <div className="text-center p-3">
                             <h1 className="text-5xl font-bold font-2 m-0">

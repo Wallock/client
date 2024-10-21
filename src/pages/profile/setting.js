@@ -86,7 +86,7 @@ export default function UpdateProfile() {
             ) : (
                 <div className="bg-gray-100 p-5">
                     <h1 className="text-3xl font-bold text-center mb-8">
-                        Update Profile
+                        แก้ไขโปรไฟล์
                     </h1>
 
                     {/* Update Profile Form */}
@@ -94,43 +94,58 @@ export default function UpdateProfile() {
                         <div className="w-full max-w-2xl my-5 mx-auto">
                             <div className="grid grid-cols-1 gap-4">
                                 <div className="card bg-base-100 p-3 shadow-xl">
-                                    <label htmlFor="name">Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        value={name}
-                                        onChange={e => setName(e.target.value)}
-                                        className="input input-bordered w-full"
-                                    />
-                                </div>
-                                <div className="card bg-base-100 p-3 shadow-xl">
-                                    <label htmlFor="email">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        value={email}
-                                        onChange={e => setEmail(e.target.value)}
-                                        className="input input-bordered w-full"
-                                    />
-                                </div>
-                                <div className="card bg-base-100 p-3 shadow-xl">
-                                    <label htmlFor="profilePhoto">
-                                        Profile Photo
+                                    <label className="input input-bordered flex items-center my-2 gap-2">
+                                        Name
+                                        <input
+                                            type="text"
+                                            className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                            placeholder="name"
+                                            id="name"
+                                            value={name}
+                                            onChange={e =>
+                                                setName(e.target.value)
+                                            }
+                                        />
                                     </label>
-                                    <input
-                                        type="file"
-                                        id="profilePhoto"
-                                        onChange={e =>
-                                            setProfilePhoto(e.target.files[0])
-                                        } // Set the file as profilePhoto
-                                        className="input input-bordered w-full"
-                                    />
+                                    <label className="input input-bordered flex items-center my-2 gap-2">
+                                        Email
+                                        <input
+                                            type="email"
+                                            className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                            placeholder="email"
+                                            id="email"
+                                            value={email}
+                                            onChange={e =>
+                                                setEmail(e.target.value)
+                                            }
+                                        />
+                                    </label>
+                                    <label className="form-control w-full my-2">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Profile Photo
+                                            </span>
+                                            <span className="label-text-alt text-error">
+                                                *jpg,jpeg,png,webp only
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="file"
+                                            id="profilePhoto"
+                                            onChange={e =>
+                                                setProfilePhoto(
+                                                    e.target.files[0],
+                                                )
+                                            } // Set the file as profilePhoto
+                                            className="file-input file-input-bordered w-full"
+                                        />
+                                    </label>
                                 </div>
                             </div>
                         </div>
                         <div className="text-center mt-4">
-                            <button type="submit" className="btn btn-primary">
-                                Update Profile
+                            <button type="submit" className="btn button-js">
+                                อัพเดทโปรไฟล์
                             </button>
                         </div>
                         {updateMessage && (

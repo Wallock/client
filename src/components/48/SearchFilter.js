@@ -42,7 +42,7 @@ const SearchFilter = ({
     return (
         <>
             <div className="flex items-center justify-center">
-                <div className="navbar bg-white shadow-md px-3">
+                <div className="navbar bg-white dark:bg-gray-800 shadow-md px-3">
                     <div className="navbar navbar-start hidden lg:flex">
                         {/* ไม่ใช้ collapse-class แต่ใช้การควบคุมด้วย state */}
                         <div className="relative mx-5">

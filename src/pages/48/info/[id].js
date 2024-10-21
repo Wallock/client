@@ -4,6 +4,7 @@ import { useProfile } from '@/lib/ProfileContext'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import Loading from '@/lib/loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUserLock,
@@ -663,20 +664,7 @@ export default function Page() {
         <AppLayout>
             <ToastContainer />
             {loading ? (
-                <div className="w-full p-5">
-                    <div className="flex items-center justify-center flex-wrap gap-4">
-                        {[...Array(30)].map((_, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col gap-4 w-full lg:w-48 mx-1">
-                                <div className="skeleton h-32 w-full"> </div>
-                                <div className="skeleton h-4 w-28"> </div>
-                                <div className="skeleton h-4 w-full"> </div>
-                                <div className="skeleton h-4 w-full"> </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <Loading />
             ) : (
                 <div className="bg-gray-200">
                     <div className="w-auto bg-white shadow-lg rounded-b-lg mx-5">

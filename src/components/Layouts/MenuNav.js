@@ -21,8 +21,8 @@ const MenuItem = ({ href, icon, label }) => {
             <div
                 className={`flex items-center justify-start mx-2 my-1 px-4 py-3 ${
                     isActive
-                        ? 'bg-blue-900 text-white rounded-xl'
-                        : 'hover:bg-blue-700 text-gray-200 rounded-xl'
+                        ? 'bg-blue-900 dark:bg-gray-900 text-white rounded-xl'
+                        : 'hover:bg-blue-700 hover:dark:bg-gray-600 text-gray-200 rounded-xl'
                 } transition-all duration-200`}>
                 <div className="flex items-center justify-center">
                     <FontAwesomeIcon icon={icon} className="mr-4 h-8 w-8" />
@@ -97,7 +97,7 @@ const MenuNav = ({ profile }) => {
             </nav>
             <a
                 href="#"
-                className="absolute w-full bottom-0 bg-blue-700 text-white text-shadow-sm flex items-center text-lg font-semibold justify-center py-4">
+                className="absolute w-full bottom-0 bg-blue-700 text-white dark:bg-gray-900 text-shadow-sm flex items-center text-lg font-semibold justify-center py-4">
                 <FontAwesomeIcon icon={faInbox} className="me-3" />
                 ติดต่อทีมซับพอต
             </a>

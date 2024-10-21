@@ -2,7 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 import daisyui from 'daisyui'
 module.exports = {
     content: ['./src/**/*.js'],
-    darkMode: 'media',
+    darkMode: 'class',
     theme: {
         extend: {
             fontFamily: {
