@@ -34,12 +34,17 @@ export function ProfileProvider({ children }) {
                 }
 
                 const data = await response.json()
+
+                const avatar = data.profile_photo_path
+                    ? `https://server.wb.in.th/${data.profile_photo_path}`
+                    : data.profile_photo_url
+
                 setProfile({
                     id: data.id,
                     name: data.name,
                     email: data.email,
                     username: data.username,
-                    avatar: data.profile_photo_url,
+                    avatar: avatar,
                     role: data.role,
                     type48: data.type48,
                     type82: data.type82,

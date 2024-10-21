@@ -2,6 +2,7 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Loading from '@/lib/loading'
 
 export default function Profile() {
     const router = useRouter()
@@ -44,35 +45,19 @@ export default function Profile() {
     return (
         <AppLayout>
             {loading ? (
-                <div className="w-full p-3">
-                    <div className="flex items-center justify-center flex-wrap gap-4">
-                        {[...Array(30)].map((_, index) => (
-                            <div
-                                key={index}
-                                className="flex flex-col gap-4 w-full lg:w-48 mx-1">
-                                <div className="skeleton h-32 w-full"> </div>
-                                <div className="skeleton h-4 w-28"> </div>
-                                <div className="skeleton h-4 w-full"> </div>
-                                <div className="skeleton h-4 w-full"> </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <Loading />
             ) : (
                 <div className="bg-gray-100 p-5">
                     {/* Cover Photo */}
-                    <div className="relative h-64 bg-blue-600 rounded-3xl">
-                        <img
-                            src="/images/bg-blue.webp"
-                            alt="Cover"
-                            className="w-full h-full object-cover object-bottom rounded-3xl"
-                        />
+                    <div className="mt-28 relative h-8 bg-gradient-to-tl from-blue-500 via-indigo-600 to-purple-700 rounded-3xl">
                         {/* Profile Photo */}
-                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 ">
+                        <div className="absolute bottom-14 left-1/2 transform -translate-x-1/2 translate-y-1/2 ">
                             <img
                                 src={
-                                    userData?.profile_photo_url ||
-                                    '/images/blank-picture.webp'
+                                    userData?.profile_photo_path
+                                        ? `https://server.wb.in.th/${userData.profile_photo_path}`
+                                        : userData?.profile_photo_url ||
+                                          '/images/blank-picture.webp'
                                 }
                                 alt="Profile"
                                 className="w-36 h-36 rounded-full border-4 border-white object-cover transition-transform transform hover:scale-105"
@@ -81,8 +66,8 @@ export default function Profile() {
                     </div>
 
                     {/* Profile Info */}
-                    <div className="text-center mt-20 mb-8 ">
-                        <h1 className="text-3xl font-bold ">
+                    <div className="text-center mt-5 mb-8">
+                        <h1 className="text-4xl font-bold ">
                             {userData?.name}{' '}
                         </h1>
                         <p className="text-gray-600">{userData?.email}</p>

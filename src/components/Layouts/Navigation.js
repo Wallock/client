@@ -201,7 +201,7 @@ const Navigation = ({ user, profile }) => {
                                 โปรไฟล์
                             </a>
                             <a
-                                href="#"
+                                href="/profile/setting"
                                 className="block px-4 py-2 text-slate-800 hover:text-blue-800">
                                 <FontAwesomeIcon
                                     icon={faGear}

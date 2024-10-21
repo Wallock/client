@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
+import { version } from '@/lib/config'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faSpinner,
@@ -212,8 +213,7 @@ const LoginPage = () => {
                         <div className="lg:w-2/6 md:w-1/2 p-8 flex flex-col md:ml-auto w-full mt-3 md:mt-0">
                             <p className="text-sm text-gray-100 mt-3 text-center font-bold drop-shadow-xl">
                                 Developer & Design By Wallock
-                                <br />
-                                v1.1.2 (BF)
+                                <br />v{version}
                             </p>
                         </div>
                     </div>
