@@ -153,10 +153,7 @@ const WorkerDetailsDrawer = ({
                                         {workerData.worker_race}
                                     </h2>
                                 </div>
-                                <div className="bg-gray-200 rounded-box my-1 text-center p-2 m-2 shadow-lg">
-                                    <h5 className="font-semibold px-3">
-                                        {workerData.worker_fullname}
-                                    </h5>
+                                <div className="bg-white rounded-box text-center p-2 mb-1 mx-2 shadow-lg">
                                     <p className="font-semibold">
                                         {workerData.worker_nickname}
                                         {workerData.worker_namelist === 1 ? (
@@ -164,6 +161,16 @@ const WorkerDetailsDrawer = ({
                                                 NameList
                                             </label>
                                         ) : null}
+                                    </p>
+                                </div>
+                                <div className="bg-gray-100 rounded-box my-1 text-center p-2 m-2 shadow-lg">
+                                    เบอร์หลัก
+                                    <p className="font-semibold text-3xl">
+                                        {workerData.worker_phone}
+                                    </p>
+                                    เบอร์สำรอง
+                                    <p className="font-semibold text-3xl">
+                                        {workerData.worker_phone2}
                                     </p>
                                 </div>
                                 <div className="divider">ประเภทงาน</div>

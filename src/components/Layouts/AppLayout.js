@@ -63,6 +63,7 @@ const AppLayout = ({ children }) => {
             </Head>
             <div className="bg-gray-100 dark:bg-gray-900 flex">
                 <MenuNav user={user} profile={profile} />
+
                 <div className="relative w-full flex flex-col h-screen overflow-y-hidden">
                     <Navigation user={user} profile={profile} />
                     <div className="w-full h-screen overflow-x-hidden border-t dark:border-gray-700 flex flex-col">

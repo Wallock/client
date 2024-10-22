@@ -105,8 +105,9 @@ const WorkerCard = ({
                 }`}>
                 {/* Card content */}
                 <div
-                    className="card indicator w-full bg-base-100 shadow-xl rounded-xl "
-                    style={{ height: '320px' }}>
+                    className="card indicator w-full bg-base-100 dark:bg-gray-600 shadow-xl rounded-xl "
+                    style={{ height: '320px' }}
+                    onClick={() => handleFreeButtonClick(item.worker_id)}>
                     <figure
                         style={{
                             position: 'relative',
@@ -227,11 +228,7 @@ const WorkerCard = ({
                         </div>
                     </div>
                     <div className="card-actions justify-center pb-2 px-2">
-                        <button
-                            className="btn btn-outline btn-xs btn-block font-1 text-xs font-bold"
-                            onClick={() =>
-                                handleFreeButtonClick(item.worker_id)
-                            }>
+                        <button className="btn btn-outline dark:text-white dark:glass btn-xs btn-block font-1 font-bold">
                             รายละเอียด
                         </button>
                     </div>

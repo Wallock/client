@@ -669,7 +669,7 @@ const SearchFilter = ({
                         <li className="menu-title w-full">สถานะ</li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === null
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -680,7 +680,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'wait'
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -691,7 +691,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'save'
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -702,7 +702,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'changepp'
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -713,7 +713,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'retry'
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -724,7 +724,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'incomplete'
                                         ? 'button-js'
                                         : 'button-js-outline '
@@ -735,7 +735,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'bfprocess'
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -746,7 +746,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'woker'
                                         ? 'button-js'
                                         : 'button-js-outline'
@@ -757,7 +757,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn mx-1 ${
+                                className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'export'
                                         ? 'button-js'
                                         : 'button-js-outline'
