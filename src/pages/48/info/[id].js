@@ -226,181 +226,233 @@ export default function Page() {
             case 'wait':
                 return (
                     <>
-                        <button
-                            className="btn btn-warning font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('wait')}>
-                            <FontAwesomeIcon
-                                icon={faUserLock}
-                                className="fa-lg"
-                            />{' '}
-                            จอง
-                        </button>
-                        <button
-                            className="btn btn-outline btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('changepp')}>
-                            <FontAwesomeIcon
-                                icon={faRightLeft}
-                                className="fa-lg"
-                            />{' '}
-                            เปลี่ยน
-                        </button>
-                        <button
-                            className="btn btn-outline btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('retry')}>
-                            <FontAwesomeIcon
-                                icon={faUserGroup}
-                                className="fa-lg"
-                            />{' '}
-                            เคลม
-                        </button>
-                        <button
-                            className="btn btn-neutral font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('export')}>
-                            <FontAwesomeIcon
-                                icon={faCircleXmark}
-                                className="fa-lg"
-                            />{' '}
-                            ไม่รับงาน
-                        </button>
+                        <li>
+                            <button
+                                className="btn btn-warning btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUserLock}
+                                    className="fa-fw"
+                                />{' '}
+                                จอง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-outline btn-primary btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('changepp')}>
+                                <FontAwesomeIcon
+                                    icon={faRightLeft}
+                                    className="fa-fw"
+                                />{' '}
+                                เปลี่ยน
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-outline btn-primary btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('retry')}>
+                                <FontAwesomeIcon
+                                    icon={faUserGroup}
+                                    className="fa-fw"
+                                />{' '}
+                                เคลม
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-neutral btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('export')}>
+                                <FontAwesomeIcon
+                                    icon={faCircleXmark}
+                                    className="fa-fw"
+                                />{' '}
+                                ไม่รับงาน
+                            </button>
+                        </li>
                     </>
                 )
             case 'save':
                 return (
                     <>
-                        <button
-                            className="btn btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('wait')}>
-                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
-                            ว่าง
-                        </button>
-                        <button
-                            className="btn btn-outline btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('changepp')}>
-                            <FontAwesomeIcon
-                                icon={faRightLeft}
-                                className="fa-lg"
-                            />{' '}
-                            เปลี่ยน
-                        </button>
-                        <button
-                            className="btn btn-outline btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('retry')}>
-                            <FontAwesomeIcon
-                                icon={faUserGroup}
-                                className="fa-lg"
-                            />{' '}
-                            เคลม
-                        </button>
-                        <button
-                            className="btn btn-info font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('incomplete')}>
-                            <FontAwesomeIcon
-                                icon={faPhoneVolume}
-                                className="fa-lg"
-                            />{' '}
-                            สัมภาษณ์แล้วรอ นจ.
-                        </button>
+                        <li>
+                            <button
+                                className="btn button-js btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="fa-fw"
+                                />{' '}
+                                ว่าง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-outline btn-primary btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('changepp')}>
+                                <FontAwesomeIcon
+                                    icon={faRightLeft}
+                                    className="fa-fw"
+                                />{' '}
+                                เปลี่ยน
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-outline btn-primary btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('retry')}>
+                                <FontAwesomeIcon
+                                    icon={faUserGroup}
+                                    className="fa-fw"
+                                />{' '}
+                                เคลม
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-info btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('incomplete')}>
+                                <FontAwesomeIcon
+                                    icon={faPhoneVolume}
+                                    className="fa-fw"
+                                />{' '}
+                                สัมภาษณ์แล้วรอ นจ.
+                            </button>
+                        </li>
                     </>
                 )
             case 'incomplete':
                 return (
                     <>
-                        <button
-                            className="btn btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('wait')}>
-                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
-                            ว่าง
-                        </button>
-                        <button
-                            className="btn btn-info font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('woker')}>
-                            <FontAwesomeIcon
-                                icon={faCircleCheck}
-                                className="fa-lg"
-                            />{' '}
-                            ได้งานแล้ว
-                        </button>
+                        <li>
+                            <button
+                                className="btn button-js btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="fa-fw"
+                                />{' '}
+                                ว่าง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-info font-semibold py-1 px-4 rounded-full"
+                                onClick={() => handleOpenModal('woker')}>
+                                <FontAwesomeIcon
+                                    icon={faCircleCheck}
+                                    className="fa-lg"
+                                />{' '}
+                                ได้งานแล้ว
+                            </button>
+                        </li>
                     </>
                 )
             case 'worker':
                 return (
-                    <button
-                        className="btn btn-primary font-semibold py-1 px-4 rounded-full"
-                        onClick={() => handleOpenModal('wait')}>
-                        <FontAwesomeIcon icon={faUser} className="fa-lg" /> ว่าง
-                    </button>
+                    <li>
+                        <button
+                            className="btn button-js btn-lg font-bold mx-3 text-3xl rounded-full"
+                            onClick={() => handleOpenModal('wait')}>
+                            <FontAwesomeIcon icon={faUser} className="fa-fw" />{' '}
+                            ว่าง
+                        </button>
+                    </li>
                 )
             case 'retry':
                 return (
                     <>
-                        <button
-                            className="btn btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('wait')}>
-                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
-                            ว่าง
-                        </button>
-                        <button
-                            className="btn btn-success font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('woker')}>
-                            <FontAwesomeIcon
-                                icon={faCircleCheck}
-                                className="fa-lg"
-                            />{' '}
-                            ได้งานแล้ว
-                        </button>
+                        <li>
+                            <button
+                                className="btn button-js btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="fa-fw"
+                                />{' '}
+                                ว่าง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-success btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('woker')}>
+                                <FontAwesomeIcon
+                                    icon={faCircleCheck}
+                                    className="fa-fw"
+                                />{' '}
+                                ได้งานแล้ว
+                            </button>
+                        </li>
                     </>
                 )
             case 'changepp':
                 return (
                     <>
-                        <button
-                            className="btn btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('wait')}>
-                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
-                            ว่าง
-                        </button>
-                        <button
-                            className="btn btn-success font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('bfprocess')}>
-                            <FontAwesomeIcon
-                                icon={faCircleCheck}
-                                className="fa-lg"
-                            />{' '}
-                            ได้งานแล้ว
-                        </button>
+                        <li>
+                            <button
+                                className="btn button-js btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="fa-fw"
+                                />{' '}
+                                ว่าง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-success btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('bfprocess')}>
+                                <FontAwesomeIcon
+                                    icon={faCircleCheck}
+                                    className="fa-fw"
+                                />{' '}
+                                ได้งานแล้ว
+                            </button>
+                        </li>
                     </>
                 )
             case 'bfprocess':
                 return (
                     <>
-                        <button
-                            className="btn btn-primary font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('wait')}>
-                            <FontAwesomeIcon icon={faUser} className="fa-lg" />{' '}
-                            ว่าง
-                        </button>
-                        <button
-                            className="btn btn-info font-semibold py-1 px-4 rounded-full"
-                            onClick={() => handleOpenModal('woker')}>
-                            <FontAwesomeIcon
-                                icon={faFileCirclePlus}
-                                className="fa-lg"
-                            />{' '}
-                            รอทำ สย. ส่งตัวคนงาน
-                        </button>
+                        <li>
+                            <button
+                                className="btn btn-primary btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="fa-fw"
+                                />{' '}
+                                ว่าง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-info btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('woker')}>
+                                <FontAwesomeIcon
+                                    icon={faFileCirclePlus}
+                                    className="fa-fw"
+                                />{' '}
+                                รอทำ สย. ส่งตัวคนงาน
+                            </button>
+                        </li>
                     </>
                 )
             case 'export':
                 return (
-                    <button
-                        className="btn btn-error font-semibold py-1 px-4 rounded-full"
-                        onClick={() => handleOpenModal('newupdate')}>
-                        <FontAwesomeIcon
-                            icon={faPersonWalkingArrowLoopLeft}
-                            className="fa-lg"
-                        />{' '}
-                        รับงานใหม่
-                    </button>
+                    <li>
+                        <button
+                            className="btn btn-error btn-lg font-bold mx-3 text-3xl rounded-full"
+                            onClick={() => handleOpenModal('newupdate')}>
+                            <FontAwesomeIcon
+                                icon={faPersonWalkingArrowLoopLeft}
+                                className="fa-fw"
+                            />{' '}
+                            รับงานใหม่
+                        </button>
+                    </li>
                 )
             default:
                 return null
@@ -667,8 +719,8 @@ export default function Page() {
             {loading ? (
                 <Loading />
             ) : (
-                <div class="grid grid-cols-1 lg:grid-cols-[20%,80%]">
-                    <div class="col-span-1 bg-gray-300 dark:glass">
+                <div className="grid grid-cols-1 lg:grid-cols-[20%,80%]">
+                    <div className="col-span-1 bg-gray-300 dark:glass">
                         <div className="flex flex-col content-around h-full text-bold overflow-y-auto">
                             <h1 className="font-black text-3xl subpixel-antialiased bg-gray-600 dark:glass text-white dark:text-gray-800 text-center py-2">
                                 {data?.worker_id}
@@ -688,13 +740,13 @@ export default function Page() {
                                 <h1 className="text-5xl font-black dark:text-white mb-2">
                                     {data?.worker_nickname}
                                 </h1>
-                                <span className="mx-auto bg-gray-800 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full">
+                                <p className="mx-auto bg-gray-800 text-white text-sm font-semibold px-2.5 py-0.5 rounded-full">
                                     <FontAwesomeIcon
                                         icon={faSyringe}
                                         className="fa-fw"
                                     />{' '}
                                     ฉีดวัคซีน {data?.worker_covid} เข็ม
-                                </span>
+                                </p>
                                 {data?.worker_namelist === 1 ? (
                                     <span className="mx-auto bg-red-100 text-red-800 text-sm font-semibold px-2.5 py-0.5 rounded-full">
                                         <FontAwesomeIcon
@@ -762,20 +814,82 @@ export default function Page() {
                                 </button>
                             </div>
                             <div className="mx-auto my-2">
-                                <button
-                                    className="btn btn-wide btn-lg shadow-lg m-2 text-3xl text-white text-shadow-sm bg-gradient-to-r from-blue-500 to-blue-700 rounded-full tooltip tooltip-bottom"
-                                    data-tip="ดำเนินการ">
-                                    <FontAwesomeIcon
-                                        icon={faAnglesRight}
-                                        fade
-                                        className="fa-fw me-1"
+                                <div className="drawer drawer-end">
+                                    <input
+                                        id="my-drawer-4"
+                                        type="checkbox"
+                                        className="drawer-toggle"
                                     />
-                                    ดำเนินการ
-                                </button>
+                                    <div className="drawer-content justify-center items-center">
+                                        <label
+                                            htmlFor="my-drawer-4"
+                                            className="drawer-button btn btn-wide btn-lg shadow-lg m-2 text-3xl text-white text-shadow-sm bg-gradient-to-r from-blue-500 to-blue-700 rounded-full tooltip tooltip-bottom flex justify-center items-center"
+                                            data-tip="ดำเนินการ">
+                                            <FontAwesomeIcon
+                                                icon={faAnglesRight}
+                                                fade
+                                                className="fa-fw me-1"
+                                            />
+                                            ดำเนินการ
+                                        </label>
+                                    </div>
+                                    <div className="drawer-side z-30">
+                                        <label
+                                            htmlFor="my-drawer-4"
+                                            aria-label="close sidebar"
+                                            className="drawer-overlay">
+                                            {' '}
+                                        </label>
+                                        <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80  p-4 space-y-4">
+                                            <li className="menu-title text-xl text-center">
+                                                ดำเนินการ
+                                            </li>
+                                            {/* Sidebar content here */}
+                                            {renderButtons(data?.worker_status)}
+                                            {isModalOpen2 && (
+                                                <div className="modal modal-open">
+                                                    <div className="modal-box">
+                                                        <h2 className="text-lg font-bold mb-4">
+                                                            รายละเอียดสถานะ
+                                                        </h2>
+                                                        <textarea
+                                                            className="textarea textarea-bordered w-full"
+                                                            placeholder="รายละเอียดสถานะ"
+                                                            value={statusDetail}
+                                                            onChange={e =>
+                                                                setStatusDetail(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }>
+                                                            {' '}
+                                                        </textarea>
+                                                        <div className="modal-action">
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                onClick={
+                                                                    handleSubmitStatus
+                                                                }>
+                                                                บันทึก
+                                                            </button>
+                                                            <button
+                                                                className="btn btn-ghost"
+                                                                onClick={
+                                                                    handleCloseModal
+                                                                }>
+                                                                ยกเลิก
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-white">
+                    <div className="bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-white">
                         <div className="flex justify-center my-3">
                             <div className="flex space-x-5 text-xl bg-white shadow-lg rounded-full mx-3 px-5 font-bold">
                                 <button
@@ -806,39 +920,6 @@ export default function Page() {
                                     </button>
                                 )}
                             </div>
-                        </div>
-                        <div className="flex space-x-3 mt-4">
-                            {renderButtons(data?.worker_status)}
-                            {isModalOpen2 && (
-                                <div className="modal modal-open">
-                                    <div className="modal-box">
-                                        <h2 className="text-lg font-bold mb-4">
-                                            รายละเอียดสถานะ
-                                        </h2>
-                                        <textarea
-                                            className="textarea textarea-bordered w-full"
-                                            placeholder="รายละเอียดสถานะ"
-                                            value={statusDetail}
-                                            onChange={e =>
-                                                setStatusDetail(e.target.value)
-                                            }>
-                                            {' '}
-                                        </textarea>
-                                        <div className="modal-action">
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={handleSubmitStatus}>
-                                                บันทึก
-                                            </button>
-                                            <button
-                                                className="btn btn-ghost"
-                                                onClick={handleCloseModal}>
-                                                ยกเลิก
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                         <div className="flex flex-wrap px-5 py-3">
                             <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
