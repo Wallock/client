@@ -66,7 +66,7 @@ const SearchFilter = ({
                         </div>
                     </div>
                 </div>
-                <div className="navbar navbar-end lg:w-full">
+                <div className="navbar navbar-end lg:navbar-center w-full">
                     <div className="join">
                         <input
                             type="text"

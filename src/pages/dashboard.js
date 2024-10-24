@@ -207,8 +207,8 @@ export default function dashboard() {
                 </div>
 
                 <div className="w-full my-5 mx-auto">
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="mockup-browser shadow-lg border bg-base-300 mx-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                        <div className="mockup-browser shadow-lg border bg-base-300 m-5">
                             <div className="mockup-browser-toolbar">
                                 <div className="input font-2 font-semibold">
                                     ข่าวสาร & อัพเดทล่าสุด
@@ -283,7 +283,7 @@ export default function dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="mockup-code mx-5 text-center shadow-lg">
+                        <div className="mockup-code m-5 text-center shadow-lg">
                             <pre className="text-lg font-semibold">
                                 <code>ประกาศวันหยุด</code>
                             </pre>

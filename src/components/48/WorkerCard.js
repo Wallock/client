@@ -10,6 +10,7 @@ import {
     faUserCheck,
     faCircleXmark,
     faQuestion,
+    faCircleInfo,
 } from '@fortawesome/free-solid-svg-icons'
 
 const WorkerCard = ({
@@ -227,10 +228,14 @@ const WorkerCard = ({
                             </ul>
                         </div>
                     </div>
-                    <div className="card-actions justify-center pb-2 px-2">
-                        <button className="btn btn-outline dark:text-white dark:glass btn-xs btn-block font-1 font-bold">
-                            รายละเอียด
-                        </button>
+                    <div className="card-actions justify-center border-dashed border-t py-2 px-2">
+                        <p className="text-center text-xs font-semibold text-gray-400">
+                            <FontAwesomeIcon
+                                icon={faCircleInfo}
+                                className="fa-fw me-1"
+                            />
+                            คลิ๊กเพื่อดูรายละเอียด
+                        </p>
                     </div>
                 </div>
             </div>
