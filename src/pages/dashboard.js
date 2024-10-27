@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer, faEnvelope, faEye } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { format } from 'date-fns'
+import Cookies from 'js-cookie'
 import { th } from 'date-fns/locale'
 import Label from '@/components/Label'
 import dynamic from 'next/dynamic'
@@ -46,7 +47,7 @@ export default function dashboard() {
             try {
                 setLoading(true)
 
-                const token = localStorage.getItem('accessToken')
+                const token = Cookies.get('accessToken')
                 if (!token) {
                     throw new Error('No access token found')
                 }

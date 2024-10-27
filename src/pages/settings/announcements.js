@@ -1,6 +1,7 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import MyEditor from '@/components/MyEditor'
 import { useRouter } from 'next/router'
 import { toast, ToastContainer } from 'react-toastify'
@@ -42,7 +43,7 @@ export default function Announcements() {
     const fetchAnnouncements = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
             const response = await axios.get(
                 'https://server.wb.in.th/api/announcements',
                 {
@@ -77,7 +78,7 @@ export default function Announcements() {
     }
 
     const handleSave = async () => {
-        const token = localStorage.getItem('accessToken')
+        const token = Cookies.get('accessToken')
         const headers = {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -128,7 +129,7 @@ export default function Announcements() {
     }
 
     const handleDelete = async id => {
-        const token = localStorage.getItem('accessToken')
+        const token = Cookies.get('accessToken')
         const confirmation = confirm(
             'Are you sure you want to delete this announcement?',
         )

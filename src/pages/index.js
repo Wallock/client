@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import React from 'react'
+import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons'
 
@@ -23,7 +24,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
 
             if (!token) {
                 router.push('/login')

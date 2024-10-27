@@ -2,6 +2,7 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import Loading from '@/lib/loading'
 
 export default function UpdateProfile() {
@@ -16,7 +17,7 @@ export default function UpdateProfile() {
     // Function to fetch user data
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
 
             if (!token) {
                 router.push('/login')
@@ -47,7 +48,7 @@ export default function UpdateProfile() {
     const updateProfile = async e => {
         e.preventDefault()
         try {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
 
             const formData = new FormData()
             formData.append('name', name)

@@ -16,45 +16,7 @@ import { version, email, website, phone } from '@/lib/config'
 import Link from 'next/link'
 //UPDATE
 const AppLayout = ({ children }) => {
-    const router = useRouter()
     const profile = useProfile()
-    const [user, setUser] = useState(null)
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const token = localStorage.getItem('accessToken')
-
-            if (!token) {
-                router.push('/login')
-                return
-            }
-
-            try {
-                const response = await fetch(
-                    'https://server.wb.in.th/api/user',
-                    {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json',
-                        },
-                    },
-                )
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data')
-                }
-
-                const data = await response.json()
-                setUser(data)
-            } catch (error) {
-                //console.error('Error fetching user data:', error)
-                router.push('/login')
-            }
-        }
-
-        fetchUserData()
-    }, [router])
 
     return (
         <>
@@ -62,10 +24,10 @@ const AppLayout = ({ children }) => {
                 <title>JS-System v3</title>
             </Head>
             <div className="bg-gray-100 dark:bg-gray-900 flex">
-                <MenuNav user={user} profile={profile} />
+                <MenuNav profile={profile} />
 
                 <div className="relative w-full flex flex-col h-screen overflow-y-hidden">
-                    <Navigation user={user} profile={profile} />
+                    <Navigation profile={profile} />
                     <div className="w-full h-screen overflow-x-hidden border-t dark:border-gray-700 flex flex-col">
                         <main className="w-full flex-grow">{children}</main>
                         <footer className="footer bg-base-200 dark:glass text-base-content dark:text-white border-base-300 dark:border-gray-800 border-t px-10 py-4">

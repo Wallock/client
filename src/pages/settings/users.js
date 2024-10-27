@@ -1,6 +1,7 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import { toast, ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
@@ -73,7 +74,7 @@ export default function Users() {
     const fetchUsers = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
             const response = await axios.get(
                 'https://server.wb.in.th/api/users',
                 {
@@ -98,7 +99,7 @@ export default function Users() {
 
     const checkForUpdates = async () => {
         try {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
             const response = await axios.get(
                 'https://server.wb.in.th/api/users/reload',
                 {
@@ -167,7 +168,7 @@ export default function Users() {
     }
 
     const handleSave = async () => {
-        const token = localStorage.getItem('accessToken')
+        const token = Cookies.get('accessToken')
         const headers = {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -214,7 +215,7 @@ export default function Users() {
     }
 
     const handlePasswordReset = async newPassword => {
-        const token = localStorage.getItem('accessToken')
+        const token = Cookies.get('accessToken')
         const headers = {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',

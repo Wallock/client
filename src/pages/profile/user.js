@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loading from '@/lib/loading'
+import Cookies from 'js-cookie'
 
 export default function Profile() {
     const router = useRouter()
@@ -12,7 +13,7 @@ export default function Profile() {
     // Function to fetch user data
     const fetchUserData = async () => {
         try {
-            const token = localStorage.getItem('accessToken') // Get token from localStorage
+            const token = Cookies.get('accessToken') // Get token from localStorage
 
             if (!token) {
                 router.push('/login') // If no token, redirect to login

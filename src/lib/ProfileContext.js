@@ -1,6 +1,7 @@
 // context/ProfileContext.js
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Cookies from 'js-cookie'
 
 const ProfileContext = createContext()
 
@@ -10,10 +11,10 @@ export function ProfileProvider({ children }) {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
 
             if (!token) {
-                router.push('/login')
+                router.push('/')
                 return
             }
 
@@ -54,14 +55,15 @@ export function ProfileProvider({ children }) {
                     uid82: data.uid82,
                     uidthai: data.uidthai,
                     uidlaos: data.uidlaos,
+                    click_count: data.click_count,
                 })
             } catch (error) {
-                router.push('/login')
+                router.push('/')
             }
         }
 
         fetchUserData()
-    }, [router])
+    }, [])
 
     return (
         <ProfileContext.Provider value={profile}>

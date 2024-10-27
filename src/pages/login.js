@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import { version } from '@/lib/config'
+import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faSpinner,
@@ -52,9 +53,7 @@ const LoginPage = () => {
             } else if (response.ok) {
                 // Login successful, store the access token and redirect
                 const accessToken = data.access_token
-                // You can store the access token in localStorage or a global state
-                localStorage.setItem('accessToken', accessToken)
-                router.push('/dashboard') // Navigate to your desired page
+                Cookies.set('accessToken', accessToken, { expires: 1 })
             } else {
                 setLoading(false)
                 toast.error('เกิดข้อผิดพลาด กรุณาลองใหม่', {

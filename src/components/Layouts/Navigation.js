@@ -1,6 +1,7 @@
 import ApplicationLogo from '@/components/ApplicationLogo'
 import Dropdown from '@/components/Dropdown'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -86,18 +87,17 @@ const MenuItem = ({ href, icon, label }) => {
     )
 }
 
-const Navigation = ({ user, profile }) => {
+const Navigation = ({ profile }) => {
     const router = useRouter()
     const handleLogout = async () => {
         try {
-            localStorage.removeItem('accessToken')
+            Cookies.remove('access_token')
             router.push('/login')
         } catch (error) {
             //console.error('Error logging out:', error)
             toast.error('Failed to log out. Please try again.')
         }
     }
-
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
@@ -132,7 +132,7 @@ const Navigation = ({ user, profile }) => {
     }
     useEffect(() => {
         const fetchAnnouncements = async () => {
-            const token = localStorage.getItem('accessToken')
+            const token = Cookies.get('accessToken')
 
             if (!token) {
                 router.push('/login')
@@ -254,6 +254,15 @@ const Navigation = ({ user, profile }) => {
                                     className="fa-lg me-2"
                                 />{' '}
                                 ตั้งค่า
+                            </a>
+                            <a
+                                href="/profile/IdleClicker"
+                                className="block px-4 py-2 text-slate-800 hover:text-blue-800">
+                                <FontAwesomeIcon
+                                    icon={faGear}
+                                    className="fa-lg me-2"
+                                />{' '}
+                                idle
                             </a>
                             <a
                                 onClick={handleLogout}

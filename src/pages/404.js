@@ -28,7 +28,7 @@ const NotFoundPage = () => (
                     <p className="leading-relaxed text-lg lg:max-w-xl text-slate-50 font-semibold text-center drop-shadow-md">
                         ไม่พบหน้านี้ กรุณาลองใหม่อีกครั้ง!
                     </p>
-                    <Link href="/">
+                    <Link href="/login">
                         <p className="mt-3 text-sm text-slate-50 text-center">
                             <FontAwesomeIcon
                                 icon={faArrowLeft}
