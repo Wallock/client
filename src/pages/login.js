@@ -54,6 +54,7 @@ const LoginPage = () => {
                 // Login successful, store the access token and redirect
                 const accessToken = data.access_token
                 Cookies.set('accessToken', accessToken, { expires: 1 })
+                router.push('/dashboard')
             } else {
                 setLoading(false)
                 toast.error('เกิดข้อผิดพลาด กรุณาลองใหม่', {
