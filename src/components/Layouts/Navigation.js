@@ -13,6 +13,7 @@ import {
     faGear,
     faNewspaper,
     faUsers,
+    faBars,
     faUserPlus,
     faFlaskVial,
 } from '@fortawesome/free-solid-svg-icons'
@@ -288,7 +289,7 @@ const Navigation = ({ profile }) => {
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         className="text-white text-3xl focus:outline-none">
-                        <i className="fas fa-bars"> </i>
+                        <FontAwesomeIcon icon={faBars} className="fa-fw" />
                     </button>
                 </div>
 
