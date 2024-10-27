@@ -290,8 +290,14 @@ export default function dashboard() {
                                 <code>Patch Note : {version}</code>
                             </pre>
                             <pre className="text-gray-500 text-sm mt-5">
-                                <code>- แก้ไข LocalStore เป็น CookieStore แทน เพื่อที่ล็อคอินแล้วจะได้ไม่หลุด</code>
-                                <code>- กำหนด Cookie Login Token เป็นระยะเวลา 1 วัน หลังจากนั้นต้องล็อคอินใหม่</code>
+                                <code>
+                                    - แก้ไข LocalStore เป็น CookieStore แทน
+                                    เพื่อที่ล็อคอินแล้วจะได้ไม่หลุด
+                                </code>
+                                <code>
+                                    - กำหนด Cookie Login Token เป็นระยะเวลา 1
+                                    วัน หลังจากนั้นต้องล็อคอินใหม่
+                                </code>
                             </pre>
                         </div>
                     </div>
