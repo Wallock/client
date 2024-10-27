@@ -8,6 +8,7 @@ import Cookies from 'js-cookie'
 import { th } from 'date-fns/locale'
 import Label from '@/components/Label'
 import dynamic from 'next/dynamic'
+import { version, email, website, phone } from '@/lib/config'
 import 'plyr-react/plyr.css'
 
 const Plyr = dynamic(() => import('plyr-react'), { ssr: false }) // Load Plyr only on the client-side
@@ -286,10 +287,11 @@ export default function dashboard() {
                         </div>
                         <div className="mockup-code m-5 text-center shadow-lg">
                             <pre className="text-lg font-semibold">
-                                <code>ประกาศวันหยุด</code>
+                                <code>Patch Note : {version}</code>
                             </pre>
                             <pre className="text-gray-500 text-sm mt-5">
-                                <code>ยังไม่มีกำหนดการ!</code>
+                                <code>- แก้ไข LocalStore เป็น CookieStore แทน เพื่อที่ล็อคอินแล้วจะได้ไม่หลุด</code>
+                                <code>- กำหนด Cookie Login Token เป็นระยะเวลา 1 วัน หลังจากนั้นต้องล็อคอินใหม่</code>
                             </pre>
                         </div>
                     </div>
