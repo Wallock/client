@@ -6,6 +6,7 @@ import {
     faUsers,
     faUserPlus,
     faFlaskVial,
+    faBars,
     faInbox,
 } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
@@ -50,7 +51,10 @@ const MenuNav = ({ profile }) => {
                 isCollapsed ? 'w-20' : 'w-64'
             } hidden sm:block shadow-xl transition-all duration-300`}>
             <div className="p-6 flex justify-between items-center">
-                <div className="flex items-center justify-center">
+                <div
+                    className={`flex items-center justify-center ${
+                        isCollapsed ? 'hidden' : ''
+                    }`}>
                     <Link href="/">
                         <ApplicationLogo className="block h-10 w-auto fill-current" />
                     </Link>
@@ -58,8 +62,10 @@ const MenuNav = ({ profile }) => {
                 {/* Toggle button */}
                 <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className="text-white focus:outline-none">
-                    <FontAwesomeIcon icon={faGear} />
+                    className={`text-white focus:outline-none ${
+                        isCollapsed ? 'm-auto' : ''
+                    }`}>
+                    <FontAwesomeIcon icon={faBars} className="fa-lg" />
                 </button>
             </div>
             <Link

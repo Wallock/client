@@ -262,7 +262,7 @@ export default function RegistrationForm() {
             if (!response.ok) {
                 // ลองดึงข้อมูล error message จาก API response
                 const errorData = await response.text()
-                //console.log(errorData) // แสดงข้อผิดพลาดใน console
+                console.log(errorData) // แสดงข้อผิดพลาดใน console
                 let errorMessage = 'Unknown error'
 
                 // ตรวจสอบว่ามี error message ที่ API ส่งกลับมาหรือไม่

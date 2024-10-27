@@ -106,8 +106,8 @@ const WorkerCard = ({
                 }`}>
                 {/* Card content */}
                 <div
-                    className="card indicator w-full bg-base-100 dark:bg-gray-600 shadow-xl rounded-xl "
-                    style={{ height: '320px' }}
+                    className="card indicator w-full bg-base-100 dark:bg-gray-700 shadow-xl rounded-xl "
+                    style={{ height: '340px' }}
                     onClick={() => handleFreeButtonClick(item.worker_id)}>
                     <figure
                         style={{
@@ -229,7 +229,7 @@ const WorkerCard = ({
                         </div>
                     </div>
                     <div className="card-actions justify-center border-dashed border-t py-2 px-2">
-                        <p className="text-center text-xs font-semibold text-gray-400">
+                        <p className="text-center text-xs font-semibold text-gray-400 dark:text-gray-300">
                             <FontAwesomeIcon
                                 icon={faCircleInfo}
                                 className="fa-fw me-1"

@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useProfile } from '@/lib/ProfileContext'
 
-import SearchFilter from '@/components/48/SearchFilter'
-import Pagination from '@/components/48/Pagination'
-import WorkerCard from '@/components/48/WorkerCard'
-import WorkerDetailsDrawer from '@/components/48/WorkerDetailsDrawer'
+import SearchFilter from '@/components/control/SearchFilter'
+import Pagination from '@/components/control/Pagination'
+import WorkerCard from '@/components/control/WorkerCard'
+import WorkerDetailsDrawer from '@/components/control/WorkerDetailsDrawer'
 import axios from 'axios'
+import Loading from '@/lib/loading'
 
 export default function Home() {
     const router = useRouter()

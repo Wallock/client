@@ -672,7 +672,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === null
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus(null)}>
                                 ทั้งหมด
@@ -683,7 +683,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'wait'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('wait')}>
                                 ว่างงาน
@@ -694,7 +694,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'save'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('save')}>
                                 ติดจอง
@@ -705,7 +705,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'changepp'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('changepp')}>
                                 เปลี่ยน
@@ -716,7 +716,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'retry'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('retry')}>
                                 เคลม
@@ -727,7 +727,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'incomplete'
                                         ? 'button-js'
-                                        : 'button-js-outline '
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('incomplete')}>
                                 รอทำสัญญา
@@ -738,7 +738,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'bfprocess'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('bfprocess')}>
                                 สพ.แล้ว
@@ -749,7 +749,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'woker'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('woker')}>
                                 ได้งานแล้ว
@@ -760,7 +760,7 @@ const SearchFilter = ({
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'export'
                                         ? 'button-js'
-                                        : 'button-js-outline'
+                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('export')}>
                                 ไม่ส่งงาน

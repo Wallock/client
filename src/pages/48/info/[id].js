@@ -87,7 +87,7 @@ export default function Page() {
         fetchData()
         const intervalId = setInterval(() => {
             fetchData(false)
-        }, 10000)
+        }, 5000)
         return () => clearInterval(intervalId)
     }, [])
 
@@ -223,13 +223,13 @@ export default function Page() {
 
     const renderButtons = worker_status => {
         switch (worker_status) {
-            case 'wait':
+            case 'wait': //ว่างงาน
                 return (
                     <>
                         <li>
                             <button
                                 className="btn btn-warning btn-lg font-bold mx-3 text-3xl rounded-full"
-                                onClick={() => handleOpenModal('wait')}>
+                                onClick={() => handleOpenModal('save')}>
                                 <FontAwesomeIcon
                                     icon={faUserLock}
                                     className="fa-fw"
@@ -270,9 +270,20 @@ export default function Page() {
                                 ไม่รับงาน
                             </button>
                         </li>
+                        <li>
+                            <button
+                                className="btn btn-error btn-lg text-white font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('newupdate')}>
+                                <FontAwesomeIcon
+                                    icon={faPersonWalkingArrowLoopLeft}
+                                    className="fa-fw"
+                                />{' '}
+                                ดันคนงาน
+                            </button>
+                        </li>
                     </>
                 )
-            case 'save':
+            case 'save': //จอง
                 return (
                     <>
                         <li>
@@ -311,7 +322,7 @@ export default function Page() {
                         <li>
                             <button
                                 className="btn btn-info btn-lg font-bold mx-3 text-3xl rounded-full"
-                                onClick={() => handleOpenModal('incomplete')}>
+                                onClick={() => handleOpenModal('bfprocess')}>
                                 <FontAwesomeIcon
                                     icon={faPhoneVolume}
                                     className="fa-fw"
@@ -321,7 +332,7 @@ export default function Page() {
                         </li>
                     </>
                 )
-            case 'incomplete':
+            case 'incomplete': //รอทำสัญญา
                 return (
                     <>
                         <li>
@@ -337,7 +348,7 @@ export default function Page() {
                         </li>
                         <li>
                             <button
-                                className="btn btn-info font-semibold py-1 px-4 rounded-full"
+                                className="btn btn-success btn-lg font-bold mx-3 text-3xl rounded-full"
                                 onClick={() => handleOpenModal('woker')}>
                                 <FontAwesomeIcon
                                     icon={faCircleCheck}
@@ -348,7 +359,7 @@ export default function Page() {
                         </li>
                     </>
                 )
-            case 'worker':
+            case 'woker': //ได้งานแล้ว
                 return (
                     <li>
                         <button
@@ -359,7 +370,7 @@ export default function Page() {
                         </button>
                     </li>
                 )
-            case 'retry':
+            case 'retry': //เคลม
                 return (
                     <>
                         <li>
@@ -386,7 +397,7 @@ export default function Page() {
                         </li>
                     </>
                 )
-            case 'changepp':
+            case 'changepp': //เปลี่ยนตัว
                 return (
                     <>
                         <li>
@@ -413,7 +424,7 @@ export default function Page() {
                         </li>
                     </>
                 )
-            case 'bfprocess':
+            case 'bfprocess': //สพ.แล้ว รอนจ.
                 return (
                     <>
                         <li>
@@ -430,7 +441,7 @@ export default function Page() {
                         <li>
                             <button
                                 className="btn btn-info btn-lg font-bold mx-3 text-3xl rounded-full"
-                                onClick={() => handleOpenModal('woker')}>
+                                onClick={() => handleOpenModal('incomplete')}>
                                 <FontAwesomeIcon
                                     icon={faFileCirclePlus}
                                     className="fa-fw"
@@ -440,19 +451,32 @@ export default function Page() {
                         </li>
                     </>
                 )
-            case 'export':
+            case 'export': //ไม่รับงาน
                 return (
-                    <li>
-                        <button
-                            className="btn btn-error btn-lg font-bold mx-3 text-3xl rounded-full"
-                            onClick={() => handleOpenModal('newupdate')}>
-                            <FontAwesomeIcon
-                                icon={faPersonWalkingArrowLoopLeft}
-                                className="fa-fw"
-                            />{' '}
-                            รับงานใหม่
-                        </button>
-                    </li>
+                    <>
+                        <li>
+                            <button
+                                className="btn button-js btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('wait')}>
+                                <FontAwesomeIcon
+                                    icon={faUser}
+                                    className="fa-fw"
+                                />{' '}
+                                ว่าง
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="btn btn-error text-white btn-lg font-bold mx-3 text-3xl rounded-full"
+                                onClick={() => handleOpenModal('newupdate')}>
+                                <FontAwesomeIcon
+                                    icon={faPersonWalkingArrowLoopLeft}
+                                    className="fa-fw"
+                                />{' '}
+                                รับงานใหม่
+                            </button>
+                        </li>
+                    </>
                 )
             default:
                 return null
@@ -460,8 +484,14 @@ export default function Page() {
     }
     const updateWorkerStatus = async (newStatus, statusDetail, empId) => {
         try {
+            setLoading(true)
+
             if (!router.query.id) {
                 throw new Error('Missing worker ID.')
+            }
+
+            if (!statusDetail) {
+                statusDetail = '-'
             }
             //console.log('Sending Data:', {newStatus,statusDetail,empId,})
             // เรียกใช้ API ที่นี่เพื่ออัพเดทสถานะ worker
@@ -482,20 +512,35 @@ export default function Page() {
             if (!response.ok) {
                 // ตรวจสอบกรณีที่ไม่สำเร็จ
                 throw new Error(`Error: ${data.message || 'Unknown error'}`)
+            } else {
+                toast.success('อัพเดทสถานะเรียบร้อยแล้ว', {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+                await fetchData(false)
             }
 
             //console.log('Update successful:', data)
             // ทำสิ่งที่ต้องการเมื่อการอัพเดทสำเร็จ
         } catch (error) {
             //console.error('Error updating worker status:', error.message)
-            toast.error(`Error:. ${error.message}`, {
-                position: 'top-right',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-            })
+            toast.error(
+                'ไม่สามารถอัพเดทสถานะได้เนื่องจากติดสถานะท่านอื่นแล้ว',
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                },
+            )
+        } finally {
+            setLoading(false) // ปิด popup loading ไม่ว่าจะสำเร็จหรือมี error
         }
     }
 
@@ -719,7 +764,7 @@ export default function Page() {
             {loading ? (
                 <Loading />
             ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-[20%,80%]">
+                <div className="grid grid-cols-1 lg:grid-cols-[30%,70%] xl:grid-cols-[30%,70%] 2xl:grid-cols-[20%,80%]">
                     <div className="col-span-1 bg-gray-300 dark:glass">
                         <div className="flex flex-col content-around h-full text-bold overflow-y-auto">
                             <h1 className="font-black text-3xl subpixel-antialiased bg-gray-600 dark:glass text-white dark:text-gray-800 text-center py-2">
@@ -840,56 +885,55 @@ export default function Page() {
                                             className="drawer-overlay">
                                             {' '}
                                         </label>
-                                        <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-80  p-4 space-y-4">
+                                        <ul className="menu menu-lg bg-base-200 text-base-content min-h-full w-1/4 p-4 space-y-4">
                                             <li className="menu-title text-xl text-center">
                                                 ดำเนินการ
                                             </li>
                                             {/* Sidebar content here */}
                                             {renderButtons(data?.worker_status)}
-                                            {isModalOpen2 && (
-                                                <div className="modal modal-open">
-                                                    <div className="modal-box">
-                                                        <h2 className="text-lg font-bold mb-4">
-                                                            รายละเอียดสถานะ
-                                                        </h2>
-                                                        <textarea
-                                                            className="textarea textarea-bordered w-full"
-                                                            placeholder="รายละเอียดสถานะ"
-                                                            value={statusDetail}
-                                                            onChange={e =>
-                                                                setStatusDetail(
-                                                                    e.target
-                                                                        .value,
-                                                                )
-                                                            }>
-                                                            {' '}
-                                                        </textarea>
-                                                        <div className="modal-action">
-                                                            <button
-                                                                className="btn btn-primary"
-                                                                onClick={
-                                                                    handleSubmitStatus
-                                                                }>
-                                                                บันทึก
-                                                            </button>
-                                                            <button
-                                                                className="btn btn-ghost"
-                                                                onClick={
-                                                                    handleCloseModal
-                                                                }>
-                                                                ยกเลิก
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </ul>
                                     </div>
+                                    {isModalOpen2 && (
+                                        <div className="modal modal-open">
+                                            <div className="modal-box text-center">
+                                                <h2 className="text-2xl font-bold mb-4">
+                                                    รายละเอียดสถานะ
+                                                </h2>
+                                                <textarea
+                                                    className="textarea textarea-bordered  text-lg w-full"
+                                                    placeholder="โปรดระบุเหตุผลทุกครั้ง"
+                                                    value={statusDetail}
+                                                    onChange={e =>
+                                                        setStatusDetail(
+                                                            e.target.value,
+                                                        )
+                                                    }>
+                                                    {' '}
+                                                </textarea>
+                                                <div className="modal-action text-center">
+                                                    <button
+                                                        className="btn btn-lg btn-1/2 button-js"
+                                                        onClick={
+                                                            handleSubmitStatus
+                                                        }>
+                                                        บันทึก
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-lg btn-error text-white"
+                                                        onClick={
+                                                            handleCloseModal
+                                                        }>
+                                                        ยกเลิก
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-white">
+                    <div className="col-span-1 bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-white">
                         <div className="flex justify-center my-3">
                             <div className="flex space-x-5 text-xl bg-white shadow-lg rounded-full mx-3 px-5 font-bold">
                                 <button
@@ -912,7 +956,7 @@ export default function Page() {
                                         ตั้งค่าคนงาน
                                     </button>
                                 )}
-                                {profile?.role >= 3 && (
+                                {profile?.role != 2 && (
                                     <button
                                         className="text-red-600 py-3"
                                         onClick={handleDeleteClick}>
@@ -923,7 +967,7 @@ export default function Page() {
                         </div>
                         <div className="flex flex-wrap px-5 py-3">
                             <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
-                                <div className="bg-white rounded-box p-5 shadow-sm mb-3">
+                                <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-5 shadow-sm mb-3">
                                     <h2 className="text-xl font-bold mb-4">
                                         <FontAwesomeIcon
                                             icon={faCircleInfo}
@@ -931,12 +975,13 @@ export default function Page() {
                                         />{' '}
                                         ข้อมูลประวัติ
                                     </h2>
-                                    <div className="flex flex-wrap justify-between items-center mt-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4 mt-4">
+                                        {/* เพศ */}
                                         <div className="px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 เพศ
                                             </h4>
-                                            <span className="mt-2 text-xl font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_gender === 1 ? (
                                                     <>
                                                         <FontAwesomeIcon
@@ -956,58 +1001,65 @@ export default function Page() {
                                                 )}
                                             </span>
                                         </div>
+
+                                        {/* น้ำหนัก */}
                                         <div className="px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
-                                                <FontAwesomeIcon
-                                                    icon={faCakeCandles}
-                                                    className="fa-fw"
-                                                />{' '}
-                                                อายุ
-                                            </h4>
-                                            <span className="mt-2 text-xl font-medium text-gray-500">
-                                                {age} ปี
-                                            </span>
-                                        </div>
-                                        <div className="px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 <FontAwesomeIcon
                                                     icon={faWeightScale}
                                                     className="fa-fw"
                                                 />{' '}
                                                 น้ำหนัก
                                             </h4>
-                                            <span className="mt-2 text-xl font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_weight}กก.
                                             </span>
                                         </div>
+
+                                        {/* ส่วนสูง */}
                                         <div className="px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 <FontAwesomeIcon
                                                     icon={faTextHeight}
                                                     className="fa-fw"
                                                 />{' '}
                                                 ส่วนสูง
                                             </h4>
-                                            <span className="mt-2 text-xl font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_height}ซม.
                                             </span>
                                         </div>
-                                    </div>
 
-                                    <div className="flex flex-wrap justify-between items-center mt-4">
+                                        {/* อายุ */}
                                         <div className="px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
+                                                <FontAwesomeIcon
+                                                    icon={faCakeCandles}
+                                                    className="fa-fw"
+                                                />{' '}
+                                                อายุ
+                                            </h4>
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
+                                                {age} ปี
+                                            </span>
+                                        </div>
+
+                                        {/* ที่อยู่ */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 ที่อยู่
                                             </h4>
-                                            <span className="mt-2 text-lg font-medium text-gray-500">
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
                                                 {data?.worker_address}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+
+                                        {/* สถานะ */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 สถานะ
                                             </h4>
-                                            <span className="mt-2 text-lg font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_relationship ===
                                                 '1'
                                                     ? 'โสด'
@@ -1026,97 +1078,115 @@ export default function Page() {
                                                     : 'ไม่ระบุ'}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+
+                                        {/* ลูก */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 ลูก
                                             </h4>
-                                            <span className="mt-2 text-lg font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_baby === null
                                                     ? 'ไม่มี'
                                                     : data?.worker_baby}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+
+                                        {/* อยู่ไทยมา */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 อยู่ไทยมา
                                             </h4>
-                                            <span className="mt-2 text-lg font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_inthai === '0'
                                                     ? 'ตั้งแต่เกิด'
                                                     : data?.worker_inthai}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+
+                                        {/* ศาสนา */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 ศาสนา
                                             </h4>
-                                            <span className="mt-2 text-lg font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_religion}
                                             </span>
                                         </div>
-                                    </div>
 
-                                    <div className="flex flex-wrap justify-between items-center mt-4">
+                                        {/* วันเกิด */}
                                         <div className="px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold ">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 วันเกิด
                                             </h4>
-                                            <span className="mt-2 text-md font-medium text-gray-500">
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
                                                 {formatDate(birthday)}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold">
+
+                                        {/* รูปแบบ */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 รูปแบบ
                                             </h4>
-                                            <span className="mt-2 text-md font-medium text-gray-500">
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
                                                 {data?.worker_overnight === 1
                                                     ? 'อยู่ประจำ'
                                                     : 'ไป-กลับ'}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold">
+
+                                        {/* เดินทาง */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 เดินทาง
                                             </h4>
-                                            <span className="mt-2 text-md font-medium text-gray-500">
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
                                                 {data?.worker_outside === 1
                                                     ? 'ไปได้ทุกที่'
                                                     : 'ในพื้นที่อยู่เท่านั้น'}
                                             </span>
                                         </div>
-                                        <div className="border-l border-gray-100 px-4">
-                                            <h4 className="text-gray-600 text-sm font-semibold">
+
+                                        {/* ทราบข่าวจาก */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
                                                 ทราบข่าวจาก
                                             </h4>
-                                            <span className="mt-2 text-md font-medium text-gray-500">
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_knownews}
+                                            </span>
+                                        </div>
+
+                                        {/* หมายเหตุ */}
+                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-2 ">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
+                                                หมายเหตุ
+                                            </h4>
+                                            <span className="mt-2 text-2xl font-medium text-gray-700">
+                                                {data?.worker_detailother}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <div className="border-t border-gray-100 mt-5">
-                                        {' '}
-                                    </div>
-                                    <div className="flex flex-wrap w-full p-3">
+                                    {/* Section for เบอร์ติดต่อ and เบอร์สำรอง */}
+                                    <div className="flex flex-wrap w-full mt-3 p-3">
                                         <div className="grid flex-grow place-items-center">
-                                            <h3 className="text-xl font-bold">
+                                            <h3 className="text-xl font-bold text-gray-800">
                                                 <FontAwesomeIcon
                                                     icon={faSquarePhone}
                                                     className="fa-fw"
                                                 />{' '}
                                                 เบอร์ติดต่อ
                                             </h3>
-
                                             <a
                                                 href={`tel:${data?.worker_phone}`}>
-                                                <kbd className="kbd text-3xl font-bold">
+                                                <kbd className="kbd text-3xl font-bold text-gray-800">
                                                     {data?.worker_phone}
                                                 </kbd>
                                             </a>
                                         </div>
                                         <div className="grid flex-grow place-items-center">
-                                            <h3 className="text-xl font-bold">
+                                            <h3 className="text-xl font-bold  text-gray-800">
                                                 <FontAwesomeIcon
                                                     icon={faMobileScreenButton}
                                                     className="fa-fw"
@@ -1125,27 +1195,21 @@ export default function Page() {
                                             </h3>
                                             <a
                                                 href={`tel:${data?.worker_phone2}`}>
-                                                <kbd className="kbd text-3xl font-bold">
+                                                <kbd className="kbd text-3xl font-bold text-gray-800">
                                                     {data?.worker_phone2}
                                                 </kbd>
                                             </a>
                                         </div>
                                     </div>
-                                    <div className="border-t border-gray-100 mt-5">
-                                        {' '}
-                                    </div>
-                                    <div className="card bg-base-300 rounded-box grid h-10 place-items-center">
-                                        หมายเหตุ : {data?.worker_detailother}
-                                    </div>
                                 </div>
 
-                                <div className="w-100 h-56 m-auto bg-red-100 rounded-xl relative text-white mb-3">
+                                <div className="w-100 h-56 m-auto shadow-lg bg-red-100 rounded-xl relative text-white mb-3">
                                     <img
                                         className="relative object-cover w-full h-full rounded-xl"
                                         src="/images/passport.png"
                                     />
 
-                                    <div className="w-full px-8 absolute top-6">
+                                    <div className="w-full px-8 absolute pb-7 top-3">
                                         <div className="flex justify-between">
                                             <div className="">
                                                 <p className="font-light">
@@ -1184,7 +1248,7 @@ export default function Page() {
                                             </div>
                                         </div>
 
-                                        <div className="pt-2">
+                                        <div className="py-2">
                                             <div className="flex justify-between">
                                                 <div className="">
                                                     <p className="font-light text-xs text-xs">
@@ -1229,7 +1293,7 @@ export default function Page() {
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                    <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-6 shadow-sm mb-3">
                                         <h2 className="text-xl font-bold mb-4">
                                             <FontAwesomeIcon
                                                 icon={faClockRotateLeft}
@@ -1351,7 +1415,7 @@ export default function Page() {
                                             ) : null}
                                         </ul>
                                     </div>
-                                    <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                    <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-6 shadow-sm mb-3">
                                         <h2 className="text-xl font-bold mb-4">
                                             <FontAwesomeIcon
                                                 icon={faBusinessTime}
@@ -1470,8 +1534,8 @@ export default function Page() {
                                         </div>
                                     </div>
                                 )}
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="bg-white rounded-box shadow-sm p-6 mb-3">
+                                <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
+                                    <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box shadow-sm p-6 mb-3">
                                         <h2 className="text-xl font-bold mb-4">
                                             <FontAwesomeIcon
                                                 icon={faImage}
@@ -1595,7 +1659,7 @@ export default function Page() {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                    <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-6 shadow-sm mb-3">
                                         <h2 className="text-xl font-bold mb-4">
                                             <FontAwesomeIcon
                                                 icon={faHouseUser}
@@ -1606,7 +1670,7 @@ export default function Page() {
                                         {/* Repeat this for each education item */}
                                         <ul className="list-none space-y-1">
                                             {data?.workposition_id1 !== '-' && (
-                                                <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                                <li className="bg-white text-gray-800 dark:text-white dark:bg-gray-700 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
                                                     <div className="flex items-center space-x-4">
                                                         <div className="text-gray-300">
                                                             <FontAwesomeIcon
@@ -1633,7 +1697,7 @@ export default function Page() {
                                                 </li>
                                             )}
                                             {data?.workposition_id2 !== '-' && (
-                                                <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                                <li className="bg-white text-gray-800 dark:text-white dark:bg-gray-700 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
                                                     <div className="flex items-center space-x-4">
                                                         <div className="text-gray-300">
                                                             <FontAwesomeIcon
@@ -1660,7 +1724,7 @@ export default function Page() {
                                                 </li>
                                             )}
                                             {data?.workposition_id3 !== '-' && (
-                                                <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                                <li className="bg-white text-gray-800 dark:text-white dark:bg-gray-700 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
                                                     <div className="flex items-center space-x-4">
                                                         <div className="text-gray-300">
                                                             <FontAwesomeIcon
@@ -1687,7 +1751,7 @@ export default function Page() {
                                                 </li>
                                             )}
                                             {data?.workposition_id4 !== '-' && (
-                                                <li className="bg-base-100 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
+                                                <li className="bg-white text-gray-800 dark:text-white dark:bg-gray-700 rounded-lg p-4 flex items-center justify-between border border-b-4 hover:border-blue-800">
                                                     <div className="flex items-center space-x-4">
                                                         <div className="text-gray-300 ">
                                                             <FontAwesomeIcon
@@ -1717,7 +1781,7 @@ export default function Page() {
                                     </div>
                                 </div>
 
-                                <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-6 shadow-sm mb-3">
                                     <h2 className="text-xl font-bold mb-4">
                                         <FontAwesomeIcon
                                             icon={faBroom}
@@ -1725,7 +1789,7 @@ export default function Page() {
                                         />{' '}
                                         ทักษะ
                                     </h2>
-                                    <div className="grid md:grid-cols-1 xl:grid-cols-3 gap-0">
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-2">
                                         <div className="flex items-center p-2 bg-white rounded-lg shadow-xs">
                                             <div className="p-4 mr-4 text-blue-500 bg-blue-100 border hover:border-blue-800  rounded-full">
                                                 <FontAwesomeIcon
@@ -1946,7 +2010,7 @@ export default function Page() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="bg-white rounded-box p-6 shadow-sm mb-3">
+                                <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-6 shadow-sm mb-3">
                                     <h2 className="text-xl font-bold mb-4">
                                         <FontAwesomeIcon
                                             icon={faFlagCheckered}
@@ -1956,12 +2020,12 @@ export default function Page() {
                                     </h2>
                                     {/* Repeat this for each education item */}
 
-                                    <div className="stats stats-vertical lg:stats-horizontal w-full">
+                                    <div className="stats dark:bg-gray-700 stats-vertical lg:stats-horizontal w-full">
                                         <div className="stat p-3">
-                                            <div className="stat-title text-2xl font-semibold text-center">
+                                            <div className="stat-title dark:text-white text-2xl font-semibold text-center">
                                                 ไทย
                                             </div>
-                                            <div className="stat-desc text-lg">
+                                            <div className="stat-desc dark:text-white text-lg">
                                                 {data?.worker_landth_talk ===
                                                 0 ? (
                                                     <FontAwesomeIcon
@@ -2007,10 +2071,10 @@ export default function Page() {
                                         </div>
 
                                         <div className="stat p-3">
-                                            <div className="stat-title text-2xl font-semibold text-center">
+                                            <div className="stat-title dark:text-white text-2xl font-semibold text-center">
                                                 อังกฤษ
                                             </div>
-                                            <div className="stat-desc text-lg">
+                                            <div className="stat-desc dark:text-white text-lg">
                                                 {data?.worker_landen_talk ===
                                                 0 ? (
                                                     <FontAwesomeIcon
@@ -2056,10 +2120,10 @@ export default function Page() {
                                         </div>
 
                                         <div className="stat p-3">
-                                            <div className="stat-title text-2xl font-semibold text-center">
+                                            <div className="stat-title dark:text-white text-2xl font-semibold text-center">
                                                 อื่นๆ
                                             </div>
-                                            <div className="stat-desc text-lg text-center">
+                                            <div className="stat-desc dark:text-white text-lg text-center">
                                                 {data?.worker_landother}
                                             </div>
                                         </div>
@@ -2521,7 +2585,15 @@ export default function Page() {
                     {/* Work Log Modal */}
                     {isWorkLogModalOpen && (
                         <div className="modal modal-open">
-                            <div className="modal-box max-w-4xl w-full">
+                            <div className="modal-box areamax-w-4xl w-full">
+                                <button
+                                    onClick={handleCloseWorkLogModal}
+                                    className="absolute top-6 right-3 text-gray-500 hover:text-gray-700">
+                                    <FontAwesomeIcon
+                                        icon={faCircleXmark}
+                                        className="fa-lg"
+                                    />
+                                </button>
                                 <h2 className="text-lg font-bold mb-4">
                                     <FontAwesomeIcon
                                         icon={faGripLinesVertical}
@@ -2537,16 +2609,16 @@ export default function Page() {
                                             <thead>
                                                 <tr>
                                                     <th className="px-4 py-2">
-                                                        ผู้ใช้
+                                                        UID
                                                     </th>
                                                     <th className="px-4 py-2">
-                                                        สถานะ
+                                                        Status
                                                     </th>
                                                     <th className="px-4 py-2">
-                                                        วันที่
+                                                        Date
                                                     </th>
                                                     <th className="px-4 py-2">
-                                                        หมายเหตุ
+                                                        Commit
                                                     </th>
                                                 </tr>
                                             </thead>

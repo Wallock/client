@@ -285,18 +285,38 @@ export default function dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="mockup-code m-5 text-center shadow-lg">
-                            <pre className="text-lg font-semibold">
+                        <div className="mockup-code shadow-lg">
+                            <pre className="text-lg font-semibold my-2">
                                 <code>Patch Note : {version}</code>
                             </pre>
-                            <pre className="text-gray-500 text-sm mt-5">
+                            <pre data-prefix=">" className="text-sm">
+                                <code>ปรับเปลี่ยน UI โหมดมืดใหม่</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    - แก้ไข LocalStore เป็น CookieStore แทน
+                                    แก้ไขระบบ 48,82,Laos หมดแล้ว เหลือระบบ
+                                    online ยังไม่เสร็จ
+                                </code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>
+                                    API ฝั่ง Server ของ 82,Laos,Online
+                                    ยังไม่อัพเดท
+                                </code>
+                            </pre>
+                            <pre className="text-lg font-semibold my-2">
+                                <code>Patch Note : 1.1a</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>
+                                    แก้ไข LocalStore เป็น CookieStore แทน
                                     เพื่อที่ล็อคอินแล้วจะได้ไม่หลุด
                                 </code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    - กำหนด Cookie Login Token เป็นระยะเวลา 1
-                                    วัน หลังจากนั้นต้องล็อคอินใหม่
+                                    กำหนด Cookie Login Token เป็นระยะเวลา 1 วัน
+                                    หลังจากนั้นต้องล็อคอินใหม่
                                 </code>
                             </pre>
                         </div>
