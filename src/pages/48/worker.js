@@ -320,9 +320,9 @@ export default function Home() {
                                     item={item}
                                     imageLoading={imageLoading}
                                     setImageLoading={setImageLoading}
-                                    handleFreeButtonClick={
-                                        handleFreeButtonClick
-                                    }
+                                    //handleFreeButtonClick={
+                                    //    handleFreeButtonClick
+                                    //}
                                     getBackgroundClass={getBackgroundClass}
                                     getFlagUrl={getFlagUrl}
                                     getfapi={f_url}
