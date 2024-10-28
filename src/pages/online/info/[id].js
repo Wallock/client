@@ -2173,7 +2173,7 @@ export default function Page() {
                             <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity duration-300">
                                 {' '}
                             </div>
-                            <div className="modal-box max-w-6xl bg-gradient-to-br from-violet-500 via-purple-600 to-indigo-700 text-white">
+                            <div className="modal-box max-w-6xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
                                 <div className="flex justify-between items-center">
                                     <h2 className="text-2xl font-semibold text-white text-shadow-sm">
                                         <FontAwesomeIcon
@@ -2214,11 +2214,8 @@ export default function Page() {
                                                 </p>
                                             </div>
                                             <div className="text-center">
-                                                <h3 className="text-2xl font-bold text-white text-shadow-sm">
-                                                    แอดไลน์สอบถาม
-                                                </h3>
                                                 <p className="text-green-600 text-2xl font-bold bg-black bg-opacity-55 shadow-lg rounded-full px-2">
-                                                    @maid2013
+                                                    สนใจติดต่อเซลล์ได้เลยค่ะ
                                                 </p>
                                             </div>
                                         </div>

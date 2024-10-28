@@ -298,39 +298,6 @@ export default function dashboard() {
                             <pre data-prefix=">" className="text-sm">
                                 <code>แก้ไขไอค่อนสำหรับระบบออนไลน์</code>
                             </pre>
-                            <pre className="text-lg font-semibold my-2">
-                                <code>Patch Note : 1.2a</code>
-                            </pre>
-                            <pre data-prefix=">" className="text-sm">
-                                <code>ปรับเปลี่ยน UI โหมดมืดใหม่</code>
-                            </pre>
-                            <pre data-prefix=">" className="text-sm">
-                                <code>
-                                    แก้ไขระบบ 48,82,Laos หมดแล้ว เหลือระบบ
-                                    online ยังไม่เสร็จ
-                                </code>
-                            </pre>
-                            <pre data-prefix=">" className="text-sm">
-                                <code>
-                                    API ฝั่ง Server ของ 82,Laos,Online
-                                    ยังไม่อัพเดท
-                                </code>
-                            </pre>
-                            <pre className="text-lg font-semibold my-2">
-                                <code>Patch Note : 1.1a</code>
-                            </pre>
-                            <pre data-prefix=">" className="text-sm">
-                                <code>
-                                    แก้ไข LocalStore เป็น CookieStore แทน
-                                    เพื่อที่ล็อคอินแล้วจะได้ไม่หลุด
-                                </code>
-                            </pre>
-                            <pre data-prefix=">" className="text-sm">
-                                <code>
-                                    กำหนด Cookie Login Token เป็นระยะเวลา 1 วัน
-                                    หลังจากนั้นต้องล็อคอินใหม่
-                                </code>
-                            </pre>
                         </div>
                     </div>
                 </div>
