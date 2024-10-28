@@ -21,6 +21,10 @@ const WorkerDetailsDrawer = ({
         m: 'พม่า',
         l: 'ลาว',
         c: 'กัมพูชา',
+        n: 'ออนไลน์48',
+        jno: 'จรัญออนไลน์',
+        jnw: 'จรัญ82',
+        g: 'รหัส G',
         // Add more mappings as needed
     }
 

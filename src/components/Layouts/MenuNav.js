@@ -135,12 +135,29 @@ const MenuNav = ({ profile }) => {
             </nav>
             <a
                 href="#"
+                onClick={() =>
+                    document.getElementById('my_modal_2').showModal()
+                }
                 className={`absolute w-full bottom-0 bg-blue-700 text-white dark:bg-gray-900 text-shadow-sm flex items-center text-lg font-semibold justify-center py-4 ${
                     isCollapsed ? 'justify-center' : ''
                 }`}>
                 <FontAwesomeIcon icon={faInbox} className="me-3" />
                 {!isCollapsed && 'ติดต่อทีมซับพอต'}
             </a>
+            <dialog id="my_modal_2" className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-4xl text-center">
+                        ติดต่อผ่านไลน์!
+                    </h3>
+                    <p className="text-center text-error">
+                        **หยุดทุกวันเสาร์ ห้ามติดต่อมานะจ๊ะ
+                    </p>
+                    <img src="/images/qr.jpg" className="mx-auto my-1" />
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </aside>
     )
 }

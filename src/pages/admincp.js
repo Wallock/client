@@ -123,6 +123,9 @@ export default function admincp() {
                             <Link href="/settings/users">ผู้ใช้งาน</Link>
                         </li>
                         <li>
+                            <Link href="/settings/worker">ค้นหาคนงาน</Link>
+                        </li>
+                        <li>
                             <Link href="/settings/system">ตั้งค่าระบบ</Link>
                         </li>
                         <li>

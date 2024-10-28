@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 export default function IdleClicker() {
     const [clickCount, setClickCount] = useState(0)
+    const [topUsers, setTopUsers] = useState([]) // State for Top 10 users
     const profile = useProfile()
     const [loading, setLoading] = useState(true)
     const [networkError, setNetworkError] = useState(false)
@@ -51,22 +52,51 @@ export default function IdleClicker() {
             }
         }
 
+        // Fetch initial click count and Top 10 users
         fetchClickCount()
+        fetchTopUsers()
 
+        // Initialize Pusher
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-            cluster: process.env.PUSHER_CLUSTER || 'default_cluster',
+            cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER || 'ap1',
         })
-        const channel = pusher.subscribe('click-channel')
-        channel.bind('increment', data => {
+        const clickChannel = pusher.subscribe('click-channel')
+
+        // Listen for increment events
+        clickChannel.bind('increment', data => {
             setClickCount(data.clickCount)
         })
 
+        // Subscribe to top-clicks channel for real-time updates
+        const topClicksChannel = pusher.subscribe('top-clicks')
+        topClicksChannel.bind('update', data => {
+            setTopUsers(data)
+        })
+
         return () => {
-            channel.unbind_all()
-            channel.unsubscribe()
+            clickChannel.unbind_all()
+            clickChannel.unsubscribe()
+            topClicksChannel.unbind_all()
+            topClicksChannel.unsubscribe()
             pusher.disconnect()
         }
     }, [profile])
+
+    const fetchTopUsers = async () => {
+        try {
+            const response = await axios.get(
+                'https://server.wb.in.th/api/top-clicks',
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('accessToken')}`,
+                    },
+                },
+            )
+            setTopUsers(response.data)
+        } catch (error) {
+            console.error('Error fetching top users:', error)
+        }
+    }
 
     const handleClick = async () => {
         if (!profile?.id) return
@@ -115,6 +145,27 @@ export default function IdleClicker() {
                             Click Me!
                         </button>
                     )}
+
+                    {/* Display Top 10 Users */}
+                    <div className="mt-8">
+                        <h2 className="text-xl font-bold">Top 10 Users</h2>
+                        <table className="table-auto w-full text-center mt-4">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {topUsers.map(user => (
+                                    <tr key={user.id}>
+                                        <td>{user.name}</td>
+                                        <td>{user.click_count}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </AppLayout>

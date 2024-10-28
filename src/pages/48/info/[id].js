@@ -4,6 +4,7 @@ import { useProfile } from '@/lib/ProfileContext'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
+import Cookies from 'js-cookie'
 import Loading from '@/lib/loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -66,6 +67,7 @@ export default function Page() {
     const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://beta.wb.in.th`
+    const d_url = `https://server.wb.in.th`
     const getname = `48`
     const empId = profile?.uid48
     const [isWorkLogModalOpen, setIsWorkLogModalOpen] = useState(false)
@@ -118,6 +120,14 @@ export default function Page() {
             }
         } catch (error) {
             //console.error('Error checking for updates:', error)
+            toast.error(`Error:. ${error}`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
             if (showLoading) {
                 setLoading(false)
             }
@@ -157,16 +167,33 @@ export default function Page() {
     // Function to close the modals
     const handleCloseWorkLogModal = () => setIsWorkLogModalOpen(false)
     const handleCloseContractLogModal = () => setIsContractLogModalOpen(false)
-
     const fetchEmpData = async () => {
         // ตรวจสอบว่า emp_id มีค่าก่อนทำการดึงข้อมูล
+        const token = Cookies.get('accessToken')
         if (data?.emp_id) {
             try {
-                const empApiUrl = `${f_url}/api/i_emp?token=${token}&data_id=${data.emp_id}`
-                const empResponse = await axios.get(empApiUrl)
-                setEmpData(empResponse.data[0]) // สมมติว่าข้อมูลพนักงานเป็น item แรก
+                const empResponse_deep = await fetch(
+                    `${d_url}/api/i_emp/${getname}/${data.emp_id}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+                const empResponse = await empResponse_deep.json()
+                setEmpData(empResponse) // สมมติว่าข้อมูลพนักงานเป็น item แรก
             } catch (error) {
                 //console.error('Error checking for updates:', error)
+                toast.error(`Error:. ${error}`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
             }
         }
     }
@@ -218,6 +245,14 @@ export default function Page() {
             setLogData(logDataWithInfo)
         } catch (error) {
             //console.error('Error checking for updates:', error)
+            toast.error(`Error:. ${error}`, {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
         }
     }
 
@@ -1515,8 +1550,8 @@ export default function Page() {
                                                     <img
                                                         className="rounded-2xl glass right-6 -mt-12 z-10 w-32 h-32 shadow"
                                                         src={
-                                                            empData?.profile_photo_url
-                                                                ? empData.profile_photo_url
+                                                            empData.profile_photo_path
+                                                                ? `https://server.wb.in.th/${empData.profile_photo_path}`
                                                                 : '/images/blank-picture.webp'
                                                         }
                                                         alt={

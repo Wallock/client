@@ -161,7 +161,7 @@ const WorkerCard = ({
                                 src={getFlagUrl(item.worker_type)}
                                 alt={`Flag for ${item.worker_type}`}
                                 style={{
-                                    width: '35px',
+                                    width: '50px',
                                     height: 'auto',
                                 }}
                             />

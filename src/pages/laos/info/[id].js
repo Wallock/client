@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useProfile } from '@/lib/ProfileContext'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import Link from 'next/link'
 import Loading from '@/lib/loading'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -66,6 +67,7 @@ export default function Page() {
     const profile = useProfile()
     const token = `1amwall0ck`
     const f_url = `https://laos.wb.in.th`
+    const d_url = `https://server.wb.in.th`
     const getname = `laos`
     const empId = profile?.uidlaos
     const [isWorkLogModalOpen, setIsWorkLogModalOpen] = useState(false)
@@ -160,13 +162,31 @@ export default function Page() {
 
     const fetchEmpData = async () => {
         // ตรวจสอบว่า emp_id มีค่าก่อนทำการดึงข้อมูล
+        const token = Cookies.get('accessToken')
         if (data?.emp_id) {
             try {
-                const empApiUrl = `${f_url}/api/i_emp?token=${token}&data_id=${data.emp_id}`
-                const empResponse = await axios.get(empApiUrl)
-                setEmpData(empResponse.data[0]) // สมมติว่าข้อมูลพนักงานเป็น item แรก
+                const empResponse_deep = await fetch(
+                    `${d_url}/api/i_emp/${getname}/${data.emp_id}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+                const empResponse = await empResponse_deep.json()
+                setEmpData(empResponse) // สมมติว่าข้อมูลพนักงานเป็น item แรก
             } catch (error) {
                 //console.error('Error checking for updates:', error)
+                toast.error(`Error:. ${error}`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
             }
         }
     }
@@ -1514,8 +1534,8 @@ export default function Page() {
                                                     <img
                                                         className="rounded-2xl glass right-6 -mt-12 z-10 w-32 h-32 shadow"
                                                         src={
-                                                            empData?.profile_photo_url
-                                                                ? empData.profile_photo_url
+                                                            empData.profile_photo_path
+                                                                ? `https://server.wb.in.th/${empData.profile_photo_path}`
                                                                 : '/images/blank-picture.webp'
                                                         }
                                                         alt={

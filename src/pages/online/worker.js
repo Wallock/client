@@ -1,9 +1,9 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React, { useEffect, useState } from 'react'
-import SearchFilter from '@/components/online/SearchFilter'
-import Pagination from '@/components/online/Pagination'
-import WorkerCard from '@/components/online/WorkerCard'
-import WorkerDetailsDrawer from '@/components/online/WorkerDetailsDrawer'
+import SearchFilter from '@/components/control/SearchFilter'
+import Pagination from '@/components/control/Pagination'
+import WorkerCard from '@/components/control/WorkerCard'
+import WorkerDetailsDrawer from '@/components/control/WorkerDetailsDrawer'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useProfile } from '@/lib/ProfileContext'
@@ -228,15 +228,15 @@ export default function Home() {
     const getFlagUrl = nationality => {
         switch (nationality) {
             case 'n':
-                return 'รหัส 48'
+                return '/flag/48.svg'
             case 'jno':
-                return 'รหัส 82 Online'
+                return '/flag/82o.svg'
             case 'jnw':
-                return 'รหัส 82'
+                return '/flag/82.svg'
             case 'g':
-                return 'รหัส G'
+                return '/flag/g.svg'
             default:
-                return 'error'
+                return '/flag/blank.svg'
         }
     }
 

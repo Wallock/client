@@ -325,7 +325,9 @@ export default function Users() {
                                                 <div className="w-12 h-12 mask mask-squircle">
                                                     <img
                                                         src={
-                                                            user.profile_photo_url
+                                                            user.profile_photo_path
+                                                                ? `https://server.wb.in.th/${user.profile_photo_path}`
+                                                                : user.profile_photo_url
                                                         }
                                                         alt="Profile Photo"
                                                     />
