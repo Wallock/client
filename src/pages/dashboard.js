@@ -124,7 +124,7 @@ export default function dashboard() {
                             )}
                         </div>
                         <div className="stat-desc dark:text-white">
-                            ทั้งหมด : 05 Record
+                            ทั้งหมด : x Record
                         </div>
                     </div>
 
@@ -146,7 +146,7 @@ export default function dashboard() {
                             )}
                         </div>
                         <div className="stat-desc dark:text-white">
-                            ทั้งหมด : 05 Record
+                            ทั้งหมด : x Record
                         </div>
                     </div>
 
@@ -168,7 +168,7 @@ export default function dashboard() {
                             )}
                         </div>
                         <div className="stat-desc dark:text-white">
-                            ทั้งหมด : 05 Record
+                            ทั้งหมด : x Record
                         </div>
                     </div>
 
@@ -190,7 +190,7 @@ export default function dashboard() {
                             )}
                         </div>
                         <div className="stat-desc dark:text-white">
-                            ทั้งหมด : 50 Record
+                            ทั้งหมด : x Record
                         </div>
                     </div>
                 </div>
@@ -288,6 +288,18 @@ export default function dashboard() {
                         <div className="mockup-code shadow-lg">
                             <pre className="text-lg font-semibold my-2">
                                 <code>Patch Note : {version}</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>เพิ่มระบบของทุกฝั่งเรียบร้อยแล้ว</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>สามารถส่งคนงานได้ปกติแล้ว</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>แก้ไขไอค่อนสำหรับระบบออนไลน์</code>
+                            </pre>
+                            <pre className="text-lg font-semibold my-2">
+                                <code>Patch Note : 1.2a</code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
                                 <code>ปรับเปลี่ยน UI โหมดมืดใหม่</code>
