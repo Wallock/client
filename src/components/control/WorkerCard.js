@@ -82,7 +82,7 @@ const WorkerCard = ({
     }
 
     return (
-        <div className="flex flex-col gap-4 w-full lg:w-48 mx-1">
+        <div className="flex flex-col gap-4 w-full lg:w-52 mx-1">
             <Link href={`./info/${item?.worker_id}`}>
                 <div
                     className={`relative p-0.5 rounded-xl transition duration-300 hover:scale-105 bg-gradient-to-r bg-gradient-to-r ${
