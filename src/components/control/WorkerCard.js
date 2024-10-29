@@ -131,8 +131,9 @@ const WorkerCard = ({
                                 } // แสดงข้อความสำรองหากไม่มี worker_fullname
                                 style={{
                                     width: '100%',
-                                    height: '100%',
+                                    height: '230px',
                                     display: imageLoading ? 'none' : 'block',
+                                    object: 'cover',
                                 }}
                                 onLoad={() => setImageLoading(false)}
                             />
