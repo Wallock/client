@@ -796,8 +796,7 @@ export default function Page() {
                                     alt={data?.worker_fullname}
                                     className="rounded-box shadow-lg bg-white p-1 w-full"
                                     style={{
-                                        height: '320px', // กำหนดความสูงที่ต้องการ
-                                        objectFit: 'cover', // ทำให้รูปไม่บิดเบือนแต่ยังครอบคลุมพื้นที่
+                                        height: '320px', // กำหนดความสูงที่ต้องการ// ทำให้รูปไม่บิดเบือนแต่ยังครอบคลุมพื้นที่
                                     }}
                                 />
                             </figure>
@@ -2158,7 +2157,7 @@ export default function Page() {
                             <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity duration-300">
                                 {' '}
                             </div>
-                            <div className="modal-box max-w-6xl bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white">
+                            <div className="modal-box max-w-7xl h-xl bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white">
                                 <div className="flex justify-between items-center">
                                     <h2 className="text-2xl font-semibold text-white text-shadow-sm">
                                         <FontAwesomeIcon
@@ -2177,17 +2176,17 @@ export default function Page() {
                                     </button>
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-4 mt-4">
+                                <div className="grid grid-cols-3 gap-2 mt-4">
                                     {/* Profile Image */}
                                     <div className="col-span-1 bg-white text-black rounded-lg shadow-lg relative">
                                         <img
                                             src={`${f_url}/${datapacks[0]?.values}`}
                                             alt="Worker"
-                                            className="w-full h-full object-cover rounded-lg"
+                                            className="w-full h-full  rounded-lg"
                                         />
                                         <div className="absolute inset-0 flex flex-col justify-between p-4 ">
                                             <div>
-                                                <h3 className="text-4xl font-bold text-white text-center text-shadow-lg">
+                                                <h3 className="text-4xl font-bold text-gray-800 text-center text-shadow-sm">
                                                     รหัส: {data.worker_id}
                                                 </h3>
                                                 <p className="text-green-600 w-1/2 font-semibold bg-white bg-opacity-70 flex justify-center rounded-full p-1 mt-1 text-center mx-auto">

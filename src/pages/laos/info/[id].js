@@ -2157,7 +2157,7 @@ export default function Page() {
                             <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity duration-300">
                                 {' '}
                             </div>
-                            <div className="modal-box max-w-6xl bg-gradient-to-r from-red-500 to-orange-500 text-white">
+                            <div className="modal-box max-w-7xl h-xl bg-gradient-to-r from-red-500 to-orange-500 text-white">
                                 <div className="flex justify-between items-center">
                                     <h2 className="text-2xl font-semibold text-white text-shadow-sm">
                                         <FontAwesomeIcon
@@ -2182,11 +2182,11 @@ export default function Page() {
                                         <img
                                             src={`${f_url}/${datapacks[0]?.values}`}
                                             alt="Worker"
-                                            className="w-full h-full object-cover rounded-lg"
+                                            className="w-full h-full  rounded-lg"
                                         />
                                         <div className="absolute inset-0 flex flex-col justify-between p-4 ">
                                             <div>
-                                                <h3 className="text-4xl font-bold text-white text-center text-shadow-lg">
+                                                <h3 className="text-4xl font-bold text-gray-800 text-center text-shadow-sm">
                                                     รหัส: {data.worker_id}
                                                 </h3>
                                                 <p className="text-green-600 w-1/2 font-semibold bg-white bg-opacity-70 flex justify-center rounded-full p-1 mt-1 text-center mx-auto">
