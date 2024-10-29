@@ -32,38 +32,37 @@ const WorkerCard = ({
                 }
             case 'save':
                 return {
-                    styles: 'bg-amber-100 text-amber-500 border-amber-500',
+                    styles: 'bg-amber-400 text-gray-800 border-amber-800',
                     icon: faCirclePause,
                     text: 'จอง',
                 }
             case 'incomplete':
                 return {
-                    styles: 'bg-blue-100 text-blue-500 border-blue-500',
+                    styles: 'bg-blue-500 text-white border-blue-500',
                     icon: faFileCircleCheck,
                     text: 'รอทำสัญญา',
                 }
             case 'woker':
                 return {
-                    styles:
-                        'bg-emerald-100 text-emerald-500 border-emerald-500',
+                    styles: 'bg-emerald-600 text-white border-emerald-200',
                     icon: faCircleCheck,
                     text: 'ได้งานแล้ว',
                 }
             case 'retry':
                 return {
-                    styles: 'bg-purple-100 text-purple-500 border-purple-500',
+                    styles: 'bg-purple-500 text-white border-purple-200',
                     icon: faPersonCircleExclamation,
                     text: 'เคลม',
                 }
             case 'changepp':
                 return {
-                    styles: 'bg-gray-100 text-black border-black',
+                    styles: 'bg-gray-500 text-white border-white',
                     icon: faArrowRightArrowLeft,
                     text: 'เปลี่ยน',
                 }
             case 'bfprocess':
                 return {
-                    styles: 'bg-sky-100 text-sky-500 border-sky-500',
+                    styles: 'bg-cyan-400 text-gray-700 border-gray-800',
                     icon: faUserCheck,
                     text: 'สพ.แล้ว',
                 }
@@ -90,17 +89,17 @@ const WorkerCard = ({
                         item?.worker_status === 'wait'
                             ? 'from-transparent to-transparent' // เพิ่มความแตกต่างระหว่างสีเข้มและสว่าง
                             : item?.worker_status === 'save'
-                            ? 'from-yellow-300 to-yellow-600' // เพิ่มความสว่างและคอนทราสต์
+                            ? 'from-yellow-400 to-yellow-800' // เพิ่มความสว่างและคอนทราสต์
                             : item?.worker_status === 'incomplete'
-                            ? 'from-indigo-400 to-blue-700' // ใช้สีที่เข้มและสว่างขึ้น
+                            ? 'from-indigo-400 to-blue-800' // ใช้สีที่เข้มและสว่างขึ้น
                             : item?.worker_status === 'woker'
-                            ? 'from-green-400 to-cyan-500' // เพิ่มสีที่สดใสขึ้น
+                            ? 'from-green-400 to-cyan-800' // เพิ่มสีที่สดใสขึ้น
                             : item?.worker_status === 'retry'
-                            ? 'from-purple-400 to-pink-600' // เพิ่มคอนทราสต์ระหว่างสี
+                            ? 'from-purple-400 to-pink-800' // เพิ่มคอนทราสต์ระหว่างสี
                             : item?.worker_status === 'changepp'
-                            ? 'from-gray-300 to-gray-500' // ใช้สีที่มีความแตกต่างมากขึ้น
+                            ? 'from-gray-400 to-gray-800' // ใช้สีที่มีความแตกต่างมากขึ้น
                             : item?.worker_status === 'bfprocess'
-                            ? 'from-blue-300 to-cyan-400' // ใช้สีน้ำเงินที่สว่างขึ้น
+                            ? 'from-blue-400 to-cyan-800' // ใช้สีน้ำเงินที่สว่างขึ้น
                             : item?.worker_status === 'export'
                             ? 'from-red-400 to-orange-500' // เพิ่มความสดใสของสีแดงและส้ม
                             : 'from-transparent to-transparent' // ค่าเริ่มต้นที่เพิ่มคอนทราสต์เล็กน้อย
@@ -134,7 +133,6 @@ const WorkerCard = ({
                                     width: '100%',
                                     height: '100%',
                                     display: imageLoading ? 'none' : 'block',
-                                    objectFit: 'cover', // เพิ่มเพื่อให้ภาพเต็มขอบเขต
                                 }}
                                 onLoad={() => setImageLoading(false)}
                             />

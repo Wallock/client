@@ -123,9 +123,6 @@ export default function dashboard() {
                                 databeta
                             )}
                         </div>
-                        <div className="stat-desc dark:text-white">
-                            ทั้งหมด : x Record
-                        </div>
                     </div>
 
                     <div className="stat">
@@ -144,9 +141,6 @@ export default function dashboard() {
                             ) : (
                                 datadd
                             )}
-                        </div>
-                        <div className="stat-desc dark:text-white">
-                            ทั้งหมด : x Record
                         </div>
                     </div>
 
@@ -167,9 +161,6 @@ export default function dashboard() {
                                 datalaos
                             )}
                         </div>
-                        <div className="stat-desc dark:text-white">
-                            ทั้งหมด : x Record
-                        </div>
                     </div>
 
                     <div className="stat">
@@ -188,9 +179,6 @@ export default function dashboard() {
                             ) : (
                                 datathai
                             )}
-                        </div>
-                        <div className="stat-desc dark:text-white">
-                            ทั้งหมด : x Record
                         </div>
                     </div>
                 </div>

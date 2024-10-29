@@ -666,7 +666,7 @@ const SearchFilter = ({
                 <div className="flex items-center justify-evenly">
                     {/* สถานะ */}
                     <ul className="menu menu-sm menu-horizontal mb-1">
-                        <li className="menu-title w-full">สถานะ</li>
+                        <li className="menu-title w-full">แสดงตามสถานะ</li>
                         <li>
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
@@ -680,10 +680,10 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl  font-bold mx-1 ${
                                     selectedStatus === 'wait'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-gray-300 text-gray-700'
+                                        : 'bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('wait')}>
                                 ว่างงาน
@@ -693,8 +693,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'save'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-amber-400 text-gray-800'
+                                        : 'bg-amber-400 text-gray-800 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('save')}>
                                 ติดจอง
@@ -704,8 +704,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'changepp'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-gray-500 text-white'
+                                        : 'bg-gray-500 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('changepp')}>
                                 เปลี่ยน
@@ -715,8 +715,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'retry'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-purple-500 text-white'
+                                        : 'bg-purple-500 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('retry')}>
                                 เคลม
@@ -726,8 +726,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'incomplete'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-blue-500 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('incomplete')}>
                                 รอทำสัญญา
@@ -737,8 +737,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'bfprocess'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-cyan-400 text-gray-800'
+                                        : 'bg-cyan-400 text-gray-800 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('bfprocess')}>
                                 สพ.แล้ว
@@ -748,8 +748,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'woker'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-emerald-600 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('woker')}>
                                 ได้งานแล้ว
@@ -759,8 +759,8 @@ const SearchFilter = ({
                             <button
                                 className={`btn text-xl font-bold mx-1 ${
                                     selectedStatus === 'export'
-                                        ? 'button-js'
-                                        : 'button-js-outline dark:bg-gray-700 dark:text-white'
+                                        ? 'bg-red-100 text-red-500'
+                                        : 'bg-red-100 text-red-500 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('export')}>
                                 ไม่ส่งงาน
