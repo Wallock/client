@@ -22,12 +22,6 @@ export default function user() {
                         </div>
                     </div>
                 </div>
-                <div role="alert" className="alert alert-error my-3">
-                    <p className="text-white font-semibold">
-                        ขนาดนี้ยังไม่อนุญาตให้เปิดใช้งานรับสมัครคนงานผ่านระบบได้ขนาดนี้
-                        กรุณาใช้งานระบบเก่าไปก่อน.
-                    </p>
-                </div>
                 <div className="flex items-center justify-center flex-wrap m-5">
                     <div className="w-full lg:w-1/2">
                         <div className="card lg:card-side bg-base-100 text-neutral shadow-xl m-3">
@@ -54,7 +48,7 @@ export default function user() {
                                         พม่า
                                     </Link>
                                     <Link
-                                        href="/48/reg-m"
+                                        href="/48/reg-l"
                                         className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
@@ -64,7 +58,7 @@ export default function user() {
                                         ลาว
                                     </Link>
                                     <Link
-                                        href="/48/reg-m"
+                                        href="/48/reg-c"
                                         className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
@@ -91,14 +85,16 @@ export default function user() {
                                     แม่บ้านดีดีเซอร์วิส
                                 </h2>
                                 <div className="card-actions justify-center">
-                                    <button className="btn btn-neutral">
+                                    <Link
+                                        href="/82/reg-m"
+                                        className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
                                                 <img src="/icon/m.webp" />
                                             </div>
                                         </div>
                                         พม่า
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -159,14 +155,16 @@ export default function user() {
                                     เมทอินเตอร์เซอร์วิส
                                 </h2>
                                 <div className="card-actions justify-center">
-                                    <button className="btn btn-neutral">
+                                    <Link
+                                        href="/laos/reg-l"
+                                        className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/l.webp" />
+                                                <img src="/icon/m.webp" />
                                             </div>
                                         </div>
-                                        ลาว
-                                    </button>
+                                        พม่า
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -4,12 +4,36 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loading from '@/lib/loading'
 import Cookies from 'js-cookie'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 export default function Profile() {
     const router = useRouter()
     const [loading, setLoading] = useState(true)
     const [userData, setUserData] = useState(null)
 
+    const getBadgeProps = role => {
+        const numericRole = Number(role) // Convert role to a number
+
+        switch (numericRole) {
+            case 0:
+                return { color: 'ghost', text: 'ไม่มี' }
+            case 1:
+                return { color: 'primary', text: 'แอดมิน' }
+            case 2:
+                return { color: 'secondary', text: 'เซลล์' }
+            case 3:
+                return { color: 'warning', text: 'ผู้แก้ไข' }
+            case 4:
+                return { color: 'danger', text: 'ผู้จัดการ' }
+            case 5:
+                return { color: 'accent', text: 'ผู้ดูแล' }
+            case 99:
+                return { color: 'gold', text: 'ผู้พัฒนา' }
+            default:
+                return { color: 'gray', text: 'Unknown Role' }
+        }
+    }
     // Function to fetch user data
     const fetchUserData = async () => {
         try {
@@ -75,32 +99,55 @@ export default function Profile() {
                         <p className="text-gray-600">{userData?.phone}</p>
                     </div>
 
-                    <div className="w-full max-w-2xl my-5 mx-auto">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="card bg-base-100 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
-                                คนงานของฉัน
-                            </div>
-                            <div className="card bg-base-100 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
-                                ทำรายการไปแล้ว
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Timeline / Posts Section */}
                     <div className="w-full max-w-2xl mx-auto">
+                        <div className="card bg-base-100 mb-5 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
+                            <p className="text-lg my-1 text-center">
+                                ระดับ : {getBadgeProps(userData?.role).text}
+                            </p>
+                        </div>
                         <div className="card bg-base-100 text-gray-800 dark:text-white dark:glass p-3 shadow-xl">
-                            <p className="text-lg">
-                                Username : {userData?.username}
-                            </p>
-                            <p className="text-lg">Role : {userData?.role}</p>
-                            <p className="text-lg">48 : {userData?.type48}</p>
-                            <p className="text-lg">82 : {userData?.type82}</p>
-                            <p className="text-lg">
-                                ThaiOnline : {userData?.typethai}
-                            </p>
-                            <p className="text-lg">
-                                Laos : {userData?.typelaos}
-                            </p>
+                            <div className="text-lg text-center mb-3">
+                                สิทธิ์การใช้งาน
+                            </div>
+                            <div className="card-actions justify-center">
+                                {userData?.type48 === 1 && (
+                                    <div className="badge badge-outline badge-success">
+                                        <FontAwesomeIcon
+                                            icon={faCircleCheck}
+                                            className="fa-fw  me-1"
+                                        />{' '}
+                                        ระบบนาซ่า
+                                    </div>
+                                )}
+                                {userData?.type82 === 1 && (
+                                    <div className="badge badge-outline badge-success">
+                                        <FontAwesomeIcon
+                                            icon={faCircleCheck}
+                                            className="fa-fw  me-1"
+                                        />{' '}
+                                        ดีดีเมท
+                                    </div>
+                                )}
+                                {userData?.typethai === 1 && (
+                                    <div className="badge badge-outline badge-success">
+                                        <FontAwesomeIcon
+                                            icon={faCircleCheck}
+                                            className="fa-fw  me-1"
+                                        />{' '}
+                                        ลาว
+                                    </div>
+                                )}
+                                {userData?.typelaos === 1 && (
+                                    <div className="badge badge-outline badge-success">
+                                        <FontAwesomeIcon
+                                            icon={faCircleCheck}
+                                            className="fa-fw me-1"
+                                        />{' '}
+                                        ไทยออนไลน์
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

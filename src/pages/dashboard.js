@@ -53,6 +53,19 @@ export default function dashboard() {
                     throw new Error('No access token found')
                 }
 
+                const response = await axios.get(
+                    'https://server.wb.in.th/api/user',
+                    {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+
+                setUserData(response.data) // Save user data
+
                 const [
                     response1,
                     response2,

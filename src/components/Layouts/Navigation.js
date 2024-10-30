@@ -257,15 +257,6 @@ const Navigation = ({ profile }) => {
                                 ตั้งค่า
                             </a>
                             <a
-                                href="/profile/IdleClicker"
-                                className="block px-4 py-2 text-slate-800 hover:text-blue-800">
-                                <FontAwesomeIcon
-                                    icon={faGear}
-                                    className="fa-lg me-2"
-                                />{' '}
-                                idle
-                            </a>
-                            <a
                                 onClick={handleLogout}
                                 className="block px-4 py-2 text-red-600 hover:text-red-800">
                                 <FontAwesomeIcon

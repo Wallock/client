@@ -145,7 +145,9 @@ export default function UpdateProfile() {
                             </div>
                         </div>
                         <div className="text-center mt-4">
-                            <button type="submit" className="btn button-js">
+                            <button
+                                type="submit"
+                                className="btn rounded-full button-js">
                                 อัพเดทโปรไฟล์
                             </button>
                         </div>
