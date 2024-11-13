@@ -160,10 +160,10 @@ export default function user() {
                                         className="btn btn-neutral">
                                         <div className="avatar">
                                             <div className="w-8 rounded-full">
-                                                <img src="/icon/m.webp" />
+                                                <img src="/icon/l.webp" />
                                             </div>
                                         </div>
-                                        พม่า
+                                        ลาว
                                     </Link>
                                 </div>
                             </div>

@@ -291,13 +291,19 @@ export default function dashboard() {
                                 <code>Patch Note : {version}</code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
-                                <code>เพิ่มระบบของทุกฝั่งเรียบร้อยแล้ว</code>
+                                <code>
+                                    แก้ไขหน้า Register ทุกระบบให้ใช้งานได้
+                                </code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
-                                <code>สามารถส่งคนงานได้ปกติแล้ว</code>
+                                <code>
+                                    แก้ไขบัคใน From สำหรับ Register ที่ Error
+                                </code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
-                                <code>แก้ไขไอค่อนสำหรับระบบออนไลน์</code>
+                                <code>
+                                    ยังไม่เปิดระบบสัญญาจ้าง กรุณารออัพเดทต่อไป
+                                </code>
                             </pre>
                         </div>
                     </div>

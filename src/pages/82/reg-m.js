@@ -259,7 +259,32 @@ export default function RegistrationForm() {
             if (!response.ok) {
                 // ลองดึงข้อมูล error message จาก API response
                 const errorData = await response.text()
-                console.log(errorData) // แสดงข้อผิดพลาดใน console
+                let parsedError
+                try {
+                    parsedError = JSON.parse(errorData)
+                } catch (e) {
+                    parsedError = { message: 'An unknown error occurred.' }
+                }
+
+                if (parsedError.errors) {
+                    // สร้างข้อความ Error ในรูปแบบ JSX
+                    const formattedErrors = (
+                        <div>
+                            <p className="font-semibold">Error:</p>
+                            <ul className="font-light text-sm">
+                                {Object.values(parsedError.errors)
+                                    .flat()
+                                    .map((error, index) => (
+                                        <li key={index}>- {error}</li>
+                                    ))}
+                            </ul>
+                        </div>
+                    )
+
+                    toast.error(formattedErrors)
+                } else {
+                    toast.error(`Error: ${parsedError.message || errorData}`)
+                }
                 let errorMessage = 'Unknown error'
 
                 // ตรวจสอบว่ามี error message ที่ API ส่งกลับมาหรือไม่
@@ -273,17 +298,16 @@ export default function RegistrationForm() {
                         .join('\n')
                 }
 
-                // แสดงข้อผิดพลาดใน alert
-                alert(`Error: ${errorMessage}`)
-                throw new Error(`HTTP error! status: ${response.status}`)
+                throw new Error(`${response.status}`)
             }
 
             const result = await response.json() // ถ้า API ส่งข้อมูลกลับมาในรูปแบบ JSON
             //console.log('Success:', result)
-            alert('Worker added successfully')
+            toast.success('Data Add Successfully')
+            router.push('/register/user')
         } catch (error) {
             //console.error('Error:', error)
-            alert(`Error: ${error.message}`)
+            toast.error(`Error: ${error.message}`)
         }
     }
 
@@ -570,7 +594,7 @@ export default function RegistrationForm() {
                                             setGender(e.target.value)
                                         }
                                         className="select select-bordered">
-                                        <option disabled>กรุณาเลือก</option>
+                                        <option>กรุณาเลือก</option>
                                         <option value="1">ชาย</option>
                                         <option value="2">หญิง</option>
                                     </select>
@@ -724,7 +748,7 @@ export default function RegistrationForm() {
                                             setRelationship(e.target.value)
                                         }
                                         className="select select-bordered">
-                                        <option disabled>กรุณาเลือก</option>
+                                        <option>กรุณาเลือก</option>
                                         <option value="1">โสด</option>
                                         <option value="5">มีแฟน</option>
                                         <option value="2">แต่งงาน</option>
@@ -742,7 +766,8 @@ export default function RegistrationForm() {
                                                 e.target.value,
                                                 10,
                                             )
-                                            if (value >= 0) {
+                                            if (value >= 0 || value === 0) {
+                                                // เพิ่มการเช็คกรณีที่เป็น 0
                                                 setChildren(value)
                                             }
                                         }}
@@ -775,6 +800,7 @@ export default function RegistrationForm() {
                                         className={getInputClassName(
                                             'selectedProvince',
                                         )}>
+                                        <option>กรุณาเลือก</option>
                                         {provinces.map((province, index) => (
                                             <option
                                                 key={index}
@@ -974,7 +1000,7 @@ export default function RegistrationForm() {
                                                         name="thaiReading"
                                                         value="0"
                                                         onChange={e =>
-                                                            thaiReading(
+                                                            setThaiReading(
                                                                 e.target.value,
                                                             )
                                                         }
@@ -1240,9 +1266,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
-                                                    กรุณาเลือก
-                                                </option>
+                                                <option>กรุณาเลือก</option>
                                                 <option value="0">
                                                     ไม่ได้เลย
                                                 </option>
@@ -1556,9 +1580,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
-                                                    กรุณาเลือก
-                                                </option>
+                                                <option>กรุณาเลือก</option>
                                                 <option value="1">กลัว</option>
                                                 <option value="0">
                                                     ไม่กลัว
@@ -1577,9 +1599,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
-                                                    กรุณาเลือก
-                                                </option>
+                                                <option>กรุณาเลือก</option>
                                                 <option value="1">กลัว</option>
                                                 <option value="0">
                                                     ไม่กลัว
@@ -1598,9 +1618,7 @@ export default function RegistrationForm() {
                                                     setAlcohol(e.target.value)
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
-                                                    กรุณาเลือก
-                                                </option>
+                                                <option>กรุณาเลือก</option>
                                                 <option value="0">
                                                     ไม่สนใจเลย
                                                 </option>
@@ -1626,9 +1644,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
-                                                    กรุณาเลือก
-                                                </option>
+                                                <option>กรุณาเลือก</option>
                                                 <option value="0">
                                                     ไม่เมา
                                                 </option>
@@ -1837,8 +1853,7 @@ export default function RegistrationForm() {
                                                                         )
                                                                     }}
                                                                     className="select select-bordered w-full">
-                                                                    <option
-                                                                        disabled>
+                                                                    <option>
                                                                         กรุณาเลือก
                                                                     </option>
                                                                     <option value="แม่บ้าน">

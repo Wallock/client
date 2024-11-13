@@ -21,6 +21,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons'
 
 const Home = () => {
     const router = useRouter()
+    const [userData, setUserData] = useState(null)
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -33,6 +34,18 @@ const Home = () => {
                 router.push('/dashboard')
                 return
             }
+            const response = await axios.get(
+                'https://server.wb.in.th/api/user',
+                {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                },
+            )
+
+            setUserData(response.data)
         }
 
         fetchUserData()
