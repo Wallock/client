@@ -97,7 +97,6 @@ export default function UpdateProfile() {
                     <h1 className="text-3xl font-bold text-center mb-8">
                         แก้ไขโปรไฟล์
                     </h1>
-                    <Confetti show={showConfetti} />
                     {/* Update Profile Form */}
                     <form onSubmit={updateProfile}>
                         <div className="w-full max-w-2xl my-5 mx-auto">
@@ -172,6 +171,7 @@ export default function UpdateProfile() {
                             </div>
                         </div>
                         <div className="text-center mt-4">
+                            <Confetti show={showConfetti} />
                             <button
                                 type="submit"
                                 className="btn rounded-full button-js">

@@ -1,5 +1,5 @@
 import AppLayout from '@/components/Layouts/AppLayout'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faServer, faEnvelope, faEye } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
@@ -8,25 +8,13 @@ import Cookies from 'js-cookie'
 import { th } from 'date-fns/locale'
 import Label from '@/components/Label'
 import dynamic from 'next/dynamic'
-import { version, email, website, phone } from '@/lib/config'
+import { version } from '@/lib/config'
 import 'plyr-react/plyr.css'
 
 const Plyr = dynamic(() => import('plyr-react'), { ssr: false }) // Load Plyr only on the client-side
 
-const mainVideoSrc = {
-    type: 'video',
-    title: 'Example Title',
-    sources: [
-        {
-            src: '/ads/ads.mp4',
-            type: 'video/mp4',
-        },
-    ],
-}
-
-const options = {}
-
-export default function dashboard() {
+export default function Dashboard() {
+    const [userData, setUserData] = useState(null) // Define userData state
     const [databeta, setDataBeta] = useState('ออฟไลน์')
     const [datadd, setDataDD] = useState('ออฟไลน์')
     const [datalaos, setDataLaos] = useState('ออฟไลน์')
@@ -56,7 +44,6 @@ export default function dashboard() {
                 const response = await axios.get(
                     'https://server.wb.in.th/api/user',
                     {
-                        method: 'GET',
                         headers: {
                             Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json',
@@ -131,7 +118,7 @@ export default function dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"> </div>
+                                <div className="skeleton h-6 w-16"></div>
                             ) : (
                                 databeta
                             )}
@@ -150,7 +137,7 @@ export default function dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"> </div>
+                                <div className="skeleton h-6 w-16"></div>
                             ) : (
                                 datadd
                             )}
@@ -169,7 +156,7 @@ export default function dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"> </div>
+                                <div className="skeleton h-6 w-16"></div>
                             ) : (
                                 datalaos
                             )}
@@ -188,7 +175,7 @@ export default function dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"> </div>
+                                <div className="skeleton h-6 w-16"></div>
                             ) : (
                                 datathai
                             )}
@@ -204,6 +191,11 @@ export default function dashboard() {
                             </h1>
                             <p className="font-1 font-semibold">
                                 ระบบจัดการพนักงานและองค์กรภายใน
+                            </p>
+                            <br />
+                            <p className="font-lg font-semibold text-error">
+                                หากเมนูด้านซ้ายไม่ขึ้น ให้รีเฟรชหน้าเว็บ 1
+                                ทีครับ
                             </p>
                         </div>
                     </div>
@@ -229,9 +221,7 @@ export default function dashboard() {
                                               <li
                                                   key={index}
                                                   className="flex justify-between items-center gap-x-6 py-2">
-                                                  <div className="skeleton h-4 w-full">
-                                                      {' '}
-                                                  </div>
+                                                  <div className="skeleton h-4 w-full"></div>
                                               </li>
                                           ))
                                         : currentItems.map(announcement => (
@@ -250,7 +240,7 @@ export default function dashboard() {
                                                       />
                                                       {announcement.title}
                                                       <Label className="text-xs">
-                                                          อัพเดทเมื่อ :
+                                                          อัพเดทเมื่อ :{' '}
                                                           {formatDate(
                                                               announcement.created_at,
                                                           )}

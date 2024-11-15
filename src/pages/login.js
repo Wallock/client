@@ -53,7 +53,7 @@ const LoginPage = () => {
             } else if (response.ok) {
                 // Login successful, store the access token and redirect
                 const accessToken = data.access_token
-                Cookies.set('accessToken', accessToken, { expires: 1 })
+                Cookies.set('accessToken', accessToken)
                 router.push('/dashboard')
             } else {
                 setLoading(false)

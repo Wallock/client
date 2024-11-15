@@ -13,9 +13,8 @@ export function ProfileProvider({ children }) {
         const fetchUserData = async () => {
             const token = Cookies.get('accessToken')
 
-            if (!token) {
-                router.push('/')
-                return
+            if (!token || router.pathname === '/login') {
+                return // Skip fetching if on login page or no token
             }
 
             try {
@@ -58,6 +57,7 @@ export function ProfileProvider({ children }) {
                     click_count: data.click_count,
                 })
             } catch (error) {
+                //console.error('Error fetching user data:', error)
                 router.push('/')
             }
         }

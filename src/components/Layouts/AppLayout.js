@@ -17,7 +17,7 @@ import Link from 'next/link'
 //UPDATE
 const AppLayout = ({ children }) => {
     const profile = useProfile()
-
+    console.log('Profile data:', profile)
     return (
         <>
             <Head>
