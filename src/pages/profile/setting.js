@@ -1,4 +1,5 @@
 import AppLayout from '@/components/Layouts/AppLayout'
+import Confetti from '@/components/Confetti'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -13,6 +14,7 @@ export default function UpdateProfile() {
     const [email, setEmail] = useState('')
     const [profilePhoto, setProfilePhoto] = useState(null) // Set to file object
     const [updateMessage, setUpdateMessage] = useState('')
+    const [showConfetti, setShowConfetti] = useState(false) // State to control confetti
 
     // Function to fetch user data
     const fetchUserData = async () => {
@@ -70,6 +72,12 @@ export default function UpdateProfile() {
             )
 
             setUpdateMessage('Profile updated successfully!')
+            setShowConfetti(true)
+
+            setTimeout(() => {
+                setShowConfetti(false)
+            }, 3000)
+
             router.push('/profile/user') // Redirect back to the profile page after update
         } catch (error) {
             setUpdateMessage('Failed to update profile.')
@@ -89,7 +97,7 @@ export default function UpdateProfile() {
                     <h1 className="text-3xl font-bold text-center mb-8">
                         แก้ไขโปรไฟล์
                     </h1>
-
+                    <Confetti show={showConfetti} />
                     {/* Update Profile Form */}
                     <form onSubmit={updateProfile}>
                         <div className="w-full max-w-2xl my-5 mx-auto">
@@ -133,11 +141,30 @@ export default function UpdateProfile() {
                                         <input
                                             type="file"
                                             id="profilePhoto"
-                                            onChange={e =>
-                                                setProfilePhoto(
-                                                    e.target.files[0],
-                                                )
-                                            } // Set the file as profilePhoto
+                                            accept=".jpg, .jpeg, .png, .webp" // Restrict file types
+                                            onChange={e => {
+                                                const file = e.target.files[0]
+                                                if (file) {
+                                                    // Validate file type
+                                                    const validTypes = [
+                                                        'image/jpeg',
+                                                        'image/jpg',
+                                                        'image/png',
+                                                        'image/webp',
+                                                    ]
+                                                    if (
+                                                        validTypes.includes(
+                                                            file.type,
+                                                        )
+                                                    ) {
+                                                        setProfilePhoto(file) // Set the file as profilePhoto if valid
+                                                    } else {
+                                                        alert(
+                                                            'Invalid file type. Please select a jpg, jpeg, png, or webp file.',
+                                                        )
+                                                    }
+                                                }
+                                            }}
                                             className="file-input file-input-bordered w-full"
                                         />
                                     </label>

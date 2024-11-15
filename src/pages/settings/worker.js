@@ -19,6 +19,64 @@ export default function Users() {
         'thai.wb.in.th': 'ระบบออนไลน์',
     }
 
+    const getStatusData = status => {
+        switch (status) {
+            case 'wait':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-slate-900 to-slate-700 text-white ',
+                    text: 'ว่างงาน',
+                }
+            case 'save':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-amber-200 to-yellow-500 text-slate-900',
+                    text: 'จอง',
+                }
+            case 'incomplete':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-indigo-500 to-blue-500 text-white',
+                    text: 'รอทำสัญญา',
+                }
+            case 'woker':
+                return {
+                    styles:
+                        'bg-gradient-to-r from-emerald-400 to-cyan-400 text-white',
+                    text: 'ได้งานแล้ว',
+                }
+            case 'retry':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-violet-500 to-purple-500 text-white',
+                    text: 'เคลม',
+                }
+            case 'changepp':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-slate-300 to-slate-500 text-black',
+                    text: 'เปลี่ยน',
+                }
+            case 'bfprocess':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-blue-200 to-cyan-200 text-slate-700',
+                    text: 'สพ.แล้ว',
+                }
+            case 'export':
+                return {
+                    styles:
+                        'bg-gradient-to-t from-rose-400 to-red-500 text-white',
+                    text: 'ห้ามส่งงาน',
+                }
+            default:
+                return {
+                    styles: '',
+                    text: 'Unknown Status',
+                }
+        }
+    }
+
     const fetchData = async () => {
         if (!dataId) {
             toast.warning('Please enter a Data ID to search')
@@ -130,7 +188,33 @@ export default function Users() {
                                             {user.data.worker_nickname}
                                         </td>
                                         <td className="text-center">
-                                            {user.data.worker_status}
+                                            <div
+                                                className={`badge gap-2 p-2 ${(() => {
+                                                    const {
+                                                        styles,
+                                                    } = getStatusData(
+                                                        user.data
+                                                            ?.worker_status,
+                                                    )
+                                                    return styles
+                                                })()}`}>
+                                                {(() => {
+                                                    const {
+                                                        styles,
+                                                        icon,
+                                                        text,
+                                                    } = getStatusData(
+                                                        user.data
+                                                            ?.worker_status,
+                                                    )
+                                                    return (
+                                                        <p
+                                                            className={`font-bold`}>
+                                                            {text}
+                                                        </p>
+                                                    )
+                                                })()}
+                                            </div>
                                         </td>
                                         <td className="space-x-1 text-center">
                                             <Link
