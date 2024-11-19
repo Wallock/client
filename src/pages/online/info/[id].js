@@ -2062,7 +2062,7 @@ export default function Page() {
                                             </div>
                                             <div className="stat-desc dark:text-white text-lg">
                                                 {data?.worker_landth_talk ===
-                                                0 ? (
+                                                '0' ? (
                                                     <FontAwesomeIcon
                                                         icon={faCircleXmark}
                                                         className="text-error fa-fw"
@@ -2076,7 +2076,7 @@ export default function Page() {
                                                 พูด
                                                 <br />
                                                 {data?.worker_landth_view ===
-                                                0 ? (
+                                                '0' ? (
                                                     <FontAwesomeIcon
                                                         icon={faCircleXmark}
                                                         className="text-error fa-fw"
@@ -2090,7 +2090,7 @@ export default function Page() {
                                                 อ่าน
                                                 <br />
                                                 {data?.worker_landth_write ===
-                                                0 ? (
+                                                '0' ? (
                                                     <FontAwesomeIcon
                                                         icon={faCircleXmark}
                                                         className="text-error fa-fw"
@@ -2111,7 +2111,7 @@ export default function Page() {
                                             </div>
                                             <div className="stat-desc dark:text-white text-lg">
                                                 {data?.worker_landen_talk ===
-                                                0 ? (
+                                                '0' ? (
                                                     <FontAwesomeIcon
                                                         icon={faCircleXmark}
                                                         className="text-error fa-fw"
@@ -2125,7 +2125,7 @@ export default function Page() {
                                                 พูด
                                                 <br />
                                                 {data?.worker_landen_view ===
-                                                0 ? (
+                                                '0' ? (
                                                     <FontAwesomeIcon
                                                         icon={faCircleXmark}
                                                         className="text-error fa-fw"
@@ -2139,7 +2139,7 @@ export default function Page() {
                                                 อ่าน
                                                 <br />
                                                 {data?.worker_landen_write ===
-                                                0 ? (
+                                                '0' ? (
                                                     <FontAwesomeIcon
                                                         icon={faCircleXmark}
                                                         className="text-error fa-fw"
@@ -2304,14 +2304,14 @@ export default function Page() {
                                                             <span
                                                                 className={
                                                                     data.worker_landth_talk ===
-                                                                    '1'
-                                                                        ? 'text-green-600'
-                                                                        : 'text-red-600'
+                                                                    '0'
+                                                                        ? 'text-red-600'
+                                                                        : 'text-green-600'
                                                                 }>
                                                                 {data.worker_landth_talk ===
-                                                                '1'
-                                                                    ? 'ได้'
-                                                                    : 'ไม่ได้'}
+                                                                '0'
+                                                                    ? 'ไม่ได้'
+                                                                    : 'ได้'}
                                                             </span>
                                                         </p>
                                                         <p>
@@ -2319,14 +2319,14 @@ export default function Page() {
                                                             <span
                                                                 className={
                                                                     data.worker_landth_view ===
-                                                                    '1'
-                                                                        ? 'text-green-600'
-                                                                        : 'text-red-600'
+                                                                    '0'
+                                                                        ? 'text-red-600'
+                                                                        : 'text-green-600'
                                                                 }>
                                                                 {data.worker_landth_view ===
-                                                                '1'
-                                                                    ? 'ได้'
-                                                                    : 'ไม่ได้'}
+                                                                '0'
+                                                                    ? 'ไม่ได้'
+                                                                    : 'ได้'}
                                                             </span>
                                                         </p>
                                                         <p>
@@ -2334,14 +2334,14 @@ export default function Page() {
                                                             <span
                                                                 className={
                                                                     data.worker_landth_write ===
-                                                                    '1'
-                                                                        ? 'text-green-600'
-                                                                        : 'text-red-600'
+                                                                    '0'
+                                                                        ? 'text-red-600'
+                                                                        : 'text-green-600'
                                                                 }>
                                                                 {data.worker_landth_write ===
-                                                                '1'
-                                                                    ? 'ได้'
-                                                                    : 'ไม่ได้'}
+                                                                '0'
+                                                                    ? 'ไม่ได้'
+                                                                    : 'ได้'}
                                                             </span>
                                                         </p>
                                                     </div>
@@ -2354,14 +2354,14 @@ export default function Page() {
                                                             <span
                                                                 className={
                                                                     data.worker_landen_talk ===
-                                                                    '1'
-                                                                        ? 'text-green-600'
-                                                                        : 'text-red-600'
+                                                                    '0'
+                                                                        ? 'text-red-600'
+                                                                        : 'text-green-600'
                                                                 }>
                                                                 {data.worker_landen_talk ===
-                                                                '1'
-                                                                    ? 'ได้'
-                                                                    : 'ไม่ได้'}
+                                                                '0'
+                                                                    ? 'ไม่ได้'
+                                                                    : 'ได้'}
                                                             </span>
                                                         </p>
                                                         <p>
@@ -2369,14 +2369,14 @@ export default function Page() {
                                                             <span
                                                                 className={
                                                                     data.worker_landen_view ===
-                                                                    '1'
-                                                                        ? 'text-green-600'
-                                                                        : 'text-red-600'
+                                                                    '0'
+                                                                        ? 'text-red-600'
+                                                                        : 'text-green-600'
                                                                 }>
                                                                 {data.worker_landen_view ===
-                                                                '1'
-                                                                    ? 'ได้'
-                                                                    : 'ไม่ได้'}
+                                                                '0'
+                                                                    ? 'ไม่ได้'
+                                                                    : 'ได้'}
                                                             </span>
                                                         </p>
                                                         <p>

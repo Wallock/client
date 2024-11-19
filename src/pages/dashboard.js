@@ -282,17 +282,14 @@ export default function Dashboard() {
                             </pre>
                             <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    แก้ไขหน้า Register ทุกระบบให้ใช้งานได้
+                                    แก้ไขบัคภาษาอังกฤษ
+                                    ที่แสดงผลไม่ตรงกับการ์ดในหน้าคนงาน
                                 </code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    แก้ไขบัคใน From สำหรับ Register ที่ Error
-                                </code>
-                            </pre>
-                            <pre data-prefix=">" className="text-sm">
-                                <code>
-                                    ยังไม่เปิดระบบสัญญาจ้าง กรุณารออัพเดทต่อไป
+                                    แก้ไขหน้าสมัคร
+                                    ให้โชว์แค่ระบบที่ตนใช้งานเท่านั้น
                                 </code>
                             </pre>
                         </div>
