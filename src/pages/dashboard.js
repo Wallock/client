@@ -282,15 +282,11 @@ export default function Dashboard() {
                             </pre>
                             <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    แก้ไขบัคภาษาอังกฤษ
-                                    ที่แสดงผลไม่ตรงกับการ์ดในหน้าคนงาน
+                                    แก้ไข Font ใหม่ให้แสดงผลเหมือนกันทุกเครื่อง
                                 </code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
-                                <code>
-                                    แก้ไขหน้าสมัคร
-                                    ให้โชว์แค่ระบบที่ตนใช้งานเท่านั้น
-                                </code>
+                                <code>อัพเดท Effect หน้าสมัครคนงานใหม่</code>
                             </pre>
                         </div>
                     </div>

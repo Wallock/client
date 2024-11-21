@@ -2,6 +2,7 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
+import Confetti from '@/components/Confetti'
 import Select from 'react-select'
 import { useProfile } from '@/lib/ProfileContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -97,6 +98,7 @@ export default function RegistrationForm() {
 
     // เพิ่ม empidlock (emp_id, emp_id_lock)
     const [empidlock, setEmpidlock] = useState('')
+    const [showConfetti, setShowConfetti] = useState(false)
 
     // Load Provinces Data
     useEffect(() => {
@@ -306,7 +308,20 @@ export default function RegistrationForm() {
 
             const result = await response.json() // ถ้า API ส่งข้อมูลกลับมาในรูปแบบ JSON
             //console.log('Success:', result)
-            toast.success('Data Add Successfully')
+            setShowConfetti(true)
+            toast.success('Data Add Successfully', {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                transition: Bounce,
+            })
+            setTimeout(() => {
+                setShowConfetti(false)
+            }, 3000)
             router.push('/register/user')
         } catch (error) {
             //console.error('Error:', error)
@@ -2174,6 +2189,7 @@ export default function RegistrationForm() {
                                             className="fa-xl"
                                         />
                                     </button>
+                                    <Confetti show={showConfetti} />
                                     <button
                                         onClick={handleFinalStep}
                                         className="btn text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 btn-lg">

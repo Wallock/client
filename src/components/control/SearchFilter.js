@@ -99,7 +99,7 @@ const SearchFilter = ({
                 {/* Popup Modal */}
                 {isPopupOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white rounded-lg p-6 w-11/12 lg:w-1/2">
+                        <div className="bg-white rounded-lg p-6 w-11/12 lg:w-1/2 ">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-2xl font-semibold font-3 drop-shadow">
                                     <FontAwesomeIcon
@@ -662,14 +662,14 @@ const SearchFilter = ({
                     </div>
                 )}
             </div>
-            <div className="w-full">
+            <div className="w-full animate-in slide-in-from-bottom">
                 <div className="flex items-center justify-evenly">
                     {/* สถานะ */}
                     <ul className="menu menu-sm menu-horizontal mb-1">
                         <li className="menu-title w-full">แสดงตามสถานะ</li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === null
                                         ? 'button-js'
                                         : 'button-js-outline dark:bg-gray-700 dark:text-white'
@@ -680,7 +680,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl  font-bold mx-1 ${
+                                className={`btn text-xl  font-semibold mx-1 ${
                                     selectedStatus === 'wait'
                                         ? 'bg-gray-300 text-gray-700'
                                         : 'bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-white'
@@ -691,7 +691,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'save'
                                         ? 'bg-amber-400 text-gray-800'
                                         : 'bg-amber-400 text-gray-800 dark:bg-gray-700 dark:text-white'
@@ -702,7 +702,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'changepp'
                                         ? 'bg-gray-500 text-white'
                                         : 'bg-gray-500 text-white dark:bg-gray-700 dark:text-white'
@@ -713,7 +713,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'retry'
                                         ? 'bg-purple-500 text-white'
                                         : 'bg-purple-500 text-white dark:bg-gray-700 dark:text-white'
@@ -724,7 +724,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'incomplete'
                                         ? 'bg-blue-500 text-white'
                                         : 'bg-blue-500 text-white dark:bg-gray-700 dark:text-white'
@@ -735,7 +735,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'bfprocess'
                                         ? 'bg-cyan-400 text-gray-800'
                                         : 'bg-cyan-400 text-gray-800 dark:bg-gray-700 dark:text-white'
@@ -746,7 +746,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'woker'
                                         ? 'bg-emerald-600 text-white'
                                         : 'bg-emerald-600 text-white dark:bg-gray-700 dark:text-white'
@@ -757,7 +757,7 @@ const SearchFilter = ({
                         </li>
                         <li>
                             <button
-                                className={`btn text-xl font-bold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'export'
                                         ? 'bg-red-100 text-red-500'
                                         : 'bg-red-100 text-red-500 dark:bg-gray-700 dark:text-white'

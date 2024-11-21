@@ -23,7 +23,7 @@ const AppLayout = ({ children }) => {
             <Head>
                 <title>JS-System v3</title>
             </Head>
-            <div className="bg-gray-100 dark:bg-gray-900 flex">
+            <div className="bg-gray-100 dark:bg-gray-900 font-lineSeed flex">
                 <MenuNav profile={profile} />
 
                 <div className="relative w-full flex flex-col h-screen overflow-y-hidden">

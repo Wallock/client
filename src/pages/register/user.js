@@ -15,7 +15,7 @@ export default function user() {
                     </div>
                     <div className="hero-content text-center text-neutral-content">
                         <div className="max-w-md my-3">
-                            <h1 className="mb-0 text-5xl font-bold drop-shadow-xl">
+                            <h1 className="mb-0 text-5xl font-semibold drop-shadow-xl">
                                 สมัครคนงานใหม่
                             </h1>
                             <p className="drop-shadow-md">
@@ -39,15 +39,15 @@ export default function user() {
                                     />
                                 </figure>
                                 <div className="card-body">
-                                    <h2 className="card-title justify-center">
+                                    <h2 className="card-title justify-center font-bold">
                                         นาซ่าลาดพร้าว48
                                     </h2>
                                     <div className="card-actions justify-center">
                                         <Link
                                             href="/48/reg-m"
-                                            className="btn btn-neutral">
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/m.webp" />
                                                 </div>
                                             </div>
@@ -55,9 +55,9 @@ export default function user() {
                                         </Link>
                                         <Link
                                             href="/48/reg-l"
-                                            className="btn btn-neutral">
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/l.webp" />
                                                 </div>
                                             </div>
@@ -65,9 +65,9 @@ export default function user() {
                                         </Link>
                                         <Link
                                             href="/48/reg-c"
-                                            className="btn btn-neutral">
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/c.webp" />
                                                 </div>
                                             </div>
@@ -92,15 +92,15 @@ export default function user() {
                                     />
                                 </figure>
                                 <div className="card-body">
-                                    <h2 className="card-title justify-center">
+                                    <h2 className="card-title justify-center font-bold">
                                         แม่บ้านดีดีเซอร์วิส
                                     </h2>
                                     <div className="card-actions justify-center">
                                         <Link
                                             href="/82/reg-m"
-                                            className="btn btn-neutral">
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/m.webp" />
                                                 </div>
                                             </div>
@@ -124,30 +124,30 @@ export default function user() {
                                         }}
                                     />
                                 </figure>
-                                <div className="card-body">
-                                    <h2 className="card-title justify-center">
+                                <div className="card-body ">
+                                    <h2 className="card-title justify-center font-bold">
                                         คนไทย ออนไลน์
                                     </h2>
                                     <div className="card-actions justify-center">
-                                        <button className="btn btn-neutral">
+                                        <button className="btn btn-neutral text-lg font-semibold">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
                                                 </div>
                                             </div>
                                             รหัส 48
                                         </button>
-                                        <button className="btn btn-neutral">
+                                        <button className="btn btn-neutral text-lg font-semibold">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
                                                 </div>
                                             </div>
                                             รหัส G
                                         </button>
-                                        <button className="btn btn-neutral">
+                                        <button className="btn btn-neutral text-lg font-semibold">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
                                                 </div>
                                             </div>
@@ -172,15 +172,15 @@ export default function user() {
                                     />
                                 </figure>
                                 <div className="card-body">
-                                    <h2 className="card-title justify-center">
+                                    <h2 className="card-title justify-center font-bold">
                                         เมทอินเตอร์เซอร์วิส
                                     </h2>
                                     <div className="card-actions justify-center">
                                         <Link
                                             href="/laos/reg-l"
-                                            className="btn btn-neutral">
+                                            className="btn btn-neutral text-lg font-semibold">
                                             <div className="avatar">
-                                                <div className="w-8 rounded-full">
+                                                <div className="w-5 rounded-full">
                                                     <img src="/icon/l.webp" />
                                                 </div>
                                             </div>

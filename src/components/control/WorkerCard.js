@@ -82,7 +82,7 @@ const WorkerCard = ({
     }
 
     return (
-        <div className="flex flex-col gap-4 w-full lg:w-52 mx-1">
+        <div className="flex flex-col gap-4 w-[170px] lg:w-52 mx-1">
             <Link href={`./info/${item?.worker_id}`}>
                 <div
                     className={`relative p-0.5 rounded-xl transition duration-300 hover:scale-105 bg-gradient-to-r bg-gradient-to-r ${
@@ -105,15 +105,12 @@ const WorkerCard = ({
                             : 'from-transparent to-transparent' // ค่าเริ่มต้นที่เพิ่มคอนทราสต์เล็กน้อย
                     }`}>
                     {/* Card content */}
-                    <div
-                        className="card indicator w-full bg-base-100 dark:bg-gray-700 shadow-xl rounded-xl "
-                        style={{ height: '340px' }}>
+                    <div className="card indicator w-full bg-base-100 dark:bg-gray-700 shadow-xl rounded-xl">
                         {/* onClick={() => handleFreeButtonClick(item.worker_id)}> */}
                         <figure
+                            className="h-[130px] lg:h-[190px]"
                             style={{
                                 position: 'relative',
-                                width: '100%',
-                                height: '190px',
                             }}>
                             {imageLoading && (
                                 <span className="loading loading-bars loading-lg">
@@ -129,9 +126,8 @@ const WorkerCard = ({
                                 alt={
                                     item.worker_fullname || 'No image available'
                                 } // แสดงข้อความสำรองหากไม่มี worker_fullname
+                                className="h-[140px] lg:h-[250px] w-[180px] lg:w-[100%]"
                                 style={{
-                                    width: '100%',
-                                    height: '230px',
                                     display: imageLoading ? 'none' : 'block',
                                     object: 'cover',
                                 }}
@@ -150,27 +146,25 @@ const WorkerCard = ({
                                 {item.worker_nickname}
                             </figcaption>
                             <figcaption
+                                className="ps-2"
                                 style={{
                                     position: 'absolute',
                                     bottom: '0',
                                     left: '0',
                                     background: 'rgba(0, 0, 0, 0)',
-                                    padding: '3px',
                                 }}>
-                                <img
-                                    width={35}
-                                    height={35}
-                                    src={getFlagUrl(item.worker_type)}
-                                    alt={`Flag for ${item.worker_type}`}
-                                    style={{
-                                        width: '50px',
-                                        height: 'auto',
-                                    }}
-                                />
+                                <div className="avatar">
+                                    <div className="ring-white w-7 rounded-full ring ring-offset-1">
+                                        <img
+                                            src={getFlagUrl(item.worker_type)}
+                                            alt={`Flag for ${item.worker_type}`}
+                                        />
+                                    </div>
+                                </div>
                             </figcaption>
                         </figure>
-                        <span className="indicator-item indicator-center badge badge-neutral">
-                            <div className="font-bold">
+                        <span className="indicator-item indicator-center badge badge-neutral badge-lg shadow-lg">
+                            <div className="font-bold text-sm">
                                 {item.worker_id}{' '}
                                 {item.worker_namelist === 1 ? (
                                     <label className="text-red-400">
@@ -186,7 +180,7 @@ const WorkerCard = ({
                                 )
                                 return (
                                     <h2
-                                        className={`card-title py-1 font-bold justify-center border-dashed border-b ${styles}`}>
+                                        className={`card-title py-1 font-semibold justify-center border-dashed border-b ${styles}`}>
                                         <FontAwesomeIcon
                                             icon={icon}
                                             className="fa-fw"

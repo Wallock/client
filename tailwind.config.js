@@ -6,7 +6,14 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                lineSeed: ['LINESeedSansTH', 'sans-serif'],
+            },
+            fontWeight: {
+                thin: 300,
+                regular: 400,
+                semibold: 700,
+                bold: 800,
+                heavy: 600,
             },
             keyframes: {
                 'gradient-move': {
@@ -26,6 +33,7 @@ module.exports = {
     },
     plugins: [
         require('@tailwindcss/forms'),
+        require('tailwindcss-animate'),
         require('daisyui'), // Combine plugins here
         daisyui,
     ],
