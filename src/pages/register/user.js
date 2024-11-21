@@ -129,7 +129,8 @@ export default function user() {
                                         คนไทย ออนไลน์
                                     </h2>
                                     <div className="card-actions justify-center">
-                                        <button className="btn btn-neutral text-lg font-semibold">
+                                        ยังไม่เปิดใช้งาน
+                                        {/* <button className="btn btn-neutral text-lg font-semibold">
                                             <div className="avatar">
                                                 <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
@@ -152,7 +153,7 @@ export default function user() {
                                                 </div>
                                             </div>
                                             รหัส JN
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                             </div>
