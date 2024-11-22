@@ -1,5 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 import daisyui from 'daisyui'
+
 module.exports = {
     content: ['./src/**/*.js'],
     darkMode: 'class',
@@ -11,6 +12,7 @@ module.exports = {
             fontWeight: {
                 thin: 300,
                 regular: 400,
+                medium: 500,
                 semibold: 700,
                 bold: 800,
                 heavy: 600,
@@ -26,15 +28,9 @@ module.exports = {
             },
         },
     },
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-        },
-    },
     plugins: [
         require('@tailwindcss/forms'),
         require('tailwindcss-animate'),
-        require('daisyui'), // Combine plugins here
-        daisyui,
+        require('daisyui'),
     ],
 }

@@ -84,11 +84,11 @@ const LoginPage = () => {
             <Head>
                 <title>JS-System v3</title>
             </Head>
-            <section className="text-gray-600 body-font bg-gradient-to-b from-blue-800 to-indigo-700">
+            <section className="text-gray-600 body-font bg-gradient-to-b from-blue-800 to-indigo-700 font-lineSeed">
                 <div className="flex items-center justify-center min-h-screen">
                     <div className="container xl:px-32 px-5 py-auto mx-auto flex flex-wrap items-center">
                         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 w-full">
-                            <h1 className="title-font drop-shadow-xl font-extrabold lg:text-7xl text-5xl text-transparent py-2 bg-clip-text bg-gradient-to-r from-slate-50 to-gray-400 text-center md:text-left">
+                            <h1 className="title-font drop-shadow-xl font-semibold lg:text-7xl text-5xl text-transparent py-2 bg-clip-text bg-gradient-to-r from-slate-50 to-gray-400 text-center md:text-left">
                                 JS-System
                                 <sup className="text-red-500 drop-shadow-md lg:text-4xl text-xl">
                                     v3
@@ -123,7 +123,7 @@ const LoginPage = () => {
                                         </div>
                                     </div>
                                     <div className="relative mb-4">
-                                        <label className="mb-1 block text-sm font-bold text-gray-700">
+                                        <label className="mb-1 block text-sm font-semibold text-gray-700">
                                             บัญชีผู้ใช้
                                         </label>
                                         <input
@@ -136,12 +136,12 @@ const LoginPage = () => {
                                             autoFocus
                                             autoComplete="username"
                                             value={username} // Updated to use the correct variable
-                                            className="w-full p-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
+                                            className="w-full p-3 rounded-lg font-regular bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
                                         />
                                     </div>
 
                                     <div className="relative mb-4">
-                                        <label className="mb-1 block text-sm font-bold text-gray-700">
+                                        <label className="mb-1 block text-sm font-semibold text-gray-700">
                                             รหัสผ่าน
                                         </label>
                                         <input
@@ -153,7 +153,7 @@ const LoginPage = () => {
                                             required
                                             value={password}
                                             autoComplete="current-password"
-                                            className="w-full p-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
+                                            className="w-full p-3 rounded-lg font-regular bg-gray-100 border border-gray-200 placeholder-gray-500 focus:outline-none focus:border-gray-400 focus:bg-white"
                                         />
                                     </div>
 
@@ -211,7 +211,7 @@ const LoginPage = () => {
                         </div>
 
                         <div className="lg:w-2/6 md:w-1/2 p-8 flex flex-col md:ml-auto w-full mt-3 md:mt-0">
-                            <p className="text-sm text-gray-100 mt-3 text-center font-bold drop-shadow-xl">
+                            <p className="text-sm text-gray-100 mt-3 text-center font-regular drop-shadow-xl">
                                 Developer & Design By Wallock
                                 <br />v{version}
                             </p>

@@ -70,7 +70,7 @@ const MenuNav = ({ profile }) => {
             </div>
             <Link
                 href="/register/user"
-                className={`btn btn-md bg-white font-bold text-lg m-3 rounded-xl shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center ${
+                className={`btn btn-md bg-white font-semibold text-lg m-3 rounded-xl shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center ${
                     isCollapsed ? 'hidden' : ''
                 }`}>
                 <FontAwesomeIcon icon={faUserPlus} className="mr-3" /> สมัครใหม่

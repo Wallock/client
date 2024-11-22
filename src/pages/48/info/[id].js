@@ -10,8 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faUserLock,
     faRightLeft,
+    faFileArrowUp,
     faCheckCircle,
     faSyringe,
+    faTriangleExclamation,
     faTrashAlt,
     faFileExcel,
     faChildren,
@@ -103,6 +105,16 @@ export default function Page() {
         setIsCardModalOpen(false)
     }
 
+    const [isPictureModalOpen, setIsPictureModalOpen] = useState(false)
+
+    const handleOpenPictureModal = () => {
+        setIsPictureModalOpen(true)
+    }
+
+    const handleClosePictureModal = () => {
+        setIsPictureModalOpen(false)
+    }
+
     const fetchData = async (showLoading = true) => {
         try {
             if (showLoading) {
@@ -140,7 +152,7 @@ export default function Page() {
             const workLogResponse = await axios.get(workLogApiUrl)
             setWorkLogs(workLogResponse.data)
         } catch (error) {
-            //console.error('Error fetching work logs:', error)
+            //ssss
             toast.error(`Error:. ${error}`, {
                 position: 'top-right',
                 autoClose: 5000,
@@ -184,8 +196,9 @@ export default function Page() {
                 )
                 const empResponse = await empResponse_deep.json()
                 setEmpData(empResponse) // สมมติว่าข้อมูลพนักงานเป็น item แรก
+                //console.error('Error checking for updates:', empResponse)
             } catch (error) {
-                //console.error('Error checking for updates:', error)
+                //sss
                 toast.error(`Error:. ${error}`, {
                     position: 'top-right',
                     autoClose: 5000,
@@ -870,7 +883,8 @@ export default function Page() {
                                 </button>
                                 <button
                                     className="btn btn-circle shadow-lg m-2 bg-white hover:bg-gray-200 text-black hover:text-blue-800 tooltip tooltip-bottom"
-                                    data-tip="อัพโหลดรูป">
+                                    data-tip="อัพโหลดรูป"
+                                    onClick={handleOpenPictureModal}>
                                     <FontAwesomeIcon
                                         icon={faCamera}
                                         className="fa-2x"
@@ -904,7 +918,7 @@ export default function Page() {
                                     <div className="drawer-content justify-center items-center">
                                         <label
                                             htmlFor="my-drawer-4"
-                                            className="drawer-button btn btn-wide btn-lg shadow-lg m-2 text-3xl text-white text-shadow-sm bg-gradient-to-r from-blue-500 to-blue-700 rounded-full tooltip tooltip-bottom flex justify-center items-center"
+                                            className="drawer-button btn btn-wide btn-lg shadow-lg m-2 text-3xl font-semibold text-white text-shadow-sm bg-gradient-to-r from-blue-500 to-blue-700 rounded-full tooltip tooltip-bottom flex justify-center items-center"
                                             data-tip="ดำเนินการ">
                                             <FontAwesomeIcon
                                                 icon={faAnglesRight}
@@ -971,7 +985,7 @@ export default function Page() {
                     </div>
                     <div className="col-span-1 bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-white">
                         <div className="flex justify-center my-3">
-                            <div className="flex space-x-5 text-xl bg-white shadow-lg rounded-full mx-3 px-5 font-bold">
+                            <div className="flex space-x-5 text-xl bg-white shadow-lg rounded-full mx-3 px-5 font-semibold">
                                 <button
                                     className="text-gray-600 py-3"
                                     onClick={handleWorkLogClick}>
@@ -1019,21 +1033,9 @@ export default function Page() {
                                             </h4>
                                             <span className="mt-2 text-2xl font-medium text-gray-700">
                                                 {data?.worker_gender === 1 ? (
-                                                    <>
-                                                        <FontAwesomeIcon
-                                                            icon={faPerson}
-                                                            className="text-blue-500"
-                                                        />{' '}
-                                                        ชาย
-                                                    </>
+                                                    <>ชาย</>
                                                 ) : (
-                                                    <>
-                                                        <FontAwesomeIcon
-                                                            icon={faPersonDress}
-                                                            className="text-pink-500"
-                                                        />{' '}
-                                                        หญิง
-                                                    </>
+                                                    <>หญิง</>
                                                 )}
                                             </span>
                                         </div>
@@ -1188,7 +1190,7 @@ export default function Page() {
                                             <h4 className="text-gray-800 text-sm font-semibold">
                                                 ทราบข่าวจาก
                                             </h4>
-                                            <span className="mt-2 text-2xl font-medium text-gray-700">
+                                            <span className="mt-2 text-md font-medium text-gray-700">
                                                 {data?.worker_knownews}
                                             </span>
                                         </div>
@@ -1198,7 +1200,7 @@ export default function Page() {
                                             <h4 className="text-gray-800 text-sm font-semibold">
                                                 หมายเหตุ
                                             </h4>
-                                            <span className="mt-2 text-2xl font-medium text-gray-700">
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
                                                 {data?.worker_detailother}
                                             </span>
                                         </div>
@@ -1216,9 +1218,9 @@ export default function Page() {
                                             </h3>
                                             <a
                                                 href={`tel:${data?.worker_phone}`}>
-                                                <kbd className="kbd text-3xl font-bold text-gray-800">
+                                                <div className="text-3xl font-semibold bg-gray-100 p-4 rounded-lg text-gray-800">
                                                     {data?.worker_phone}
-                                                </kbd>
+                                                </div>
                                             </a>
                                         </div>
                                         <div className="grid flex-grow place-items-center">
@@ -1231,9 +1233,9 @@ export default function Page() {
                                             </h3>
                                             <a
                                                 href={`tel:${data?.worker_phone2}`}>
-                                                <kbd className="kbd text-3xl font-bold text-gray-800">
+                                                <div className="text-3xl font-semibold bg-gray-100 p-4 rounded-lg text-gray-800">
                                                     {data?.worker_phone2}
-                                                </kbd>
+                                                </div>
                                             </a>
                                         </div>
                                     </div>
@@ -1519,7 +1521,7 @@ export default function Page() {
                                         })()}`}>
                                         <div className="flex justify-between">
                                             <div>
-                                                <h2 className="text-4xl font-bold mb-2">
+                                                <h2 className="text-4xl font-semibold mb-2">
                                                     {(() => {
                                                         const {
                                                             styles,
@@ -1530,7 +1532,7 @@ export default function Page() {
                                                         )
                                                         return (
                                                             <p
-                                                                className={`font-bold text-shadow`}>
+                                                                className={`font-semibold text-shadow`}>
                                                                 {text}
                                                             </p>
                                                         )
@@ -1560,7 +1562,7 @@ export default function Page() {
                                                             'No image available'
                                                         } // แสดงข้อความสำรองหากไม่มี empData.id
                                                     />
-                                                    <p className="whitespace-nowrap">
+                                                    <p className="whitespace-nowrap ">
                                                         ผู้ดูแล : {empData.name}
                                                     </p>
                                                 </div>
@@ -1715,7 +1717,7 @@ export default function Page() {
                                                             />
                                                         </div>
                                                         <div>
-                                                            <h3 className="text-lg font-bold">
+                                                            <h3 className="text-lg font-semibold">
                                                                 {
                                                                     data?.workposition_id1
                                                                 }
@@ -1742,7 +1744,7 @@ export default function Page() {
                                                             />
                                                         </div>
                                                         <div>
-                                                            <h3 className="text-lg font-bold">
+                                                            <h3 className="text-lg font-semibold">
                                                                 {
                                                                     data?.workposition_id2
                                                                 }
@@ -1769,7 +1771,7 @@ export default function Page() {
                                                             />
                                                         </div>
                                                         <div>
-                                                            <h3 className="text-lg font-bold">
+                                                            <h3 className="text-lg font-semibold">
                                                                 {
                                                                     data?.workposition_id3
                                                                 }
@@ -1796,7 +1798,7 @@ export default function Page() {
                                                             />
                                                         </div>
                                                         <div>
-                                                            <h3 className="text-lg font-bold">
+                                                            <h3 className="text-lg font-semibold">
                                                                 {
                                                                     data?.workposition_id4
                                                                 }
@@ -2612,6 +2614,68 @@ export default function Page() {
                                         className="btn"
                                         onClick={handleClosePaymentLogModal}>
                                         ปิด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {/* Picture correctly */}
+                    {isPictureModalOpen && (
+                        <div className="modal modal-open ">
+                            <div className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity duration-300">
+                                {' '}
+                            </div>
+                            <div className="modal-box h-xl bg-gradient-to-t from-[#000000] via-[#150050] to-[#3f0071] text-white">
+                                <div className="flex justify-between items-center">
+                                    <h2 className="text-2xl font-semibold text-white text-shadow-sm">
+                                        <FontAwesomeIcon
+                                            icon={faGripLinesVertical}
+                                            className="fa-fw me-1"
+                                        />
+                                        อัพโหลดรูป
+                                    </h2>
+                                    <button
+                                        className="text-white text-2xl"
+                                        onClick={handleClosePictureModal}>
+                                        <FontAwesomeIcon
+                                            icon={faTimes}
+                                            className="fa-lg"
+                                        />
+                                    </button>
+                                </div>
+
+                                <div className="bg-white rounded-lg shadow-lg m-3 p-3 text-center">
+                                    <h1 className="text-3xl font-semibold text-error font-semibold">
+                                        <FontAwesomeIcon
+                                            icon={faTriangleExclamation}
+                                            className="fa-fw"
+                                        />
+                                        แจ้งเตือนก่อนอัพโหลด!!
+                                    </h1>
+                                    <p className="my-3 text-sm text-center font-regular text-neutral">
+                                        รูปที่แสดงบนการ์ดและนามบัตรคนงานคือรูปแรกของการอัพโหลดเสมอ
+                                        <br />
+                                        ดังนั้น หากต้องการอัพโหลด
+                                        รูปการ์ดแรกควรคำนึกถึงความสวยงามให้ดี
+                                        <br />
+                                        เพราะไม่สามารถแก้ไขได้ภายหลัง
+                                        <br />
+                                    </p>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        className="file-input file-input-bordered text-neutral my-1 w-full"
+                                    />
+                                    <p className="text-xs text-error font-medium mb-3">
+                                        *รองรับไฟล์ประเภท jpg,jpeg,png เท่านั้น
+                                    </p>
+
+                                    <button className="btn button-js font-semibold text-lg w-full my-1">
+                                        <FontAwesomeIcon
+                                            icon={faFileArrowUp}
+                                            className="fa-fw"
+                                        />
+                                        Upload now
                                     </button>
                                 </div>
                             </div>

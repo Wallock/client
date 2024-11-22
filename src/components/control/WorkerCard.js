@@ -193,7 +193,7 @@ const WorkerCard = ({
                                 <ul className="list">
                                     {item.workposition_id1 && (
                                         <li
-                                            className={`badge text-xs p-1 ${getBackgroundClass(
+                                            className={`badge text-xs font-semibold p-1 ${getBackgroundClass(
                                                 item.workposition_id1,
                                             )}`}>
                                             {item.workposition_id1}
@@ -201,7 +201,7 @@ const WorkerCard = ({
                                     )}
                                     {item.workposition_id2 && (
                                         <li
-                                            className={`badge text-xs p-1 ${getBackgroundClass(
+                                            className={`badge text-xs font-semibold p-1 ${getBackgroundClass(
                                                 item.workposition_id2,
                                             )}`}>
                                             {item.workposition_id2}
@@ -209,7 +209,7 @@ const WorkerCard = ({
                                     )}
                                     {item.workposition_id3 && (
                                         <li
-                                            className={`badge text-xs p-1 ${getBackgroundClass(
+                                            className={`badge text-xs font-semibold p-1 ${getBackgroundClass(
                                                 item.workposition_id3,
                                             )}`}>
                                             {item.workposition_id3}
@@ -217,7 +217,7 @@ const WorkerCard = ({
                                     )}
                                     {item.workposition_id4 && (
                                         <li
-                                            className={`badge text-xs p-1 ${getBackgroundClass(
+                                            className={`badge text-xs font-semibold p-1 ${getBackgroundClass(
                                                 item.workposition_id4,
                                             )}`}>
                                             {item.workposition_id4}
@@ -227,7 +227,7 @@ const WorkerCard = ({
                             </div>
                         </div>
                         <div className="card-actions justify-center border-dashed border-t py-2 px-2">
-                            <p className="text-center text-xs font-semibold text-gray-400 dark:text-gray-300">
+                            <p className="text-center text-xs text-gray-300 dark:text-gray-300">
                                 <FontAwesomeIcon
                                     icon={faCircleInfo}
                                     className="fa-fw me-1"

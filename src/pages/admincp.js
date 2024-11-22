@@ -118,15 +118,12 @@ export default function admincp() {
                 </div>
 
                 <div className="text-center pb-5 w-full overflow-hidden">
-                    <ul className="menu text-lg font-1 menu-vertical lg:menu-horizontal text-slate-800 bg-white rounded-box shadow-lg">
+                    <ul className="menu text-lg font-1 font-semibold menu-vertical lg:menu-horizontal text-slate-800 bg-white rounded-box shadow-lg">
                         <li>
                             <Link href="/settings/users">ผู้ใช้งาน</Link>
                         </li>
                         <li>
                             <Link href="/settings/worker">ค้นหาคนงาน</Link>
-                        </li>
-                        <li>
-                            <Link href="/settings/system">ตั้งค่าระบบ</Link>
                         </li>
                         <li>
                             <Link href="/settings/system">ตั้งค่าระบบ</Link>

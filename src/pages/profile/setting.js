@@ -12,6 +12,10 @@ export default function UpdateProfile() {
     const [userData, setUserData] = useState(null)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [birthday, setbirthday] = useState('')
+    const [freeday, setfreeday] = useState('')
+    const [lineID, setlineID] = useState('')
+    const [phone, setphone] = useState('')
     const [profilePhoto, setProfilePhoto] = useState(null) // Set to file object
     const [updateMessage, setUpdateMessage] = useState('')
     const [showConfetti, setShowConfetti] = useState(false) // State to control confetti
@@ -36,10 +40,22 @@ export default function UpdateProfile() {
                 },
             )
 
-            const { name, email, profile_photo_url } = response.data
+            const {
+                name,
+                email,
+                birthday,
+                freeday,
+                lineID,
+                phone,
+                profile_photo_url,
+            } = response.data
             setUserData(response.data)
             setName(name)
             setEmail(email)
+            setbirthday(birthday)
+            setfreeday(freeday)
+            setlineID(lineID)
+            setphone(phone)
             setLoading(false)
         } catch (error) {
             setLoading(false)
@@ -55,6 +71,10 @@ export default function UpdateProfile() {
             const formData = new FormData()
             formData.append('name', name)
             formData.append('email', email)
+            formData.append('birthday', birthday)
+            formData.append('freeday', freeday)
+            formData.append('lineID', lineID)
+            formData.append('phone', phone)
 
             if (profilePhoto) {
                 formData.append('profile_photo', profilePhoto)
@@ -103,7 +123,9 @@ export default function UpdateProfile() {
                             <div className="grid grid-cols-1 gap-4">
                                 <div className="card bg-base-100 dark:glass text-gray-900 p-3 shadow-xl">
                                     <label className="input input-bordered flex items-center my-2 gap-2">
-                                        Name
+                                        <label className="font-semibold">
+                                            Name (ชื่อผู้ใช้งาน)
+                                        </label>
                                         <input
                                             type="text"
                                             className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
@@ -116,7 +138,9 @@ export default function UpdateProfile() {
                                         />
                                     </label>
                                     <label className="input input-bordered flex items-center my-2 gap-2">
-                                        Email
+                                        <label className="font-semibold">
+                                            Email
+                                        </label>
                                         <input
                                             type="email"
                                             className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
@@ -125,6 +149,75 @@ export default function UpdateProfile() {
                                             value={email}
                                             onChange={e =>
                                                 setEmail(e.target.value)
+                                            }
+                                        />
+                                    </label>
+                                    <label className="input input-bordered flex items-center my-2 gap-2">
+                                        <label className="font-semibold">
+                                            Birthday (วันเกิด)
+                                        </label>
+                                        <input
+                                            type="date"
+                                            className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                            placeholder="birthday"
+                                            id="birthday"
+                                            value={birthday}
+                                            onChange={e =>
+                                                setbirthday(e.target.value)
+                                            }
+                                        />
+                                    </label>
+                                    <label className="input input-bordered flex items-center my-2 gap-2">
+                                        <label className="font-semibold">
+                                            FreeDay (วันหยุด)
+                                        </label>
+                                        <select
+                                            className=" border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                            value={freeday} // Set the value of the select element
+                                            onChange={e =>
+                                                setfreeday(e.target.value)
+                                            }>
+                                            {/* Populate the select options based on getBadgeProps */}
+                                            <option value="1">วันจันทร์</option>
+                                            <option value="2">วันอังคาร</option>
+                                            <option value="3">วันพุธ</option>
+                                            <option value="4">
+                                                วันพฤหัสบดี
+                                            </option>
+                                            <option value="5">วันศุกร์</option>
+                                            <option value="6">วันเสาร์</option>
+                                            <option value="7">
+                                                วันอาทิตย์
+                                            </option>
+                                        </select>
+                                    </label>
+                                    <label className="input input-bordered flex items-center my-2 gap-2">
+                                        <label className="font-semibold">
+                                            Line ID (ไลน์)
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                            placeholder="ไอดีไลน์หรือเบอร์โทร"
+                                            id="lineID"
+                                            value={lineID}
+                                            onChange={e =>
+                                                setlineID(e.target.value)
+                                            }
+                                        />
+                                    </label>
+                                    <label className="input input-bordered flex items-center my-2 gap-2">
+                                        <label className="font-semibold">
+                                            Phone Number (เบอร์ติดต่อ)
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="border-none outline-none grow focus:outline-none focus:ring-0 focus:border-transparent"
+                                            placeholder="ป้อนเบอร์ติดต่อ"
+                                            id="phone"
+                                            value={phone}
+                                            onChange={e =>
+                                                setphone(e.target.value)
                                             }
                                         />
                                     </label>
