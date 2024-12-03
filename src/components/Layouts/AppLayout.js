@@ -73,6 +73,7 @@ const AppLayout = ({ children }) => {
                         </footer>
                     </div>
                 </div>
+                <SpeedInsights />
             </div>
         </>
     )
