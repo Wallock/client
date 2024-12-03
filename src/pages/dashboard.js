@@ -118,7 +118,7 @@ export default function Dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"></div>
+                                <div className="skeleton h-6 w-16"> </div>
                             ) : (
                                 databeta
                             )}
@@ -137,7 +137,7 @@ export default function Dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"></div>
+                                <div className="skeleton h-6 w-16"> </div>
                             ) : (
                                 datadd
                             )}
@@ -156,7 +156,7 @@ export default function Dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"></div>
+                                <div className="skeleton h-6 w-16"> </div>
                             ) : (
                                 datalaos
                             )}
@@ -175,7 +175,7 @@ export default function Dashboard() {
                         </div>
                         <div className="stat-value text-success">
                             {loading ? (
-                                <div className="skeleton h-6 w-16"></div>
+                                <div className="skeleton h-6 w-16"> </div>
                             ) : (
                                 datathai
                             )}
@@ -225,7 +225,9 @@ export default function Dashboard() {
                                               <li
                                                   key={index}
                                                   className="flex justify-between items-center gap-x-6 py-2">
-                                                  <div className="skeleton h-4 w-full"></div>
+                                                  <div className="skeleton h-4 w-full">
+                                                      {' '}
+                                                  </div>
                                               </li>
                                           ))
                                         : currentItems.map(announcement => (

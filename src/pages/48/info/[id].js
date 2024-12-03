@@ -62,7 +62,6 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 export default function Page() {
     const router = useRouter()
-    const [successMessage, setSuccessMessage] = useState('')
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
     const [empData, setEmpData] = useState(null)
@@ -1685,7 +1684,7 @@ export default function Page() {
                                                                 datapacks.values
                                                                     ? `${f_url}/${datapacks[0].values}`
                                                                     : '/images/blank-picture.webp',
-                                                                    datapacks[0].id,
+                                                                datapacks[0].id,
                                                             )
                                                         }>
                                                         <span className="text-white text-lg font-semibold">
