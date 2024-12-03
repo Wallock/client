@@ -14,6 +14,7 @@ import React from 'react'
 import { useProfile } from '@/lib/ProfileContext'
 import { version, email, website, phone } from '@/lib/config'
 import Link from 'next/link'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 //UPDATE
 const AppLayout = ({ children }) => {
     const profile = useProfile()
