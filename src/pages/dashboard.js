@@ -197,6 +197,10 @@ export default function Dashboard() {
                                 หากเมนูด้านซ้ายไม่ขึ้น ให้รีเฟรชหน้าเว็บ 1
                                 ทีครับ
                             </p>
+                            <p className="font-md font-semibold text-error">
+                                **ปิดการใช้งานโหมดมืด
+                                ไม่งั้นจะทำให้ระบบบัคเมนูครับ
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -282,11 +286,11 @@ export default function Dashboard() {
                             </pre>
                             <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    แก้ไข Font ใหม่ให้แสดงผลเหมือนกันทุกเครื่อง
+                                    เพิ่มการอัพโหลดรูปการ์ด และลบรูปการ์ดได้แล้ว
                                 </code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
-                                <code>อัพเดท Effect หน้าสมัครคนงานใหม่</code>
+                                <code>ปิดการใช้งานโหมดมืดชั่วคราว</code>
                             </pre>
                         </div>
                     </div>

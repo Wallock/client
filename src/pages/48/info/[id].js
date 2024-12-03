@@ -11,6 +11,7 @@ import {
     faUserLock,
     faRightLeft,
     faFileArrowUp,
+    faTrashCan,
     faCheckCircle,
     faSyringe,
     faTriangleExclamation,
@@ -61,6 +62,7 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 export default function Page() {
     const router = useRouter()
+    const [successMessage, setSuccessMessage] = useState('')
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
     const [empData, setEmpData] = useState(null)
@@ -77,6 +79,7 @@ export default function Page() {
     const [workLogs, setWorkLogs] = useState([])
     const [isPaymentLogModalOpen, setIsPaymentLogModalOpen] = useState(false)
     const [paymentLogs, setPaymentLogs] = useState([])
+    const [dataFiles, setDataFiles] = useState(null)
     useEffect(() => {
         const checkUserStatus = () => {
             // Check the user's type48 status from the profile prop
@@ -103,6 +106,68 @@ export default function Page() {
 
     const handleCloseCardModal = () => {
         setIsCardModalOpen(false)
+    }
+
+    const handleFileChange = e => {
+        setDataFiles(e.target.files) // เก็บไฟล์ที่เลือก
+    }
+
+    const handleSubmit = async e => {
+        e.preventDefault()
+
+        if (!dataFiles || dataFiles.length === 0) {
+            alert('กรุณาเลือกไฟล์ก่อน!')
+            return
+        }
+
+        const apiUrl = `${f_url}/api/datapack/add?token=${token}&data_id=${router.query.id}`
+
+        const formData = new FormData()
+
+        // เพิ่มไฟล์ทั้งหมดที่เลือกลงใน FormData
+        Array.from(dataFiles).forEach(file => {
+            formData.append('data_files[]', file) // 'data_files[]' เพื่อรองรับหลายไฟล์
+        })
+        formData.append('data_id', router.query.id)
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                body: formData,
+            })
+
+            if (response.ok) {
+                toast.success('อัพเดทสถานะเรียบร้อยแล้ว', {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+                await fetchData(false)
+                setIsPictureModalOpen(false)
+            } else {
+                const error = await response.json()
+                toast.error(`เกิดข้อผิดพลาด: ${error.message}`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+            }
+        } catch (error) {
+            toast.error('การเชื่อมต่อกับเซิร์ฟเวอร์ล้มเหลว', {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            })
+        }
     }
 
     const [isPictureModalOpen, setIsPictureModalOpen] = useState(false)
@@ -716,10 +781,62 @@ export default function Page() {
     const datapacks = data?.datapacks || []
     const [newStatus, setNewStatus] = useState('')
     const [statusDetail, setStatusDetail] = useState('')
+    const [selectedImageId, setSelectedImageId] = useState(null)
 
-    const handleImageClick = imageUrl => {
+    const handleImageClick = (imageUrl, id) => {
         setSelectedImage(imageUrl)
+        setSelectedImageId(id)
         setIsModalOpen(true)
+    }
+
+    const handleDeleteImage = async (id, empId) => {
+        if (confirm('คุณต้องการลบรูปภาพนี้หรือไม่?')) {
+            try {
+                const response = await fetch(
+                    `${f_url}/api/datapack/remove?token=${token}&id=${id}&save_empid=${empId}`,
+                    {
+                        method: 'get',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    },
+                )
+
+                if (response.ok) {
+                    toast.success('Images deleted successfully!', {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                    })
+                    setIsModalOpen(false)
+                    // รีเฟรชข้อมูลหลังลบรูปภาพ
+                    fetchData()
+                } else {
+                    // console.error('Error deleting image:', empId)
+                    toast.error(`เกิดข้อผิดพลาดในการลบรูปภาพ`, {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                    })
+                }
+            } catch (error) {
+                // console.error('Error deleting image:', error)
+                toast.error(`Error:. ${error.message}`, {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                })
+            }
+        }
     }
 
     const handleDeleteWorker = async () => {
@@ -928,7 +1045,7 @@ export default function Page() {
                                             ดำเนินการ
                                         </label>
                                     </div>
-                                    <div className="drawer-side z-30">
+                                    <div className="drawer-side fixed inset-0 z-40">
                                         <label
                                             htmlFor="my-drawer-4"
                                             aria-label="close sidebar"
@@ -943,42 +1060,6 @@ export default function Page() {
                                             {renderButtons(data?.worker_status)}
                                         </ul>
                                     </div>
-                                    {isModalOpen2 && (
-                                        <div className="modal modal-open">
-                                            <div className="modal-box text-center">
-                                                <h2 className="text-2xl font-bold mb-4">
-                                                    รายละเอียดสถานะ
-                                                </h2>
-                                                <textarea
-                                                    className="textarea textarea-bordered  text-lg w-full"
-                                                    placeholder="โปรดระบุเหตุผลทุกครั้ง"
-                                                    value={statusDetail}
-                                                    onChange={e =>
-                                                        setStatusDetail(
-                                                            e.target.value,
-                                                        )
-                                                    }>
-                                                    {' '}
-                                                </textarea>
-                                                <div className="modal-action text-center">
-                                                    <button
-                                                        className="btn btn-lg btn-1/2 button-js"
-                                                        onClick={
-                                                            handleSubmitStatus
-                                                        }>
-                                                        บันทึก
-                                                    </button>
-                                                    <button
-                                                        className="btn btn-lg btn-error text-white"
-                                                        onClick={
-                                                            handleCloseModal
-                                                        }>
-                                                        ยกเลิก
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -1017,7 +1098,7 @@ export default function Page() {
                         </div>
                         <div className="flex flex-wrap px-5 py-3">
                             <div className="w-full py-3 pr-0 sm:w-1/2 pb-0 sm:pr-2">
-                                <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-5 shadow-sm mb-3">
+                                <div className="bg-white text-gray-800 text-gray-800 dark:bg-gray-400 rounded-box p-5 shadow-sm mb-3">
                                     <h2 className="text-xl font-bold mb-4">
                                         <FontAwesomeIcon
                                             icon={faCircleInfo}
@@ -1331,7 +1412,7 @@ export default function Page() {
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-4">
-                                    <div className="bg-white text-gray-800 dark:bg-gray-400 rounded-box p-6 shadow-sm mb-3">
+                                    <div className="bg-white dark:bg-gray-800 dark:text-white rounded-box p-6 shadow-sm mb-3">
                                         <h2 className="text-xl font-bold mb-4">
                                             <FontAwesomeIcon
                                                 icon={faClockRotateLeft}
@@ -1339,7 +1420,7 @@ export default function Page() {
                                             />{' '}
                                             ประวัติการทำงาน
                                         </h2>
-                                        <ul className="timeline timeline-vertical">
+                                        <ul className="timeline timeline-vertical dark:bg-gray-800 dark:text-white">
                                             {data?.workexp_position1 != null ? (
                                                 <li>
                                                     <div className="timeline-start">
@@ -1352,7 +1433,7 @@ export default function Page() {
                                                             className="fa-fw"
                                                         />
                                                     </div>
-                                                    <div className="timeline-end timeline-box">
+                                                    <div className="timeline-end timeline-box dark:bg-gray-600 dark:text-white">
                                                         <p className="underline p-0">
                                                             {
                                                                 data?.workexp_position1
@@ -1380,7 +1461,7 @@ export default function Page() {
                                                             className="fa-fw"
                                                         />
                                                     </div>
-                                                    <div className="timeline-end timeline-box">
+                                                    <div className="timeline-end timeline-box dark:bg-gray-600 dark:text-white">
                                                         <p className="underline p-0">
                                                             {
                                                                 data?.workexp_position2
@@ -1408,7 +1489,7 @@ export default function Page() {
                                                             className="fa-fw"
                                                         />
                                                     </div>
-                                                    <div className="timeline-end timeline-box">
+                                                    <div className="timeline-end timeline-box dark:bg-gray-600 dark:text-white">
                                                         <p className="underline p-0">
                                                             {
                                                                 data?.workexp_position3
@@ -1436,7 +1517,7 @@ export default function Page() {
                                                             className="fa-fw"
                                                         />
                                                     </div>
-                                                    <div className="timeline-end timeline-box">
+                                                    <div className="timeline-end timeline-box dark:bg-gray-600 dark:text-white">
                                                         <p className="underline p-0">
                                                             {
                                                                 data?.workexp_position4
@@ -1490,7 +1571,7 @@ export default function Page() {
                                                                 className="fa-fw"
                                                             />
                                                         </div>
-                                                        <div className="timeline-end timeline-box">
+                                                        <div className="timeline-end timeline-box dark:bg-gray-600 dark:text-white">
                                                             <p className="underline p-0">
                                                                 {
                                                                     log.sy_position
@@ -1601,7 +1682,10 @@ export default function Page() {
                                                         className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 opacity-0 hover:opacity-100 rounded-xl transition duration-300 ease-in-out"
                                                         onClick={() =>
                                                             handleImageClick(
-                                                                `${f_url}/${datapacks[0].values}`,
+                                                                datapacks.values
+                                                                    ? `${f_url}/${datapacks[0].values}`
+                                                                    : '/images/blank-picture.webp',
+                                                                    datapacks[0].id,
                                                             )
                                                         }>
                                                         <span className="text-white text-lg font-semibold">
@@ -1650,6 +1734,7 @@ export default function Page() {
                                                                                 datapack.values
                                                                                     ? `${f_url}/${datapack.values}`
                                                                                     : '/images/blank-picture.webp',
+                                                                                datapack.id,
                                                                             )
                                                                         }
                                                                     />
@@ -1692,6 +1777,24 @@ export default function Page() {
                                                             alt="Selected"
                                                             className="max-w-full max-h-[70vh] object-contain"
                                                         />
+                                                    </div>
+                                                    <div className="flex justify-center mt-4 mb-4 px-4">
+                                                        <button
+                                                            className="btn btn-error btn-block text-white px-4 py-2 rounded-lg"
+                                                            onClick={() =>
+                                                                handleDeleteImage(
+                                                                    selectedImageId,
+                                                                    empId,
+                                                                )
+                                                            }>
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faTrashCan
+                                                                }
+                                                                className="fa-fw"
+                                                            />{' '}
+                                                            ลบรูปภาพ
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2626,58 +2729,68 @@ export default function Page() {
                                 {' '}
                             </div>
                             <div className="modal-box h-xl bg-gradient-to-t from-[#000000] via-[#150050] to-[#3f0071] text-white">
-                                <div className="flex justify-between items-center">
-                                    <h2 className="text-2xl font-semibold text-white text-shadow-sm">
-                                        <FontAwesomeIcon
-                                            icon={faGripLinesVertical}
-                                            className="fa-fw me-1"
-                                        />
-                                        อัพโหลดรูป
-                                    </h2>
-                                    <button
-                                        className="text-white text-2xl"
-                                        onClick={handleClosePictureModal}>
-                                        <FontAwesomeIcon
-                                            icon={faTimes}
-                                            className="fa-lg"
-                                        />
-                                    </button>
-                                </div>
+                                <form
+                                    onSubmit={handleSubmit}
+                                    encType="multipart/form-data">
+                                    <div className="flex justify-between items-center">
+                                        <h2 className="text-2xl font-semibold text-white text-shadow-sm">
+                                            <FontAwesomeIcon
+                                                icon={faGripLinesVertical}
+                                                className="fa-fw me-1"
+                                            />
+                                            อัพโหลดรูป
+                                        </h2>
+                                        <button
+                                            className="text-white text-2xl"
+                                            onClick={handleClosePictureModal}>
+                                            <FontAwesomeIcon
+                                                icon={faTimes}
+                                                className="fa-lg"
+                                            />
+                                        </button>
+                                    </div>
 
-                                <div className="bg-white rounded-lg shadow-lg m-3 p-3 text-center">
-                                    <h1 className="text-3xl font-semibold text-error font-semibold">
-                                        <FontAwesomeIcon
-                                            icon={faTriangleExclamation}
-                                            className="fa-fw"
+                                    <div className="bg-white rounded-lg shadow-lg m-3 p-3 text-center">
+                                        <h1 className="text-3xl font-semibold text-error font-semibold">
+                                            <FontAwesomeIcon
+                                                icon={faTriangleExclamation}
+                                                className="fa-fw"
+                                            />
+                                            แจ้งเตือนก่อนอัพโหลด!!
+                                        </h1>
+                                        <p className="my-3 text-sm text-center font-regular text-neutral">
+                                            รูปที่แสดงบนการ์ดและนามบัตรคนงานคือรูปแรกของการอัพโหลดเสมอ
+                                            <br />
+                                            ดังนั้น หากต้องการอัพโหลด
+                                            รูปการ์ดแรกควรคำนึกถึงความสวยงามให้ดี
+                                            <br />
+                                            เพราะไม่สามารถแก้ไขได้ภายหลัง
+                                            <br />
+                                        </p>
+                                        <input
+                                            name="data_files"
+                                            id="data_files"
+                                            type="file"
+                                            onChange={handleFileChange}
+                                            multiple
+                                            className="file-input file-input-bordered text-neutral my-1 w-full"
                                         />
-                                        แจ้งเตือนก่อนอัพโหลด!!
-                                    </h1>
-                                    <p className="my-3 text-sm text-center font-regular text-neutral">
-                                        รูปที่แสดงบนการ์ดและนามบัตรคนงานคือรูปแรกของการอัพโหลดเสมอ
-                                        <br />
-                                        ดังนั้น หากต้องการอัพโหลด
-                                        รูปการ์ดแรกควรคำนึกถึงความสวยงามให้ดี
-                                        <br />
-                                        เพราะไม่สามารถแก้ไขได้ภายหลัง
-                                        <br />
-                                    </p>
-                                    <input
-                                        type="file"
-                                        multiple
-                                        className="file-input file-input-bordered text-neutral my-1 w-full"
-                                    />
-                                    <p className="text-xs text-error font-medium mb-3">
-                                        *รองรับไฟล์ประเภท jpg,jpeg,png เท่านั้น
-                                    </p>
+                                        <p className="text-xs text-error font-medium mb-3">
+                                            *รองรับไฟล์ประเภท jpg,jpeg,png
+                                            เท่านั้น
+                                        </p>
 
-                                    <button className="btn button-js font-semibold text-lg w-full my-1">
-                                        <FontAwesomeIcon
-                                            icon={faFileArrowUp}
-                                            className="fa-fw"
-                                        />
-                                        Upload now
-                                    </button>
-                                </div>
+                                        <button
+                                            type="submit"
+                                            className="btn button-js font-semibold text-lg w-full my-1">
+                                            <FontAwesomeIcon
+                                                icon={faFileArrowUp}
+                                                className="fa-fw"
+                                            />
+                                            Upload now
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     )}
@@ -2818,6 +2931,42 @@ export default function Page() {
                                         className="btn"
                                         onClick={handleCloseContractLogModal}>
                                         ปิด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Buttom Action Modal */}
+                    {isModalOpen2 && (
+                        <div
+                            className="modal modal-open fixed inset-0 flex items-center justify-center z-50"
+                            style={{
+                                background: 'rgba(0, 0, 0, 0.5)',
+                            }}>
+                            <div className="modal-box text-center">
+                                <h2 className="text-2xl font-bold mb-4">
+                                    รายละเอียดสถานะ
+                                </h2>
+                                <textarea
+                                    className="textarea textarea-bordered  text-lg w-full"
+                                    placeholder="โปรดระบุเหตุผลทุกครั้ง"
+                                    value={statusDetail}
+                                    onChange={e =>
+                                        setStatusDetail(e.target.value)
+                                    }>
+                                    {' '}
+                                </textarea>
+                                <div className="modal-action text-center">
+                                    <button
+                                        className="btn btn-lg btn-1/2 button-js"
+                                        onClick={handleSubmitStatus}>
+                                        บันทึก
+                                    </button>
+                                    <button
+                                        className="btn btn-lg btn-error text-white"
+                                        onClick={handleCloseModal}>
+                                        ยกเลิก
                                     </button>
                                 </div>
                             </div>
