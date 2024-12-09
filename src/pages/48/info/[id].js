@@ -2624,6 +2624,34 @@ export default function Page() {
                                                     </p>
                                                 </div>
                                             )}
+                                            {data.workexp_name3 && (
+                                                <div className="p-2 bg-gray-100 rounded-lg shadow-sm">
+                                                    <p className="font-bold">
+                                                        {data.workexp_position3}
+                                                    </p>
+                                                    <p>
+                                                        {data.workexp_name3} -{' '}
+                                                        {data.workexp_time3}
+                                                    </p>
+                                                    <p className="text-sm">
+                                                        {data.workexp_detail3}
+                                                    </p>
+                                                </div>
+                                            )}
+                                            {data.workexp_name4 && (
+                                                <div className="p-2 bg-gray-100 rounded-lg shadow-sm">
+                                                    <p className="font-bold">
+                                                        {data.workexp_position4}
+                                                    </p>
+                                                    <p>
+                                                        {data.workexp_name4} -{' '}
+                                                        {data.workexp_time4}
+                                                    </p>
+                                                    <p className="text-sm">
+                                                        {data.workexp_detail4}
+                                                    </p>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
