@@ -104,6 +104,44 @@ export default function Dashboard() {
 
     return (
         <AppLayout>
+            <div className="snowflakes" aria-hidden="true">
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+                <div className="snowflake">
+                    <div className="inner">❅</div>
+                </div>
+            </div>
             <div className="w-full p-5">
                 <div className="stats stats-vertical lg:stats-horizontal w-full shadow-lg bg-white dark:bg-gray-800 dark:text-white">
                     <div className="stat">
