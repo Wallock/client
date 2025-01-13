@@ -283,7 +283,8 @@ export default function RegistrationForm() {
 
             const result = await response.json() // ถ้า API ส่งข้อมูลกลับมาในรูปแบบ JSON
             //console.log('Success:', result)
-            alert('Worker added successfully')
+            toast.success('Data Add Successfully')
+            router.push('/register/user')
         } catch (error) {
             //console.error('Error:', error)
             alert(`Error: ${error.message}`)
@@ -400,7 +401,7 @@ export default function RegistrationForm() {
                 errors.altPhone = 'กรุณาใส่เบอร์สำรอง'
                 isValid = false
             }
-            if (!children) {
+            if (children < 0) {
                 errors.children = 'กรุณาระบุจำนวนลูกถ้าไม่มีให้ใส่ 0 '
                 isValid = false
             }
@@ -497,7 +498,7 @@ export default function RegistrationForm() {
                                     กรุณาตรวจสอบก่อนบันทึก
                                 </span>
                                 <span className="label-text-alt">
-                                    ระบบสมัครงาน - นาซ่า
+                                    ระบบสมัครงาน JS-System © 2025
                                 </span>
                             </div>
                         </div>
@@ -573,7 +574,7 @@ export default function RegistrationForm() {
                                             setGender(e.target.value)
                                         }
                                         className="select select-bordered">
-                                        <option disabled>กรุณาเลือก</option>
+                                        <option selected>กรุณาเลือก</option>
                                         <option value="1">ชาย</option>
                                         <option value="2">หญิง</option>
                                     </select>
@@ -727,7 +728,7 @@ export default function RegistrationForm() {
                                             setRelationship(e.target.value)
                                         }
                                         className="select select-bordered">
-                                        <option disabled>กรุณาเลือก</option>
+                                        <option selected>กรุณาเลือก</option>
                                         <option value="1">โสด</option>
                                         <option value="5">มีแฟน</option>
                                         <option value="2">แต่งงาน</option>
@@ -778,6 +779,7 @@ export default function RegistrationForm() {
                                         className={getInputClassName(
                                             'selectedProvince',
                                         )}>
+                                        <option selected>กรุณาเลือก</option>
                                         {provinces.map((province, index) => (
                                             <option
                                                 key={index}
@@ -819,6 +821,9 @@ export default function RegistrationForm() {
                                         className="input input-bordered"
                                         placeholder="กรอกจำนวนปีที่อยู่ไทย"
                                     />
+                                    <label className="label text-red-500">
+                                        หากเป็นคนไทยให้ใส่ 0
+                                    </label>
                                 </div>
                                 <div className="form-control">
                                     <label className="label">
@@ -964,7 +969,7 @@ export default function RegistrationForm() {
                                                             setThaiReading(
                                                                 e.target.value,
                                                             )
-                                                        }
+                                                        } // ใช้ setThaiReading
                                                         className="radio me-2"
                                                     />
                                                     <span className="label-text">
@@ -976,11 +981,14 @@ export default function RegistrationForm() {
                                                         type="radio"
                                                         name="thaiReading"
                                                         value="0"
+                                                        checked={
+                                                            thaiReading === '0'
+                                                        } // เพิ่ม checked สำหรับ value="0"
                                                         onChange={e =>
-                                                            thaiReading(
+                                                            setThaiReading(
                                                                 e.target.value,
                                                             )
-                                                        }
+                                                        } // ใช้ setThaiReading
                                                         className="radio me-2"
                                                     />
                                                     <span className="label-text">
@@ -1243,7 +1251,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
+                                                <option selected>
                                                     กรุณาเลือก
                                                 </option>
                                                 <option value="0">
@@ -1559,7 +1567,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
+                                                <option selected>
                                                     กรุณาเลือก
                                                 </option>
                                                 <option value="1">กลัว</option>
@@ -1580,7 +1588,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
+                                                <option selected>
                                                     กรุณาเลือก
                                                 </option>
                                                 <option value="1">กลัว</option>
@@ -1601,7 +1609,7 @@ export default function RegistrationForm() {
                                                     setAlcohol(e.target.value)
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
+                                                <option selected>
                                                     กรุณาเลือก
                                                 </option>
                                                 <option value="0">
@@ -1629,7 +1637,7 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option disabled>
+                                                <option selected>
                                                     กรุณาเลือก
                                                 </option>
                                                 <option value="0">
@@ -1948,40 +1956,34 @@ export default function RegistrationForm() {
                                         </label>
                                     </div>
 
-                                    {hasWorkPermit && (
-                                        <>
-                                            <div className="form-control">
-                                                <label className="label">
-                                                    เลขบัตร work permit
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    value={workPermitNo}
-                                                    onChange={e =>
-                                                        setWorkPermitNo(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    className="input input-bordered"
-                                                />
-                                            </div>
-                                            <div className="form-control">
-                                                <label className="label">
-                                                    วันหมดอายุ work permit
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    value={workPermitExpiry}
-                                                    onChange={e =>
-                                                        setWorkPermitExpiry(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    className="input input-bordered"
-                                                />
-                                            </div>
-                                        </>
-                                    )}
+                                    <div className="form-control">
+                                        <label className="label">
+                                            เลขบัตร work permit
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={workPermitNo}
+                                            onChange={e =>
+                                                setWorkPermitNo(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            วันหมดอายุ work permit
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={workPermitExpiry}
+                                            onChange={e =>
+                                                setWorkPermitExpiry(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
 
                                     <div className="form-control">
                                         <label className="label">

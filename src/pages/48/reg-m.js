@@ -86,6 +86,7 @@ export default function RegistrationForm() {
 
     // Step 5: Documents
     const [hasWorkPermit, setHasWorkPermit] = useState(false)
+    const [hasPinkCard, setHasPinkCard] = useState(false)
     const [workPermitNo, setWorkPermitNo] = useState('')
     const [workPermitExpiry, setWorkPermitExpiry] = useState('')
     const [passportNo, setPassportNo] = useState('')
@@ -184,6 +185,8 @@ export default function RegistrationForm() {
         formData.append('visacardexp', visaExpiry)
 
         formData.append('worker_namelist', hasWorkPermit)
+
+        formData.append('worker_pinkcard', hasPinkCard)
 
         formData.append('worker_smalldog', fearSmallPets)
         formData.append('worker_bigdog', fearBigPets)
@@ -439,7 +442,7 @@ export default function RegistrationForm() {
                 errors.altPhone = 'กรุณาใส่เบอร์สำรอง'
                 isValid = false
             }
-            if (!children) {
+            if (children < 0) {
                 errors.children = 'กรุณาระบุจำนวนลูกถ้าไม่มีให้ใส่ 0 '
                 isValid = false
             }
@@ -536,7 +539,7 @@ export default function RegistrationForm() {
                                     กรุณาตรวจสอบก่อนบันทึก
                                 </span>
                                 <span className="label-text-alt">
-                                    ระบบสมัครงาน - นาซ่า
+                                    ระบบสมัครงาน JS-System © 2025
                                 </span>
                             </div>
                         </div>
@@ -1978,40 +1981,52 @@ export default function RegistrationForm() {
                                         </label>
                                     </div>
 
-                                    {hasWorkPermit && (
-                                        <>
-                                            <div className="form-control">
-                                                <label className="label">
-                                                    เลขบัตร work permit
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    value={workPermitNo}
-                                                    onChange={e =>
-                                                        setWorkPermitNo(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    className="input input-bordered"
-                                                />
-                                            </div>
-                                            <div className="form-control">
-                                                <label className="label">
-                                                    วันหมดอายุ work permit
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    value={workPermitExpiry}
-                                                    onChange={e =>
-                                                        setWorkPermitExpiry(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    className="input input-bordered"
-                                                />
-                                            </div>
-                                        </>
-                                    )}
+                                    <div className="form-control">
+                                        <label className="label cursor-pointer">
+                                            <span className="label-text">
+                                                บัตรชมพู (ทร.๓๘)
+                                            </span>
+                                            <input
+                                                type="checkbox"
+                                                checked={hasPinkCard}
+                                                onChange={e =>
+                                                    setHasPinkCard(
+                                                        e.target.checked,
+                                                    )
+                                                }
+                                                className="checkbox checkbox-primary"
+                                            />
+                                        </label>
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            เลขบัตร work permit
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={workPermitNo}
+                                            onChange={e =>
+                                                setWorkPermitNo(e.target.value)
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            วันหมดอายุ work permit
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={workPermitExpiry}
+                                            onChange={e =>
+                                                setWorkPermitExpiry(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            className="input input-bordered"
+                                        />
+                                    </div>
 
                                     <div className="form-control">
                                         <label className="label">

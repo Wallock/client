@@ -2,7 +2,6 @@ import AppLayout from '@/components/Layouts/AppLayout'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
-import Confetti from '@/components/Confetti'
 import Select from 'react-select'
 import { useProfile } from '@/lib/ProfileContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -27,7 +26,7 @@ export default function RegistrationForm() {
 
     // Step 1: Personal Info
     const [workerId, setworkerId] = useState('')
-    const [flag, setFlag] = useState('m') // เพิ่ม flag
+    const [flag, setFlag] = useState('jno') // เพิ่ม flag
     const [fullName, setFullName] = useState('')
     const [nickname, setNickname] = useState('')
     const [birthdate, setBirthdate] = useState('')
@@ -86,7 +85,6 @@ export default function RegistrationForm() {
 
     // Step 5: Documents
     const [hasWorkPermit, setHasWorkPermit] = useState(false)
-    const [hasPinkCard, setHasPinkCard] = useState(false)
     const [workPermitNo, setWorkPermitNo] = useState('')
     const [workPermitExpiry, setWorkPermitExpiry] = useState('')
     const [passportNo, setPassportNo] = useState('')
@@ -99,7 +97,6 @@ export default function RegistrationForm() {
 
     // เพิ่ม empidlock (emp_id, emp_id_lock)
     const [empidlock, setEmpidlock] = useState('')
-    const [showConfetti, setShowConfetti] = useState(false)
 
     // Load Provinces Data
     useEffect(() => {
@@ -186,8 +183,6 @@ export default function RegistrationForm() {
 
         formData.append('worker_namelist', hasWorkPermit)
 
-        formData.append('worker_pinkcard', hasPinkCard)
-
         formData.append('worker_smalldog', fearSmallPets)
         formData.append('worker_bigdog', fearBigPets)
 
@@ -254,42 +249,20 @@ export default function RegistrationForm() {
         }
 
         try {
-            const response = await fetch('https://dd.wb.in.th/api/addworker', {
-                method: 'POST',
-                body: formData, // ส่งข้อมูลในรูปแบบ FormData
-                headers: {},
-            })
+            const response = await fetch(
+                'https://thai.wb.in.th/api/addworker',
+                {
+                    method: 'POST',
+                    body: formData, // ส่งข้อมูลในรูปแบบ FormData
+                    headers: {},
+                },
+            )
 
             // ตรวจสอบว่า response สำเร็จหรือไม่
             if (!response.ok) {
                 // ลองดึงข้อมูล error message จาก API response
                 const errorData = await response.text()
-                let parsedError
-                try {
-                    parsedError = JSON.parse(errorData)
-                } catch (e) {
-                    parsedError = { message: 'An unknown error occurred.' }
-                }
-
-                if (parsedError.errors) {
-                    // สร้างข้อความ Error ในรูปแบบ JSX
-                    const formattedErrors = (
-                        <div>
-                            <p className="font-semibold">Error:</p>
-                            <ul className="font-light text-sm">
-                                {Object.values(parsedError.errors)
-                                    .flat()
-                                    .map((error, index) => (
-                                        <li key={index}>- {error}</li>
-                                    ))}
-                            </ul>
-                        </div>
-                    )
-
-                    toast.error(formattedErrors)
-                } else {
-                    toast.error(`Error: ${parsedError.message || errorData}`)
-                }
+                //console.log(errorData) // แสดงข้อผิดพลาดใน console
                 let errorMessage = 'Unknown error'
 
                 // ตรวจสอบว่ามี error message ที่ API ส่งกลับมาหรือไม่
@@ -303,29 +276,18 @@ export default function RegistrationForm() {
                         .join('\n')
                 }
 
-                throw new Error(`${response.status}`)
+                // แสดงข้อผิดพลาดใน alert
+                alert(`Error: ${errorMessage}`)
+                throw new Error(`HTTP error! status: ${response.status}`)
             }
 
             const result = await response.json() // ถ้า API ส่งข้อมูลกลับมาในรูปแบบ JSON
             //console.log('Success:', result)
-            setShowConfetti(true)
-            toast.success('Data Add Successfully', {
-                position: 'top-center',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                transition: Bounce,
-            })
-            setTimeout(() => {
-                setShowConfetti(false)
-            }, 3000)
+            toast.success('Data Add Successfully')
             router.push('/register/user')
         } catch (error) {
             //console.error('Error:', error)
-            toast.error(`Error: ${error.message}`)
+            alert(`Error: ${error.message}`)
         }
     }
 
@@ -612,7 +574,7 @@ export default function RegistrationForm() {
                                             setGender(e.target.value)
                                         }
                                         className="select select-bordered">
-                                        <option>กรุณาเลือก</option>
+                                        <option selected>กรุณาเลือก</option>
                                         <option value="1">ชาย</option>
                                         <option value="2">หญิง</option>
                                     </select>
@@ -766,7 +728,7 @@ export default function RegistrationForm() {
                                             setRelationship(e.target.value)
                                         }
                                         className="select select-bordered">
-                                        <option>กรุณาเลือก</option>
+                                        <option selected>กรุณาเลือก</option>
                                         <option value="1">โสด</option>
                                         <option value="5">มีแฟน</option>
                                         <option value="2">แต่งงาน</option>
@@ -784,8 +746,7 @@ export default function RegistrationForm() {
                                                 e.target.value,
                                                 10,
                                             )
-                                            if (value >= 0 || value === 0) {
-                                                // เพิ่มการเช็คกรณีที่เป็น 0
+                                            if (value >= 0) {
                                                 setChildren(value)
                                             }
                                         }}
@@ -818,7 +779,7 @@ export default function RegistrationForm() {
                                         className={getInputClassName(
                                             'selectedProvince',
                                         )}>
-                                        <option>กรุณาเลือก</option>
+                                        <option selected>กรุณาเลือก</option>
                                         {provinces.map((province, index) => (
                                             <option
                                                 key={index}
@@ -860,6 +821,9 @@ export default function RegistrationForm() {
                                         className="input input-bordered"
                                         placeholder="กรอกจำนวนปีที่อยู่ไทย"
                                     />
+                                    <label className="label text-red-500">
+                                        หากเป็นคนไทยให้ใส่ 0
+                                    </label>
                                 </div>
                                 <div className="form-control">
                                     <label className="label">
@@ -1005,7 +969,7 @@ export default function RegistrationForm() {
                                                             setThaiReading(
                                                                 e.target.value,
                                                             )
-                                                        }
+                                                        } // ใช้ setThaiReading
                                                         className="radio me-2"
                                                     />
                                                     <span className="label-text">
@@ -1017,11 +981,14 @@ export default function RegistrationForm() {
                                                         type="radio"
                                                         name="thaiReading"
                                                         value="0"
+                                                        checked={
+                                                            thaiReading === '0'
+                                                        } // เพิ่ม checked สำหรับ value="0"
                                                         onChange={e =>
                                                             setThaiReading(
                                                                 e.target.value,
                                                             )
-                                                        }
+                                                        } // ใช้ setThaiReading
                                                         className="radio me-2"
                                                     />
                                                     <span className="label-text">
@@ -1284,7 +1251,9 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option>กรุณาเลือก</option>
+                                                <option selected>
+                                                    กรุณาเลือก
+                                                </option>
                                                 <option value="0">
                                                     ไม่ได้เลย
                                                 </option>
@@ -1598,7 +1567,9 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option>กรุณาเลือก</option>
+                                                <option selected>
+                                                    กรุณาเลือก
+                                                </option>
                                                 <option value="1">กลัว</option>
                                                 <option value="0">
                                                     ไม่กลัว
@@ -1617,7 +1588,9 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option>กรุณาเลือก</option>
+                                                <option selected>
+                                                    กรุณาเลือก
+                                                </option>
                                                 <option value="1">กลัว</option>
                                                 <option value="0">
                                                     ไม่กลัว
@@ -1636,7 +1609,9 @@ export default function RegistrationForm() {
                                                     setAlcohol(e.target.value)
                                                 }
                                                 className="select select-bordered">
-                                                <option>กรุณาเลือก</option>
+                                                <option selected>
+                                                    กรุณาเลือก
+                                                </option>
                                                 <option value="0">
                                                     ไม่สนใจเลย
                                                 </option>
@@ -1662,7 +1637,9 @@ export default function RegistrationForm() {
                                                     )
                                                 }
                                                 className="select select-bordered">
-                                                <option>กรุณาเลือก</option>
+                                                <option selected>
+                                                    กรุณาเลือก
+                                                </option>
                                                 <option value="0">
                                                     ไม่เมา
                                                 </option>
@@ -1871,7 +1848,8 @@ export default function RegistrationForm() {
                                                                         )
                                                                     }}
                                                                     className="select select-bordered w-full">
-                                                                    <option>
+                                                                    <option
+                                                                        disabled>
                                                                         กรุณาเลือก
                                                                     </option>
                                                                     <option value="แม่บ้าน">
@@ -1970,24 +1948,6 @@ export default function RegistrationForm() {
                                                 checked={hasWorkPermit}
                                                 onChange={e =>
                                                     setHasWorkPermit(
-                                                        e.target.checked,
-                                                    )
-                                                }
-                                                className="checkbox checkbox-primary"
-                                            />
-                                        </label>
-                                    </div>
-
-                                    <div className="form-control">
-                                        <label className="label cursor-pointer">
-                                            <span className="label-text">
-                                                บัตรชมพู (ทร.๓๘)
-                                            </span>
-                                            <input
-                                                type="checkbox"
-                                                checked={hasPinkCard}
-                                                onChange={e =>
-                                                    setHasPinkCard(
                                                         e.target.checked,
                                                     )
                                                 }
@@ -2201,7 +2161,6 @@ export default function RegistrationForm() {
                                             className="fa-xl"
                                         />
                                     </button>
-                                    <Confetti show={showConfetti} />
                                     <button
                                         onClick={handleFinalStep}
                                         className="btn text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 btn-lg">

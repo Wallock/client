@@ -54,6 +54,12 @@ const LoginPage = () => {
                 // Login successful, store the access token and redirect
                 const accessToken = data.access_token
                 Cookies.set('accessToken', accessToken)
+                if (shouldRemember) {
+                    Cookies.set('remember', 'true')
+                } else {
+                    Cookies.remove('remember')
+                }
+                //const profile = useProfile()
                 router.push('/dashboard')
             } else {
                 setLoading(false)
@@ -84,44 +90,6 @@ const LoginPage = () => {
             <Head>
                 <title>JS-System v3</title>
             </Head>
-            <div className="snowflakes" aria-hidden="true">
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-                <div className="snowflake">
-                    <div className="inner">❅</div>
-                </div>
-            </div>
             <section className="text-gray-600 body-font bg-gradient-to-b from-blue-800 to-indigo-700 font-lineSeed">
                 <div className="flex items-center justify-center min-h-screen">
                     <div className="container xl:px-32 px-5 py-auto mx-auto flex flex-wrap items-center">

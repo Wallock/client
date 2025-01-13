@@ -129,31 +129,46 @@ export default function user() {
                                         คนไทย ออนไลน์
                                     </h2>
                                     <div className="card-actions justify-center">
-                                        ยังไม่เปิดใช้งาน
-                                        {/* <button className="btn btn-neutral text-lg font-semibold">
+                                        <Link
+                                            href="/online/reg-48"
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
                                                 <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
                                                 </div>
                                             </div>
                                             รหัส 48
-                                        </button>
-                                        <button className="btn btn-neutral text-lg font-semibold">
+                                        </Link>
+                                        <Link
+                                            href="/online/reg-g"
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
                                                 <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
                                                 </div>
                                             </div>
                                             รหัส G
-                                        </button>
-                                        <button className="btn btn-neutral text-lg font-semibold">
+                                        </Link>
+                                        <Link
+                                            href="/online/reg-jno"
+                                            className="btn btn-neutral font-semibold text-lg">
                                             <div className="avatar">
                                                 <div className="w-5 rounded-full">
                                                     <img src="/icon/t.webp" />
                                                 </div>
                                             </div>
-                                            รหัส JN
-                                        </button> */}
+                                            รหัส JNO
+                                        </Link>
+                                        <Link
+                                            href="/online/reg-jnw"
+                                            className="btn btn-neutral font-semibold text-lg">
+                                            <div className="avatar">
+                                                <div className="w-5 rounded-full">
+                                                    <img src="/icon/t.webp" />
+                                                </div>
+                                            </div>
+                                            รหัส JNW
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

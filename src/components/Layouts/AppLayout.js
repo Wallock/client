@@ -18,7 +18,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 //UPDATE
 const AppLayout = ({ children }) => {
     const profile = useProfile()
-    //console.log('Profile data:', profile)
+
     return (
         <>
             <Head>

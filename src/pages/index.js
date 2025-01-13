@@ -57,44 +57,6 @@ const Home = () => {
                 <title>JS-System v3</title>
             </Head>
             <main>
-                <div className="snowflakes" aria-hidden="true">
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                    <div className="snowflake">
-                        <div className="inner">❅</div>
-                    </div>
-                </div>
                 <div className="flex items-center justify-center h-screen">
                     <div>
                         <h1 className="title-font m-0 font-semibold text-5xl  drop-shadow-xl text-transparent py-1 bg-clip-text bg-gradient-to-r from-slate-50 to-gray-400 text-left">

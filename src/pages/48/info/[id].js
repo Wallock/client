@@ -260,7 +260,7 @@ export default function Page() {
                 )
                 const empResponse = await empResponse_deep.json()
                 setEmpData(empResponse) // สมมติว่าข้อมูลพนักงานเป็น item แรก
-                //console.error('Error checking for updates:', empResponse)
+                console.error('Error checking for updates:', data?.emp_id)
             } catch (error) {
                 //sss
                 toast.error(`Error:. ${error}`, {
