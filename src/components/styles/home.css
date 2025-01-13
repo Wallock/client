@@ -1,17 +1,4 @@
-.wrapper {
-    width: 100vw;
-    height: 100vh;
-    background: #eee;
-    display: flex;
-    box-sizing: border-box;
-  }
 
-  .container {
-    display: block;
-    width: 80%;
-    margin: 0 auto;
-    height: auto;
-  }
 
   .house {
     cursor: pointer;
