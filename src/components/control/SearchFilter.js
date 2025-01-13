@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import axios from 'axios'
 import {
     faTasks,
     faXmark,
@@ -14,6 +15,7 @@ const SearchFilter = ({
     handleResetSearch,
     setSearchWorkerId,
     systemName,
+    url_count,
     showOnlyTypeT,
     showOnlyTypeC,
     showOnlyTypeM,
@@ -22,7 +24,6 @@ const SearchFilter = ({
     setShowOnlyTypeC,
     setShowOnlyTypeM,
     setShowOnlyTypeL,
-
     showOvernightt,
     showOvernightf,
     setShowOnlyOvernightt,
@@ -31,14 +32,37 @@ const SearchFilter = ({
     setSelectedStatus,
     selectedJob,
     setSelectedJob,
-
     selectedZone,
     setSelectedZone,
-
     selectedOutside,
     setSelectedOutside,
 }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false)
+    const [statuses, setStatuses] = useState([])
+
+    useEffect(() => {
+        // ดึงข้อมูลจาก API
+        const fetchStatuses = async () => {
+            try {
+                const response = await axios.get(
+                    `${url_count}/api/i_countstatus?token=1amwall0ck`,
+                )
+                setStatuses(response.data)
+            } catch (error) {
+                toast.error(`Error: ${error}`)
+            }
+        }
+
+        fetchStatuses()
+    }, [])
+
+    // ฟังก์ชันสำหรับดึงจำนวน total ตามสถานะ
+    const getTotal = workerStatus => {
+        const status = statuses.find(
+            item => item.worker_status === workerStatus,
+        )
+        return status ? status.total : 0
+    }
     return (
         <>
             <div className="flex items-center justify-center">
@@ -665,9 +689,9 @@ const SearchFilter = ({
             <div className="w-full animate-in slide-in-from-bottom">
                 <div className="flex items-center justify-evenly">
                     {/* สถานะ */}
-                    <ul className="menu menu-sm menu-horizontal mb-1">
+                    <ul className="menu menu-sm menu-horizontal">
                         <li className="menu-title w-full">แสดงตามสถานะ</li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === null
@@ -678,18 +702,21 @@ const SearchFilter = ({
                                 ทั้งหมด
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
-                                className={`btn text-xl  font-semibold mx-1 ${
+                                className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'wait'
                                         ? 'bg-gray-300 text-gray-700'
                                         : 'bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('wait')}>
-                                ว่างงาน
+                                ว่างงาน{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('wait')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'save'
@@ -697,10 +724,13 @@ const SearchFilter = ({
                                         : 'bg-amber-400 text-gray-800 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('save')}>
-                                ติดจอง
+                                ติดจอง{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('save')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'changepp'
@@ -708,10 +738,13 @@ const SearchFilter = ({
                                         : 'bg-gray-500 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('changepp')}>
-                                เปลี่ยน
+                                เปลี่ยน{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('changepp')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'retry'
@@ -719,10 +752,13 @@ const SearchFilter = ({
                                         : 'bg-purple-500 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('retry')}>
-                                เคลม
+                                เคลม{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('retry')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'incomplete'
@@ -730,10 +766,13 @@ const SearchFilter = ({
                                         : 'bg-blue-500 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('incomplete')}>
-                                รอทำสัญญา
+                                รอทำสัญญา{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('incomplete')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'bfprocess'
@@ -741,10 +780,13 @@ const SearchFilter = ({
                                         : 'bg-cyan-400 text-gray-800 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('bfprocess')}>
-                                สพ.แล้ว
+                                สพ.แล้ว{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('bfprocess')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'woker'
@@ -752,10 +794,13 @@ const SearchFilter = ({
                                         : 'bg-emerald-600 text-white dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('woker')}>
-                                ได้งานแล้ว
+                                ได้งานแล้ว{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('woker')}
+                                </div>
                             </button>
                         </li>
-                        <li>
+                        <li className="mb-1">
                             <button
                                 className={`btn text-xl font-semibold mx-1 ${
                                     selectedStatus === 'export'
@@ -763,7 +808,10 @@ const SearchFilter = ({
                                         : 'bg-red-100 text-red-500 dark:bg-gray-700 dark:text-white'
                                 }`}
                                 onClick={() => setSelectedStatus('export')}>
-                                ไม่ส่งงาน
+                                ไม่ส่งงาน{' '}
+                                <div className="badge badge-sm">
+                                    {getTotal('export')}
+                                </div>
                             </button>
                         </li>
                     </ul>

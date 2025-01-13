@@ -1154,8 +1154,30 @@ export default function Page() {
                                             </span>
                                         </div>
 
-                                        {/* เดินทาง */}
+                                        {/* บัตรชมพู */}
                                         <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
+                                                บัตรชมพู
+                                            </h4>
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
+                                                {data?.worker_pinkcard === 1
+                                                    ? 'มี'
+                                                    : 'ไม่มี'}
+                                            </span>
+                                        </div>
+
+                                        {/* ทราบข่าวจาก */}
+                                        <div className="px-4">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
+                                                ทราบข่าวจาก
+                                            </h4>
+                                            <span className="mt-2 text-md font-medium text-gray-700">
+                                                {data?.worker_knownews}
+                                            </span>
+                                        </div>
+
+                                        {/* เดินทาง */}
+                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-2">
                                             <h4 className="text-gray-800 text-sm font-semibold">
                                                 เดินทาง
                                             </h4>
@@ -1166,22 +1188,12 @@ export default function Page() {
                                             </span>
                                         </div>
 
-                                        {/* ทราบข่าวจาก */}
-                                        <div className="px-4">
-                                            <h4 className="text-gray-800 text-sm font-semibold">
-                                                ทราบข่าวจาก
-                                            </h4>
-                                            <span className="mt-2 text-2xl font-medium text-gray-700">
-                                                {data?.worker_knownews}
-                                            </span>
-                                        </div>
-
                                         {/* หมายเหตุ */}
-                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-2 ">
+                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-1 ">
                                             <h4 className="text-gray-800 text-sm font-semibold">
                                                 หมายเหตุ
                                             </h4>
-                                            <span className="mt-2 text-2xl font-medium text-gray-700">
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
                                                 {data?.worker_detailother}
                                             </span>
                                         </div>

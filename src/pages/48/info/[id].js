@@ -1082,9 +1082,11 @@ export default function Page() {
                                     การชำระเงิน
                                 </button>
                                 {profile?.role != 2 && (
-                                    <button className="text-gray-600 py-3">
+                                    <Link
+                                        href={`/${getname}/edit/${data?.worker_id}`}
+                                        className="text-gray-600 py-3">
                                         ตั้งค่าคนงาน
-                                    </button>
+                                    </Link>
                                 )}
                                 {profile?.role != 2 && (
                                     <button
@@ -1253,15 +1255,15 @@ export default function Page() {
                                             </span>
                                         </div>
 
-                                        {/* เดินทาง */}
+                                        {/* บัตรชมพู */}
                                         <div className="px-4">
                                             <h4 className="text-gray-800 text-sm font-semibold">
-                                                เดินทาง
+                                                บัตรชมพู
                                             </h4>
                                             <span className="mt-2 text-lg font-medium text-gray-700">
-                                                {data?.worker_outside === 1
-                                                    ? 'ไปได้ทุกที่'
-                                                    : 'ในพื้นที่อยู่เท่านั้น'}
+                                                {data?.worker_pinkcard === 1
+                                                    ? 'มี'
+                                                    : 'ไม่มี'}
                                             </span>
                                         </div>
 
@@ -1275,8 +1277,20 @@ export default function Page() {
                                             </span>
                                         </div>
 
+                                        {/* เดินทาง */}
+                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-2">
+                                            <h4 className="text-gray-800 text-sm font-semibold">
+                                                เดินทาง
+                                            </h4>
+                                            <span className="mt-2 text-lg font-medium text-gray-700">
+                                                {data?.worker_outside === 1
+                                                    ? 'ไปได้ทุกที่'
+                                                    : 'ในพื้นที่อยู่เท่านั้น'}
+                                            </span>
+                                        </div>
+
                                         {/* หมายเหตุ */}
-                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-2 ">
+                                        <div className="px-4 col-span-1 lg:col-span-1 2xl:col-span-1 ">
                                             <h4 className="text-gray-800 text-sm font-semibold">
                                                 หมายเหตุ
                                             </h4>

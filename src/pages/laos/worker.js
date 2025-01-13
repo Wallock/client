@@ -256,6 +256,7 @@ export default function Home() {
         <AppLayout>
             <SearchFilter
                 systemName={getname}
+                url_count={f_url}
                 searchWorkerId={searchWorkerId}
                 handleSearchWorkerId={handleSearchWorkerId}
                 handleResetSearch={handleResetSearch}

@@ -269,6 +269,7 @@ export default function Home() {
             <div className="w-full">
                 <SearchFilter
                     systemName={getname}
+                    url_count={f_url}
                     searchWorkerId={searchWorkerId}
                     handleSearchWorkerId={handleSearchWorkerId}
                     handleResetSearch={handleResetSearch}

@@ -182,7 +182,26 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-
+                {/* <div
+                    className="w-50 h-50"
+                    style={{ width: '200px', height: '200px' }}>
+                    <div className="gift">
+                        <div className="gift__bow">
+                            <div className="gift__bow-left"></div>
+                            <div className="gift__bow-right"></div>
+                            <div className="gift__bow-center"></div>
+                        </div>
+                        <div className="gift__box">
+                            <div className="gift__lid-shadow"></div>
+                        </div>
+                        <div className="gift__lid"></div>
+                        <div className="gift__star gift__star--1"></div>
+                        <div className="gift__star gift__star--2"></div>
+                        <div className="gift__star gift__star--3"></div>
+                        <div className="gift__star gift__star--4"></div>
+                        <div className="gift__star gift__star--5"></div>
+                    </div>
+                </div> */}
                 <div className="hero text-gray-300 dark:text-white">
                     <div className="hero-content my-3">
                         <div className="text-center p-3">
@@ -288,11 +307,37 @@ export default function Dashboard() {
                             </pre>
                             <pre data-prefix=">" className="text-sm">
                                 <code>
-                                    เพิ่มการอัพโหลดรูปการ์ด และลบรูปการ์ดได้แล้ว
+                                    แก้ไขระบบลงทะเบียนคนงาน
+                                    ให้ใช้งานได้ทุกระบบแล้ว
                                 </code>
                             </pre>
                             <pre data-prefix=">" className="text-sm">
-                                <code>ปิดการใช้งานโหมดมืดชั่วคราว</code>
+                                <code>เพิ่มระบบคำนวนยอดคนงานแต่ละสถานะ</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>
+                                    แก้ไขบัคชื่อเจ้าหน้าที่ดูแลคนงานไม่ขึ้น
+                                </code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>เพิ่มบัตร สีชมพู เข้าไปใน Choice</code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>
+                                    แก้ไขระบบลงทะเบียนบังคับให้เลือกช้อยทุกครั้ง
+                                </code>
+                            </pre>
+                            <pre
+                                data-prefix=">"
+                                className="text-sm text-red-500">
+                                <code>
+                                    แก้ไขบัคสมัครแล้วขึ้นกรอกข้อมูลไม่ครบถ้วน
+                                </code>
+                            </pre>
+                            <pre data-prefix=">" className="text-sm">
+                                <code>
+                                    เปิดระบบให้สามารถสมัครได้ทุกระบบแล้ว
+                                </code>
                             </pre>
                         </div>
                     </div>
