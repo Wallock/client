@@ -89,6 +89,20 @@ const LoginPage = () => {
         <div>
             <Head>
                 <title>JS-System v3</title>
+                <meta
+                    name="description"
+                    content="ระบบจัดการพนักงานและองค์กรภายใน"
+                />
+                <meta property="og:site_name" content="JS-System v3" />
+                <meta
+                    property="og:url"
+                    content="https://jssystem.vercel.app/"
+                />
+                <meta property="og:title" content="JS-System v3" />
+                <meta
+                    property="og:description"
+                    content="ระบบจัดการพนักงานและองค์กรภายใน"
+                />
             </Head>
             <section className="text-gray-600 body-font bg-gradient-to-b from-blue-800 to-indigo-700 font-lineSeed">
                 <div className="flex items-center justify-center min-h-screen">
